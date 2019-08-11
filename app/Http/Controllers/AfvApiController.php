@@ -77,7 +77,7 @@ class AfvApiController extends Controller
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
         curl_close($ch); // End cURL
 
-        return $httpCode;
+        abort($httpCode);
     }
 
     /**
