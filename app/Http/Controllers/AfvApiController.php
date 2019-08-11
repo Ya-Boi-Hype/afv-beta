@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\Approval;
 use Illuminate\Http\Request;
 
-class AFVAuthController extends Controller
+class AfvApiController extends Controller
 {
     //////////////////////////////////////////////////////
     // This class/controller handles all approvals      //
@@ -16,8 +16,8 @@ class AFVAuthController extends Controller
     //      - Revoke a CID                              //
     //////////////////////////////////////////////////////
 
-    private static $base; // Base API URL
-    private static $bearer; // Token to authenticate to API
+    protected static $base; // Base API URL
+    protected static $bearer; // Token to authenticate to API
 
     /**
      * Initializes Parameters and gets authenttication token.
@@ -26,15 +26,13 @@ class AFVAuthController extends Controller
      */
     public function __construct()
     {
-        self::$base = config('afv.api'); // Sets base URL
+        static::$base = config('afv.api'); // Sets base URL
         $url = self::$base.'api/v1/auth'; // Endpoint to be accessed
-
         $data = json_encode([
             'Username' => config('afv.user'),
             'Password' => config('afv.pass'),
             'NetworkVersion' => config('afv.networkVersion'),
         ]);
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1); // POST Request
@@ -44,17 +42,13 @@ class AFVAuthController extends Controller
             'Content-Length: '.strlen($data),
         ]);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
         // Send the request
         $result = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        if ($httpCode != 200) {
-            return ['code' => $httpCode, 'message' => $result];
-        }
-
-        self::$bearer = $result;
+        if ($httpCode !== 200) return $httpCode;
+        static::$bearer = $result;
     }
 
     /**
@@ -63,13 +57,11 @@ class AFVAuthController extends Controller
      * @param $data Content to be sent with the request
      * @return true or array
      */
-    private function doPUT($data = [])
+    public static function doPUT($endpoint, $data = [])
     {
-        $url = self::$base.'api/v1/users/enabled';
+        $url = self::$base.$endpoint;
         $content = json_encode($data);
-
         $ch = curl_init(); // Start cURL
-
         curl_setopt($ch, CURLOPT_URL, $url); // DESTINATION
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT'); // TYPE
         curl_setopt($ch, CURLOPT_POSTFIELDS, $content); // CONTENT
@@ -79,20 +71,11 @@ class AFVAuthController extends Controller
             'Authorization: Bearer '.self::$bearer,
         ]);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
         $result = curl_exec($ch); // Send the request
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
-
         curl_close($ch); // End cURL
 
-        if ($httpCode == 200) {
-            return true;
-        } elseif ($httpCode == 400) {
-            return ['code' => $httpCode, 'message' => json_decode($result)->message];
-        } // TRUE if 200 - OK, FALSE if not
-        else {
-            return ['code' => $httpCode, 'message' => $result];
-        }
+        return $httpCode;
     }
 
     /**
@@ -101,13 +84,14 @@ class AFVAuthController extends Controller
      * @param $cid CID to approve
      * @return true or array
      */
-    public function approveCID($cid)
+    public static function approveCIDs($cids)
     {
-        $data = [
-            ['Username' => (string) $cid, 'Enabled' => true],
-        ];
+        $data = array();
+        foreach($cids as $cid){
+            $data[] = ['Username' => (string) $cid, 'Enabled' => true];
+        }
 
-        return self::doPUT($data);
+        return self::doPUT('api/v1/users/enabled', $data);
     }
 
     /**
@@ -115,7 +99,7 @@ class AFVAuthController extends Controller
      *
      * @return true or array
      */
-    public function syncApprovals()
+    public static function syncApprovals()
     {
         $data = [];
 
@@ -124,12 +108,7 @@ class AFVAuthController extends Controller
             $data[] = ['Username' => (string) $cid, 'Enabled' => true];
         }
 
-        /*$nApproved = User::pending()->pluck('id');
-        foreach($nApproved as $cid){
-            $data[] = ["Username" => (string)$cid, "Enabled" => false];
-        }*/
-
-        return self::doPUT($data);
+        return self::doPUT('api/v1/users/enabled', $data);
     }
 
     /**
@@ -138,12 +117,13 @@ class AFVAuthController extends Controller
      * @param $cid CID to revoke
      * @return true or array
      */
-    public function revokeCID($cid)
+    public static function revokeCIDs($cids)
     {
-        $data = [
-            ['Username' => (string) $cid, 'Enabled' => false],
-        ];
+        $data = array();
+        foreach($cids as $cid){
+            $data[] = ['Username' => (string) $cid, 'Enabled' => false];
+        }
 
-        return self::doPUT($data);
+        return self::doPUT('api/v1/users/enabled', $data);
     }
 }

@@ -30,15 +30,14 @@ class ApprovalController extends Controller
             $approval = $approval->first();
         } // Get the approval
 
-        $afvAuth = new AFVAuthController();
-        $afvAuth = $afvAuth->approveCID($cid);
-        if ($afvAuth !== true) {
-            return redirect()->back()->withError($afvAuth['message'])->withApprove('');
-        }
+        $afvAuth = AfvApiController::approveCIDs([$cid]);
+        if ($afvAuth == 200) {
+            $approval->setAsApproved();
+            return redirect()->back()->withSuccess('User successfully approved!')->withApprove('');
+        } else {
+            return redirect()->back()->withError($afvAuth)->withApprove('');
+        } 
 
-        $approval->setAsApproved();
-
-        return redirect()->back()->withSuccess('User successfully approved!')->withApprove('');
     }
 
     /**
@@ -64,15 +63,14 @@ class ApprovalController extends Controller
             $approval = $approval->first();
         } // Get the approval
 
-        $afvAuth = new AFVAuthController();
-        $afvAuth = $afvAuth->revokeCID($cid);
-        if ($afvAuth !== true) {
-            return redirect()->back()->withError($afvAuth['code'].' - '.$afvAuth['message']);
+        $afvAuth = AfvApiController::revokeCIDs([$cid]);
+        if ($afvAuth == 200) {
+            $approval->setAsPending();
+            return redirect()->back()->withSuccess('User approval revoked!');
+        } else {
+            return redirect()->back()->withError($afvAuth);
         }
 
-        $approval->setAsPending();
-
-        return redirect()->back()->withSuccess('User approval revoked!');
     }
 
     /**
@@ -96,33 +94,31 @@ class ApprovalController extends Controller
             return redirect()->back()->withError('No pending approvals')->withApprove('');
         }
 
-        $approved = 0;
+        $cids = array();
         foreach ($pending as $approval) {
             if (! $approval->user) {
                 continue;
-            } // If it doesn't belong to any user, it will fail when trying to find who to send mail to
-
-            $afvAuth = new AFVAuthController();
-            $afvAuth = $afvAuth->approveCID($cid);
-            if ($afvAuth !== true) {
-                continue;
+            } else {
+                $cids[] = $approval->user->id;
             }
-
-            $approval->setAsApproved();
-            $approved++;
         }
 
-        return redirect()->back()->withSuccess("Successfully approved $approved users")->withApprove('');
+        $afvAuth = AfvApiController::approveCIDs($cids);
+        if ($afvAuth == 200) {
+            $approval->setAsApproved();
+            return redirect()->back()->withSuccess('Users successfully approved!')->withApprove('');
+        } else {
+            return redirect()->back()->withError($afvAuth)->withApprove('');
+        }
     }
 
     public function sync()
     {
-        $afvAuth = new AFVAuthController();
-        $afvAuth = $afvAuth->syncApprovals();
-        if ($afvAuth !== true) {
-            return redirect()->back()->withError($afvAuth['code'].' - '.$afvAuth['message']);
+        $afvAuth = AfvApiController::syncApprovals();
+        if ($afvAuth == 200) {
+            return redirect()->back()->withSuccess('Users successfully submitted!');
+        } else {
+            return redirect()->back()->withError($afvAuth);
         }
-
-        return redirect()->back()->withSuccess('Users successfully submitted');
     }
 }
