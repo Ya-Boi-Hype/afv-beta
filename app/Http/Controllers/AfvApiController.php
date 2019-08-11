@@ -42,7 +42,7 @@ class AfvApiController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Return the actual content of response
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
-            'Content-Length: '.strlen($data),
+            'Content-Length: '.strlen($content),
         ]);
         // Send the request
         $result = curl_exec($ch);
