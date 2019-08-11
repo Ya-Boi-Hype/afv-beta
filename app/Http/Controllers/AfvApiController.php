@@ -47,7 +47,9 @@ class AfvApiController extends Controller
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        if ($httpCode !== 200) return $httpCode;
+        if ($httpCode !== 200) {
+            return $httpCode;
+        }
         static::$bearer = $result;
     }
 
@@ -86,8 +88,8 @@ class AfvApiController extends Controller
      */
     public static function approveCIDs($cids)
     {
-        $data = array();
-        foreach($cids as $cid){
+        $data = [];
+        foreach ($cids as $cid) {
             $data[] = ['Username' => (string) $cid, 'Enabled' => true];
         }
 
@@ -119,8 +121,8 @@ class AfvApiController extends Controller
      */
     public static function revokeCIDs($cids)
     {
-        $data = array();
-        foreach($cids as $cid){
+        $data = [];
+        foreach ($cids as $cid) {
             $data[] = ['Username' => (string) $cid, 'Enabled' => false];
         }
 
