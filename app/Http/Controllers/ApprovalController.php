@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Approval;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ApprovalController extends Controller
 {
@@ -16,27 +17,23 @@ class ApprovalController extends Controller
      */
     public function approve($cid, Request $request)
     {
-        $approval = Approval::pending()->where('user_id', $cid); // See if user has a pending approval
+        try{
+            $approval = Approval::pending()->where('user_id', $cid)->firstOrFail(); // See if user has a pending approval
+        } catch (ModelNotFoundException $e) {
+            if (Approval::where('user_id', $cid)->exists()) {
+                return redirect()->back()->withError('User is already approved')->withApprove('');
+            } else {
+                return redirect()->back()->withError('User has not submitted a request to join the beta')->withApprove('');
+            }
+        }
 
-        if ($approval == null) { // If user hasn't got a pending approval
-             $approval = Approval::where('user_id', $cid); // See if user has any approval (pending or not)
-             if (! $approval) {
-                 return redirect()->back()->withError('User not found.')->withApprove('');
-             } // User not found
-            else {
-                return redirect()->back()->withError('User is already approved.')->withApprove('');
-            } // Can't approve an alreay approved user
-        } else {
-            $approval = $approval->first();
-        } // Get the approval
-
-        $afvAuth = AfvApiController::approveCIDs([$cid]);
-        if ($afvAuth == 200) {
+        $data = ['Username' => (string) $cid, 'Enabled' => true];
+        $afvApproval = AfvApiController::doPUT('api/v1/users/enabled', $data);
+        if ($afvApproval == 200) {
             $approval->setAsApproved();
-
             return redirect()->back()->withSuccess('User successfully approved!')->withApprove('');
         } else {
-            return redirect()->back()->withError($afvAuth)->withApprove('');
+            return redirect()->back()->withError("AFV Server replied with $afvApproval")->withApprove('');
         }
     }
 
@@ -49,27 +46,23 @@ class ApprovalController extends Controller
      */
     public function revoke($cid, Request $request)
     {
-        $approval = Approval::approved()->where('user_id', $cid); // See if user is approved
+        try{
+            $approval = Approval::approved()->where('user_id', $cid)->firstOrFail(); // User approved?
+        } catch (ModelNotFoundException $e) {
+            if (Approval::where('user_id', $cid)->exists()) { // User pending?
+                return redirect()->back()->withError('Approval is already pending');
+            } else {
+                return redirect()->back()->withError('User has not submitted a request to join the beta'); // No requests
+            }
+        }
 
-        if ($approval == null) { // If user is not approved
-             $approval = Approval::where('user_id', $cid); // See if it exists
-             if (! $approval) {
-                 return redirect()->back()->withError('User not found.');
-             } // User not found
-            else {
-                return redirect()->back()->withError('User is not approved.');
-            } // Can't revoke a non-approved user
-        } else {
-            $approval = $approval->first();
-        } // Get the approval
-
-        $afvAuth = AfvApiController::revokeCIDs([$cid]);
-        if ($afvAuth == 200) {
+        $data = ['Username' => (string) $cid, 'Enabled' => false];
+        $afvApproval = AfvApiController::doPUT('api/v1/users/enabled', [$data]);
+        if ($afvApproval == 200) {
             $approval->setAsPending();
-
-            return redirect()->back()->withSuccess('User approval revoked!');
+            return redirect()->back()->withSuccess('Approval revoked!');
         } else {
-            return redirect()->back()->withError($afvAuth);
+            return redirect()->back()->withError("AFV Server replied with $afvApproval");
         }
     }
 
@@ -82,44 +75,38 @@ class ApprovalController extends Controller
      */
     public function random(Request $request)
     {
-        $qty = $request->input('qty', 0);
-        if (! $qty) {
-            return redirect()->back()->withApprove('');
-        }
-
-        $pending = Approval::pending()->take($request->input('qty', 0))->inRandomOrder()->get();
-
+        $request->validate([
+            'qty' => 'required|numeric|min:1',
+        ]);
+        $qty = $request->input('qty');
+        $pending = Approval::pending()->take($qty)->inRandomOrder()->get();
         // No approvals pending
         if (! $pending->count()) {
             return redirect()->back()->withError('No pending approvals')->withApprove('');
         }
+        $cids = $pending->pluck('user_id');
 
-        $cids = [];
-        foreach ($pending as $approval) {
-            if (! $approval->user) {
-                continue;
-            } else {
-                $cids[] = $approval->user->id;
-            }
-        }
-
-        $afvAuth = AfvApiController::approveCIDs($cids);
-        if ($afvAuth == 200) {
-            $approval->setAsApproved();
-
+        $afvServer = AfvApiController::approveCIDs($cids);
+        if ($afvServer == 200) {
+            $pending->setAsApproved();
             return redirect()->back()->withSuccess('Users successfully approved!')->withApprove('');
         } else {
-            return redirect()->back()->withError($afvAuth)->withApprove('');
+            return redirect()->back()->withError("AFV Server replied with $afvServer")->withApprove('');
         }
     }
 
     public function sync()
     {
-        $afvAuth = AfvApiController::syncApprovals();
-        if ($afvAuth == 200) {
+        $approved = Approval::approved()->pluck('user_id');
+        foreach ($approved as $cid) {
+            $data[] = ['Username' => (string) $cid, 'Enabled' => true];
+        }
+
+        $afvResponse = AfvApiController::doPUT('api/v1/users/enabled', $data);
+        if ($afvResponse == 200) {
             return redirect()->back()->withSuccess('Users successfully submitted!');
         } else {
-            return redirect()->back()->withError($afvAuth);
+            return redirect()->back()->withError("AFV Server replied with $afvResponse");
         }
     }
 }
