@@ -28,7 +28,7 @@ class ApprovalController extends Controller
         }
 
         $data = ['Username' => (string) $cid, 'Enabled' => true];
-        $afvApproval = AfvApiController::doPUT('api/v1/users/enabled', $data);
+        $afvApproval = AfvApiController::doPUT('api/v1/users/enabled', [$data]);
         if ($afvApproval == 200) {
             $approval->setAsApproved();
 
