@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Approval;
 use Illuminate\Http\Request;
 
 class AfvApiController extends Controller
@@ -19,8 +17,6 @@ class AfvApiController extends Controller
     protected static $base; // Base API URL
     protected static $bearer; // Token to authenticate to API
 
-    
-    
     /**
      * Gets authentication token.
      *
@@ -49,8 +45,9 @@ class AfvApiController extends Controller
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        if ($result){
+        if ($result) {
             self::$bearer = $result;
+
             return true;
         }
     }
@@ -63,7 +60,9 @@ class AfvApiController extends Controller
      */
     public static function doPUT($endpoint, $data = [])
     {
-        if (! self::init()) return 'AFV Authentication Failed';
+        if (! self::init()) {
+            return 'AFV Authentication Failed';
+        }
         $url = self::$base.$endpoint;
         $content = json_encode($data);
         $ch = curl_init(); // Start cURL
@@ -79,7 +78,7 @@ class AfvApiController extends Controller
         $result = curl_exec($ch); // Send the request
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
         curl_close($ch); // End cURL
-        
+
         return $httpCode;
     }
 }
