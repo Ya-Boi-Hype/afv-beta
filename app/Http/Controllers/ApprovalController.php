@@ -33,11 +33,11 @@ class ApprovalController extends Controller
         $afvAuth = AfvApiController::approveCIDs([$cid]);
         if ($afvAuth == 200) {
             $approval->setAsApproved();
+
             return redirect()->back()->withSuccess('User successfully approved!')->withApprove('');
         } else {
             return redirect()->back()->withError($afvAuth)->withApprove('');
-        } 
-
+        }
     }
 
     /**
@@ -66,11 +66,11 @@ class ApprovalController extends Controller
         $afvAuth = AfvApiController::revokeCIDs([$cid]);
         if ($afvAuth == 200) {
             $approval->setAsPending();
+
             return redirect()->back()->withSuccess('User approval revoked!');
         } else {
             return redirect()->back()->withError($afvAuth);
         }
-
     }
 
     /**
@@ -94,7 +94,7 @@ class ApprovalController extends Controller
             return redirect()->back()->withError('No pending approvals')->withApprove('');
         }
 
-        $cids = array();
+        $cids = [];
         foreach ($pending as $approval) {
             if (! $approval->user) {
                 continue;
@@ -106,6 +106,7 @@ class ApprovalController extends Controller
         $afvAuth = AfvApiController::approveCIDs($cids);
         if ($afvAuth == 200) {
             $approval->setAsApproved();
+
             return redirect()->back()->withSuccess('Users successfully approved!')->withApprove('');
         } else {
             return redirect()->back()->withError($afvAuth)->withApprove('');
