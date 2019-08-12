@@ -66,8 +66,8 @@ class AfvApiController extends Controller
         $content = json_encode($data);
         $ch = curl_init(); // Start cURL
         curl_setopt($ch, CURLOPT_URL, $url); // DESTINATION
-        curl_setopt($ch, CURLOPT_POST, 1); // POST Request
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT'); // TYPE
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $content); // CONTENT
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Return the actual content of response
         curl_setopt($ch, CURLOPT_HTTPHEADER, [ // HEADERS
             'Content-Type: application/json',
@@ -97,8 +97,8 @@ class AfvApiController extends Controller
         $content = json_encode($data);
         $ch = curl_init(); // Start cURL
         curl_setopt($ch, CURLOPT_URL, $url); // DESTINATION
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'P'); // TYPE
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $content); // CONTENT
+        curl_setopt($ch, CURLOPT_POST, 1); // POST Request
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Return the actual content of response
         curl_setopt($ch, CURLOPT_HTTPHEADER, [ // HEADERS
             'Content-Type: application/json',
