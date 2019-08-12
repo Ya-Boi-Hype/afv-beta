@@ -36,7 +36,7 @@
           @if ($searchResults->total > 0)
           <tbody>
             @foreach($searchResults->transceivers as $transceiver)
-            <tr onclick="window.location='{{ route('transceivers.show', ['id' => $transceiver->transceiverID]) }}';">
+            <tr onclick="window.location='{{ route('transceivers.show', ['name' => $transceiver->name]) }}';">
               <td>{{ $transceiver->name }}</td>
               <td>{{ $transceiver->altMslM }}</td>
               <td>{{ $transceiver->altAglM }}</td>
@@ -82,9 +82,9 @@
     // Marker Setup
     var search_results = @json($searchResults),
         transceivers = [],
-        show_url = '{{ route("transceivers.show", ":id") }}';
+        show_url = '{{ route("transceivers.show", ":name") }}';
     search_results.transceivers.forEach(function (transceiver) {
-        var popup = '<a href="'+show_url.replace(':id', transceiver.transceiverID)+'">';
+        var popup = '<a href="'+show_url.replace(':name', transceiver.name)+'">';
         popup += '<b>' + transceiver.name + '</b>';
         popup += '</a>';
         transceivers.push(L.marker([transceiver.latDeg, transceiver.lonDeg]).addTo(map).bindPopup(popup));

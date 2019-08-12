@@ -89,11 +89,22 @@ class TransceiverController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $name
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($name)
     {
+        try {
+            $response = AfvApiController::doGET("api/v1/stations/transceivers/$name");
+            $transceiver = json_decode($response);
+        } catch (\Exception $e) {
+            return redirect()->route('transceivers.index')->withError(['AFV Server Error', "Server replied with ".$e->getMessage()])->withInput();
+        }
+        
+        echo "<pre>";
+        print_r($transceiver);
+        echo "</pre>";
+        die();
         $transceiver = [
             'name' => 'Test',
             'lat' => 0.0,

@@ -51,36 +51,28 @@ class AfvApiController extends Controller
     }
 
     /**
-     * Submits a PUT Request.
+     * Submits a GET Request.
      *
      * @param $endpoint Endpoint to submit the request to
      * @param $data Content to be sent with the request
      * @throws Exception
      * @return string
      */
-    public static function doPUT($endpoint, $data = [])
+    public static function doGET($endpoint)
     {
         self::init();
         $url = self::$base.$endpoint;
-        $content = json_encode($data);
         $ch = curl_init(); // Start cURL
         curl_setopt($ch, CURLOPT_URL, $url); // DESTINATION
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT'); // TYPE
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $content); // CONTENT
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the actual content of response
         curl_setopt($ch, CURLOPT_HTTPHEADER, [ // HEADERS
-            'Content-Type: application/json',
-            'Content-Length: '.strlen($content),
             'Authorization: Bearer '.self::$bearer,
         ]);
         $result = curl_exec($ch); // Send the request
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
         curl_close($ch); // End cURL
-
         if ($httpCode == 200) {
             return $result;
-        } else if ($httpCode == 400) {
-            throw new \Exception("HTTP Code 400. Try changing some settings.");
         } else {
             throw new \Exception("HTTP Code $httpCode");
         }
@@ -94,7 +86,7 @@ class AfvApiController extends Controller
      * @throws Exception
      * @return string
      */
-    public static function doPOST($endpoint, $data = [])
+    public static function doPOST($endpoint, $data = array())
     {
         self::init();
         $url = self::$base.$endpoint;
@@ -116,7 +108,43 @@ class AfvApiController extends Controller
         if ($httpCode == 200) {
             return $result;
         } else if ($httpCode == 400) {
-            throw new \Exception("HTTP Code 400. Try changing some settings.");
+            throw new \Exception("HTTP Code 400. Try changing some fields.");
+        } else {
+            throw new \Exception("HTTP Code $httpCode");
+        }
+    }
+
+    /**
+     * Submits a PUT Request.
+     *
+     * @param $endpoint Endpoint to submit the request to
+     * @param $data Content to be sent with the request
+     * @throws Exception
+     * @return string
+     */
+    public static function doPUT($endpoint, $data = array())
+    {
+        self::init();
+        $url = self::$base.$endpoint;
+        $content = json_encode($data);
+        $ch = curl_init(); // Start cURL
+        curl_setopt($ch, CURLOPT_URL, $url); // DESTINATION
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT'); // TYPE
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $content); // CONTENT
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the actual content of response
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [ // HEADERS
+            'Content-Type: application/json',
+            'Content-Length: '.strlen($content),
+            'Authorization: Bearer '.self::$bearer,
+        ]);
+        $result = curl_exec($ch); // Send the request
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
+        curl_close($ch); // End cURL
+
+        if ($httpCode == 200) {
+            return $result;
+        } else if ($httpCode == 400) {
+            throw new \Exception("HTTP Code 400. Try changing some fields.");
         } else {
             throw new \Exception("HTTP Code $httpCode");
         }
