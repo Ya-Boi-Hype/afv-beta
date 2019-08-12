@@ -79,8 +79,8 @@ class AfvApiController extends Controller
 
         if ($httpCode == 200) {
             return $result;
-        } else if ($httpCode == 400) {
-            throw new \Exception("HTTP Code 400. Try changing some settings.");
+        } elseif ($httpCode == 400) {
+            throw new \Exception('HTTP Code 400. Try changing some settings.');
         } else {
             throw new \Exception("HTTP Code $httpCode");
         }
@@ -115,8 +115,8 @@ class AfvApiController extends Controller
 
         if ($httpCode == 200) {
             return $result;
-        } else if ($httpCode == 400) {
-            throw new \Exception("HTTP Code 400. Try changing some settings.");
+        } elseif ($httpCode == 400) {
+            throw new \Exception('HTTP Code 400. Try changing some settings.');
         } else {
             throw new \Exception("HTTP Code $httpCode");
         }
