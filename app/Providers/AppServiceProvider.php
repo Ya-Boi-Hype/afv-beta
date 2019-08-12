@@ -29,11 +29,11 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Blade::if('pending', function () {
-            return auth()->user()->pending;
+            return auth()->user()->pending && ! auth()->user()->admin;
         });
 
         Blade::if('hasnorequest', function () {
-            return ! auth()->user()->has_request;
+            return ! auth()->user()->has_request && ! auth()->user()->admin;
         });
 
         Blade::if('admin', function () {

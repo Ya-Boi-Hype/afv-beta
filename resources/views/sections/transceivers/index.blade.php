@@ -82,7 +82,7 @@
                       <div class="table-responsive">
                         <table class="table table-striped table-bordered">
                           <tr>
-                            <th>Altitude MSL</th>
+                            <th>Altitude MSL (m)</th>
                           </tr>
                           <tr>
                             <td>
@@ -99,7 +99,7 @@
                       <div class="table-responsive">
                         <table class="table table-striped table-bordered">
                           <tr>
-                            <th>Altitude AGL</th>
+                            <th>Altitude AGL (m)</th>
                           </tr>
                           <tr>
                             <td>

@@ -65,7 +65,7 @@ class TransceiverController extends Controller
         $request->validate([
             'lat' => 'required|numeric|max:90|min:-90',
             'lon' => 'required|numeric|max:180|min:-180',
-            'name' => 'required|string',
+            'name' => 'required|string|alpha_dash',
             'alt_msl' => 'required|integer',
             'alt_agl' => 'required|integer',
         ]);
@@ -81,7 +81,7 @@ class TransceiverController extends Controller
                 'AltAglM' => $request->input('alt_agl'),
             ]);
 
-            return redirect()->page('transceivers.show', ['id' => $transceiverID])->withSuccess(['Transceiver created', $response]);
+            return redirect()->route('transceivers.show', ['name' => $request->input('name')])->withSuccess(['Transceiver created', $response]);
         } catch (\Exception $e) {
             return redirect()->back()->withError(['AFV Server Error', 'Server replied with '.$e->getMessage()])->withInput();
         }

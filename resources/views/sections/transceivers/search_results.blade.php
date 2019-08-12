@@ -29,8 +29,8 @@
           <thead>
             <tr>
               <th>Name</th>
-              <th>Alt MSL</th>
-              <th>Alt AGL</th>
+              <th>Alt MSL (m)</th>
+              <th>Alt AGL (m)</th>
             </tr>
           </thead>
           @if ($searchResults->total > 0)
@@ -46,8 +46,8 @@
           <tfoot>
             <tr>
               <th>Name</th>
-              <th>Alt MSL</th>
-              <th>Alt AGL</th>
+              <th>Alt MSL (m)</th>
+              <th>Alt AGL (m)</th>
             </tr>
           </tfoot>
           @endif
