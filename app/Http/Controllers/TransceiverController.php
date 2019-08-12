@@ -20,12 +20,12 @@ class TransceiverController extends Controller
         ]);
         $data = ['searchText' => $request->input('search')];
 
-        try{
+        try {
             $searchResults = AfvApiController::doPOST('api/v1/stations/transceivers/search', $data);
         } catch (Exception $e) {
-            return redirect()->back()->withError(['AFV Server Error', "Server replied with ".$e->getMessage()]);
+            return redirect()->back()->withError(['AFV Server Error', 'Server replied with '.$e->getMessage()]);
         }
-        
+
         return view('sections.transceivers.search_results')->withSearchResults(json_decode($searchResults));
     }
 
