@@ -28,13 +28,13 @@ class ApprovalController extends Controller
         }
 
         $data = ['Username' => (string) $cid, 'Enabled' => true];
-        $afvApproval = AfvApiController::doPUT('api/v1/users/enabled', [$data]);
-        if ($afvApproval == 200) {
-            $approval->setAsApproved();
 
+        try{
+            AfvApiController::doPUT('api/v1/users/enabled', [$data]);
+            $approval->setAsApproved();
             return redirect()->back()->withSuccess('User successfully approved!')->withApprove('');
-        } else {
-            return redirect()->back()->withError("AFV Server replied with $afvApproval")->withApprove('');
+        } catch (Exception $e) {
+            return redirect()->back()->withError("AFV Server replied with ".$e->getMessage())->withApprove('');
         }
     }
 
@@ -58,13 +58,12 @@ class ApprovalController extends Controller
         }
 
         $data = ['Username' => (string) $cid, 'Enabled' => false];
-        $afvApproval = AfvApiController::doPUT('api/v1/users/enabled', [$data]);
-        if ($afvApproval == 200) {
+        try{
+            AfvApiController::doPUT('api/v1/users/enabled', [$data]);
             $approval->setAsPending();
-
             return redirect()->back()->withSuccess('Approval revoked!');
-        } else {
-            return redirect()->back()->withError("AFV Server replied with $afvApproval");
+        } catch (Exception $e) {
+            return redirect()->back()->withError("AFV Server replied with ".$e->getMessage())->withApprove('');
         }
     }
 
@@ -80,21 +79,25 @@ class ApprovalController extends Controller
         $request->validate([
             'qty' => 'required|numeric|min:1',
         ]);
+
         $qty = $request->input('qty');
         $pending = Approval::pending()->take($qty)->inRandomOrder()->get();
-        // No approvals pending
-        if (! $pending->count()) {
+        if (! $pending->count()) { // No approvals pending
             return redirect()->back()->withError('No pending approvals')->withApprove('');
         }
+
         $cids = $pending->pluck('user_id');
+        $data = array();
+        foreach ($cids as $cid) {
+            $data[] = ['Username' => (string) $cid, 'Enabled' => true];
+        }
 
-        $afvServer = AfvApiController::approveCIDs($cids);
-        if ($afvServer == 200) {
-            $pending->setAsApproved();
-
+        try{
+            AfvApiController::doPUT('api/v1/users/enabled', $data);
+            $approval->setAsApproved();
             return redirect()->back()->withSuccess('Users successfully approved!')->withApprove('');
-        } else {
-            return redirect()->back()->withError("AFV Server replied with $afvServer")->withApprove('');
+        } catch (Exception $e) {
+            return redirect()->back()->withError("AFV Server replied with ".$e->getMessage())->withApprove('');
         }
     }
 
@@ -105,11 +108,11 @@ class ApprovalController extends Controller
             $data[] = ['Username' => (string) $cid, 'Enabled' => true];
         }
 
-        $afvResponse = AfvApiController::doPUT('api/v1/users/enabled', $data);
-        if ($afvResponse == 200) {
+        try {
+            AfvApiController::doPUT('api/v1/users/enabled', $data);
             return redirect()->back()->withSuccess('Users successfully submitted!');
-        } else {
-            return redirect()->back()->withError("AFV Server replied with $afvResponse");
+        } catch (Exception $e) {
+            return redirect()->back()->withError("AFV Server replied with ".$e->getMessage());
         }
     }
 }

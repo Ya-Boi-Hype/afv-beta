@@ -18,9 +18,9 @@ class AfvApiController extends Controller
     /**
      * Gets authentication token.
      *
-     * @return true on success
+     * @throws Exception
      */
-    protected static function init()
+    protected static function init() // Can't use __constructor on static classes
     {
         self::$base = config('afv.api'); // Sets base URL
         $url = self::$base.'api/v1/auth'; // Endpoint to be accessed
@@ -31,9 +31,9 @@ class AfvApiController extends Controller
         ]);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, 1); // POST Request
+        curl_setopt($ch, CURLOPT_POST, true); // POST Request
         curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Return the actual content of response
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the actual content of response
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
             'Content-Length: '.strlen($content),
@@ -43,11 +43,11 @@ class AfvApiController extends Controller
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        if ($result) {
-            self::$bearer = $result;
-
-            return true;
+        if (! $result) {
+            throw new Exception('Authentication Failure');
         }
+
+        self::$bearer = $result;
     }
 
     /**
@@ -55,51 +55,19 @@ class AfvApiController extends Controller
      *
      * @param $endpoint Endpoint to submit the request to
      * @param $data Content to be sent with the request
-     * @return true or array
+     * @throws Exception
+     * @return string
      */
     public static function doPUT($endpoint, $data = [])
     {
-        if (! self::init()) {
-            return 'AFV Authentication Failed';
-        }
+        self::init();
         $url = self::$base.$endpoint;
         $content = json_encode($data);
         $ch = curl_init(); // Start cURL
         curl_setopt($ch, CURLOPT_URL, $url); // DESTINATION
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT'); // TYPE
         curl_setopt($ch, CURLOPT_POSTFIELDS, $content); // CONTENT
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Return the actual content of response
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [ // HEADERS
-            'Content-Type: application/json',
-            'Content-Length: '.strlen($content),
-            'Authorization: Bearer '.self::$bearer,
-        ]);
-        $result = curl_exec($ch); // Send the request
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
-        curl_close($ch); // End cURL
-
-        return $httpCode;
-    }
-
-    /**
-     * Submits a POST Request.
-     *
-     * @param $endpoint Endpoint to submit the request to
-     * @param $data Content to be sent with the request
-     * @return true or array
-     */
-    public static function doPOST($endpoint, $data = [])
-    {
-        if (! self::init()) {
-            return 'AFV Authentication Failed';
-        }
-        $url = self::$base.$endpoint;
-        $content = json_encode($data);
-        $ch = curl_init(); // Start cURL
-        curl_setopt($ch, CURLOPT_URL, $url); // DESTINATION
-        curl_setopt($ch, CURLOPT_POST, 1); // POST Request
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Return the actual content of response
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the actual content of response
         curl_setopt($ch, CURLOPT_HTTPHEADER, [ // HEADERS
             'Content-Type: application/json',
             'Content-Length: '.strlen($content),
@@ -110,7 +78,41 @@ class AfvApiController extends Controller
         curl_close($ch); // End cURL
 
         if ($httpCode != 200) {
-            return false;
+            throw new Exception("HTTP Code $httpCode");
+        } else {
+            return $result;
+        }
+    }
+
+    /**
+     * Submits a POST Request.
+     *
+     * @param $endpoint Endpoint to submit the request to
+     * @param $data Content to be sent with the request
+     * @throws Exception
+     * @return string
+     */
+    public static function doPOST($endpoint, $data = [])
+    {
+        self::init();
+        $url = self::$base.$endpoint;
+        $content = json_encode($data);
+        $ch = curl_init(); // Start cURL
+        curl_setopt($ch, CURLOPT_URL, $url); // DESTINATION
+        curl_setopt($ch, CURLOPT_POST, true); // POST Request
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the actual content of response
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [ // HEADERS
+            'Content-Type: application/json',
+            'Content-Length: '.strlen($content),
+            'Authorization: Bearer '.self::$bearer,
+        ]);
+        $result = curl_exec($ch); // Send the request
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
+        curl_close($ch); // End cURL
+
+        if ($httpCode != 200) {
+            throw new Exception("HTTP Code $httpCode");
         } else {
             return $result;
         }
