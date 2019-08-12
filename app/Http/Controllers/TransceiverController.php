@@ -7,26 +7,26 @@ use Illuminate\Http\Request;
 class TransceiverController extends Controller
 {
     /**
-     * Performs a search for the given parameters
-     * 
+     * Performs a search for the given parameters.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request)
     {
         $request->validate([
-            'search' => 'required|string'
+            'search' => 'required|string',
         ]);
 
         $data = ['searchText' => $request->input('search')];
         $afvSearch = AfvApiController::doPOST('api/v1/stations/transceivers/search', $data);
 
-        echo "<pre>";
+        echo '<pre>';
         print_r($afvSearch);
-        echo "</pre>";
+        echo '</pre>';
         die();
     }
-    
+
     /**
      * Display a listing of the resource.
      *

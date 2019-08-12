@@ -109,7 +109,7 @@ class AfvApiController extends Controller
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
         curl_close($ch); // End cURL
 
-        if ($httpCode != 200){
+        if ($httpCode != 200) {
             return false;
         } else {
             return $result;
