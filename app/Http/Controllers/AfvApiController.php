@@ -44,7 +44,7 @@ class AfvApiController extends Controller
         curl_close($ch);
 
         if (! $result) {
-            throw new Exception('Authentication Failure');
+            throw new \Exception('Authentication Failure');
         }
 
         self::$bearer = $result;
@@ -77,10 +77,12 @@ class AfvApiController extends Controller
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
         curl_close($ch); // End cURL
 
-        if ($httpCode != 200) {
-            throw new Exception("HTTP Code $httpCode");
-        } else {
+        if ($httpCode == 200) {
             return $result;
+        } else if ($httpCode == 400) {
+            throw new \Exception("HTTP Code 400. Try changing some settings.");
+        } else {
+            throw new \Exception("HTTP Code $httpCode");
         }
     }
 
@@ -111,10 +113,12 @@ class AfvApiController extends Controller
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
         curl_close($ch); // End cURL
 
-        if ($httpCode != 200) {
-            throw new Exception("HTTP Code $httpCode");
-        } else {
+        if ($httpCode == 200) {
             return $result;
+        } else if ($httpCode == 400) {
+            throw new \Exception("HTTP Code 400. Try changing some settings.");
+        } else {
+            throw new \Exception("HTTP Code $httpCode");
         }
     }
 }

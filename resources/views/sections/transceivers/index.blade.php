@@ -41,7 +41,7 @@
             <form class="form-horizontal" method="POST" action="{{ route('transceivers.store') }}">
               @csrf
               <div class="row">
-                @if($errors->has('lat') || $errors->has('lng'))
+                @if($errors->has('lat') || $errors->has('lon'))
                 <div class="col-12">
                   <div class="alert alert-error">
                     Invalid Lat./Lon. value
@@ -53,12 +53,12 @@
                   <div id="map" class="" style="cursor:crosshair; min-height: 400px;"></div>
                 </div>
                 <div class="col-12 col-md-6 mt-3 mt-md-auto">
-                  @if(! $errors->has('lat') && ! $errors->has('lng') && old('lat') && old('lng'))
+                  @if(! $errors->has('lat') && ! $errors->has('lon') && old('lat') && old('lon'))
                   <input type="hidden" id="lat" name="lat" value="{{ old('lat') }}">
-                  <input type="hidden" id="lng" name="lng" value="{{ old('lng') }}">
+                  <input type="hidden" id="lon" name="lon" value="{{ old('lon') }}">
                   @else
                   <input type="hidden" id="lat" name="lat" value="">
-                  <input type="hidden" id="lng" name="lng" value="">
+                  <input type="hidden" id="lon" name="lon" value="">
                   @endif
                   <div class="row h-100">
                     <div class="col-12 my-auto">
@@ -158,8 +158,8 @@
 
     // Marker Setup
     var marker;
-    @if(! $errors->has('lat') && ! $errors->has('lng') && old('lat') && old('lng'))
-      marker = L.marker([{{ old('lat') }}, {{ old('lng') }}], {
+    @if(! $errors->has('lat') && ! $errors->has('lon') && old('lat') && old('lon'))
+      marker = L.marker([{{ old('lat') }}, {{ old('lon') }}], {
           draggable: 'true'
       }).addTo(map)
       marker.on('dragend', function(event) {
@@ -168,7 +168,7 @@
         });
         var position = marker.getLatLng().wrap();
         $('#lat').val(position.lat);
-        $('#lng').val(position.lng);
+        $('#lon').val(position.lng);
       });
     @endif
 
@@ -184,11 +184,11 @@
           });
           var position = marker.getLatLng().wrap();
           $('#lat').val(position.lat);
-          $('#lng').val(position.lng);
+          $('#lon').val(position.lng);
         });
         var position = e.latlng.wrap();
         $('#lat').val(position.lat);
-        $('#lng').val(position.lng);
+        $('#lon').val(position.lng);
     });
 </script>
 @endsection

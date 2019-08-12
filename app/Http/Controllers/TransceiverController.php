@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Webpatser\Uuid\Uuid;
 
 class TransceiverController extends Controller
 {
@@ -63,11 +64,26 @@ class TransceiverController extends Controller
     {
         $request->validate([
             'lat' => 'required|numeric|max:90|min:-90',
-            'lng' => 'required|numeric|max:180|min:-180',
+            'lon' => 'required|numeric|max:180|min:-180',
             'name' => 'required|string',
             'alt_msl' => 'required|integer',
             'alt_agl' => 'required|integer',
         ]);
+
+        $transceiverID = (string) Uuid::generate();
+        try{
+            $response = AfvApiController::doPUT('api/v1/stations/transceivers', [
+                'TransceiverID' => $transceiverID,
+                'Name' => $request->input('name'),
+                'LatDeg' => $request->input('lat'),
+                'LonDeg' => $request->input('lon'),
+                'AltMslM' => $request->input('alt_msl'),
+                'AltAglM' => $request->input('alt_agl'),
+            ]);
+            return redirect()->page('transceivers.show', ['id' => $transceiverID])->withSuccess(['Transceiver created', $response]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withError(['AFV Server Error', "Server replied with ".$e->getMessage()])->withInput();
+        }
     }
 
     /**
