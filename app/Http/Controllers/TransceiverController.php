@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Webpatser\Uuid\Uuid;
+use Illuminate\Http\Request;
 
 class TransceiverController extends Controller
 {
@@ -71,7 +71,7 @@ class TransceiverController extends Controller
         ]);
 
         $transceiverID = (string) Uuid::generate();
-        try{
+        try {
             $response = AfvApiController::doPUT('api/v1/stations/transceivers', [
                 'TransceiverID' => $transceiverID,
                 'Name' => $request->input('name'),
@@ -80,9 +80,10 @@ class TransceiverController extends Controller
                 'AltMslM' => $request->input('alt_msl'),
                 'AltAglM' => $request->input('alt_agl'),
             ]);
+
             return redirect()->page('transceivers.show', ['id' => $transceiverID])->withSuccess(['Transceiver created', $response]);
         } catch (\Exception $e) {
-            return redirect()->back()->withError(['AFV Server Error', "Server replied with ".$e->getMessage()])->withInput();
+            return redirect()->back()->withError(['AFV Server Error', 'Server replied with '.$e->getMessage()])->withInput();
         }
     }
 
