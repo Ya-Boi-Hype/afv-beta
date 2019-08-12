@@ -14,13 +14,6 @@ class PageController extends Controller
         return view('home');
     }
 
-    public function knowledgeBase()
-    {
-        $knowledgeBase = (new GitIssuesController)->getKnowledgeBase();
-
-        return view('sections.knowledgeBase')->withKnowledgeBase($knowledgeBase);
-    }
-
     public function euroscope()
     {
         return view('sections.atc.euroscope');
@@ -55,6 +48,12 @@ class PageController extends Controller
     {
         $issues = (new GitIssuesController)->getIssues();
 
-        return view('sections.issues')->withIssues($issues);
+        return view('sections.issues.issues')->withIssues($issues);
+    }
+
+    public function knowledgeBase()
+    {
+        $knowledgeBase = (new GitIssuesController)->getKnowledgeBase();
+        return view('sections.issues.knowledgeBase')->withKnowledgeBase($knowledgeBase);
     }
 }

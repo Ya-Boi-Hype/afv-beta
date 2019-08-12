@@ -7,13 +7,34 @@ use Illuminate\Http\Request;
 class TransceiverController extends Controller
 {
     /**
+     * Performs a search for the given parameters
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $request->validate([
+            'search' => 'required|string'
+        ]);
+
+        $data = ['searchText' => $request->input('search')];
+        $afvSearch = AfvApiController::doPOST('api/v1/stations/transceivers/search', $data);
+
+        echo "<pre>";
+        print_r($afvSearch);
+        echo "</pre>";
+        die();
+    }
+    
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        return view('sections.transceivers.index');
     }
 
     /**
@@ -23,7 +44,7 @@ class TransceiverController extends Controller
      */
     public function create()
     {
-        return view('admin.transceivers.create');
+        return view('sections.transceivers.create');
     }
 
     /**
@@ -51,7 +72,15 @@ class TransceiverController extends Controller
      */
     public function show($id)
     {
-        //
+        $transceiver = [
+            'name' => 'Test',
+            'lat' => 0.0,
+            'lng' => 0.0,
+            'alt_msl' => 0.0,
+            'alt_agl' => 21,
+        ];
+
+        return view('sections.transceivers.show')->withTransceiver($transceiver);
     }
 
     /**

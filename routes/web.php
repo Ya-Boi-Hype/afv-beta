@@ -56,7 +56,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::patch('user/{cid}/discord', 'DiscordAccountController@update')->name('users.discord');
     Route::patch('user/admin', 'AdminController@add')->name('admin.add');
     Route::delete('user/admin', 'AdminController@remove')->name('admin.remove');
-    Route::resource('transceivers', 'TransceiverController')->only(['create', 'store']);
+    Route::resource('transceivers', 'TransceiverController');
+    Route::patch('transceivers', 'TransceiverController@search')->name('transceivers.search');
 });
 
 //--------------------------------------------------------------------------

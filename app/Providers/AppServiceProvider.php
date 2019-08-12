@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Blade::if('approved', function () {
-            return auth()->user()->approved;
+            return auth()->user()->approved || auth()->user()->admin;
         });
 
         Blade::if('pending', function () {

@@ -16,7 +16,7 @@ class Approved
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->user() && auth()->user()->approved) { // User is approved
+        if (auth()->user() && (auth()->user()->approved || auth()->user()->admin)) { // User is approved
             return $next($request);
         }
 
