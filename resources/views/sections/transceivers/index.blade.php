@@ -49,6 +49,7 @@
                 </div>
                 @endif
                 <div class="col-12 col-md-6">
+                  <div class="text-sm">Select transceiver position on the map</div>
                   <div id="map" class="" style="cursor:crosshair; min-height: 400px;"></div>
                 </div>
                 <div class="col-12 col-md-6 mt-3 mt-md-auto">
