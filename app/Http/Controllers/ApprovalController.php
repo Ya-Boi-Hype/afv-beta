@@ -29,12 +29,13 @@ class ApprovalController extends Controller
 
         $data = ['Username' => (string) $cid, 'Enabled' => true];
 
-        try{
+        try {
             AfvApiController::doPUT('api/v1/users/enabled', [$data]);
             $approval->setAsApproved();
+
             return redirect()->back()->withSuccess('User successfully approved!')->withApprove('');
         } catch (Exception $e) {
-            return redirect()->back()->withError("AFV Server replied with ".$e->getMessage())->withApprove('');
+            return redirect()->back()->withError('AFV Server replied with '.$e->getMessage())->withApprove('');
         }
     }
 
@@ -58,12 +59,13 @@ class ApprovalController extends Controller
         }
 
         $data = ['Username' => (string) $cid, 'Enabled' => false];
-        try{
+        try {
             AfvApiController::doPUT('api/v1/users/enabled', [$data]);
             $approval->setAsPending();
+
             return redirect()->back()->withSuccess('Approval revoked!');
         } catch (Exception $e) {
-            return redirect()->back()->withError("AFV Server replied with ".$e->getMessage())->withApprove('');
+            return redirect()->back()->withError('AFV Server replied with '.$e->getMessage())->withApprove('');
         }
     }
 
@@ -87,17 +89,18 @@ class ApprovalController extends Controller
         }
 
         $cids = $pending->pluck('user_id');
-        $data = array();
+        $data = [];
         foreach ($cids as $cid) {
             $data[] = ['Username' => (string) $cid, 'Enabled' => true];
         }
 
-        try{
+        try {
             AfvApiController::doPUT('api/v1/users/enabled', $data);
             $approval->setAsApproved();
+
             return redirect()->back()->withSuccess('Users successfully approved!')->withApprove('');
         } catch (Exception $e) {
-            return redirect()->back()->withError("AFV Server replied with ".$e->getMessage())->withApprove('');
+            return redirect()->back()->withError('AFV Server replied with '.$e->getMessage())->withApprove('');
         }
     }
 
@@ -110,9 +113,10 @@ class ApprovalController extends Controller
 
         try {
             AfvApiController::doPUT('api/v1/users/enabled', $data);
+
             return redirect()->back()->withSuccess('Users successfully submitted!');
         } catch (Exception $e) {
-            return redirect()->back()->withError("AFV Server replied with ".$e->getMessage());
+            return redirect()->back()->withError('AFV Server replied with '.$e->getMessage());
         }
     }
 }
