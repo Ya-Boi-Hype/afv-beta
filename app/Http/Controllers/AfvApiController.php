@@ -86,7 +86,7 @@ class AfvApiController extends Controller
      * @throws Exception
      * @return string
      */
-    public static function doPOST($endpoint, $data = array())
+    public static function doPOST($endpoint, $data = [])
     {
         self::init();
         $url = self::$base.$endpoint;
@@ -107,8 +107,8 @@ class AfvApiController extends Controller
 
         if ($httpCode == 200) {
             return $result;
-        } else if ($httpCode == 400) {
-            throw new \Exception("HTTP Code 400. Try changing some fields.");
+        } elseif ($httpCode == 400) {
+            throw new \Exception('HTTP Code 400. Try changing some fields.');
         } else {
             throw new \Exception("HTTP Code $httpCode");
         }
@@ -122,7 +122,7 @@ class AfvApiController extends Controller
      * @throws Exception
      * @return string
      */
-    public static function doPUT($endpoint, $data = array())
+    public static function doPUT($endpoint, $data = [])
     {
         self::init();
         $url = self::$base.$endpoint;
@@ -143,8 +143,8 @@ class AfvApiController extends Controller
 
         if ($httpCode == 200) {
             return $result;
-        } else if ($httpCode == 400) {
-            throw new \Exception("HTTP Code 400. Try changing some fields.");
+        } elseif ($httpCode == 400) {
+            throw new \Exception('HTTP Code 400. Try changing some fields.');
         } else {
             throw new \Exception("HTTP Code $httpCode");
         }

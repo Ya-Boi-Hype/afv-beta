@@ -99,12 +99,12 @@ class TransceiverController extends Controller
             $response = AfvApiController::doGET("api/v1/stations/transceivers/$name");
             $transceiver = json_decode($response);
         } catch (\Exception $e) {
-            return redirect()->route('transceivers.index')->withError(['AFV Server Error', "Server replied with ".$e->getMessage()])->withInput();
+            return redirect()->route('transceivers.index')->withError(['AFV Server Error', 'Server replied with '.$e->getMessage()])->withInput();
         }
-        
-        echo "<pre>";
+
+        echo '<pre>';
         print_r($transceiver);
-        echo "</pre>";
+        echo '</pre>';
         die();
         $transceiver = [
             'name' => 'Test',
