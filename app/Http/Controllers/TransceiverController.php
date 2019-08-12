@@ -12,17 +12,13 @@ class TransceiverController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function search(Request $request)
+    public function search($search)
     {
-        $request->validate([
-            'search' => 'required|string',
-        ]);
-
-        $data = ['searchText' => $request->input('search')];
+        $data = ['searchText' => $search];
         $afvSearch = AfvApiController::doPOST('api/v1/stations/transceivers/search', $data);
 
         echo '<pre>';
-        print_r($afvSearch);
+        print_r(json_decode($afvSearch));
         echo '</pre>';
         die();
     }
@@ -30,10 +26,14 @@ class TransceiverController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->has('search')) {
+            return redirect()->route('transceivers.search', ['search' => $request->input('search')]);
+        }
         return view('sections.transceivers.index');
     }
 

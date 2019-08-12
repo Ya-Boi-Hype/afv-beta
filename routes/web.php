@@ -57,7 +57,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::patch('user/admin', 'AdminController@add')->name('admin.add');
     Route::delete('user/admin', 'AdminController@remove')->name('admin.remove');
     Route::resource('transceivers', 'TransceiverController');
-    Route::patch('transceivers', 'TransceiverController@search')->name('transceivers.search');
+    Route::get('transceivers/search/{search}', 'TransceiverController@search')->name('transceivers.search');
 });
 
 //--------------------------------------------------------------------------
