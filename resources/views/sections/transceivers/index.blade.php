@@ -143,7 +143,7 @@
   @parent
   <!-- page script -->
   <script type="text/javascript">
-    var map = L.map('map').setView([30.0, 0], 2);
+    var map = L.map('map').setView([30, 0], 2);
 
     // Map Layers
     var streets = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

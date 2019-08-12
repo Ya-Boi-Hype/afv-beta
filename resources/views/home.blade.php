@@ -44,9 +44,10 @@
       <div class="card card-body mb-4">
         
         <div class="content-header">
-          <div class="card bg-info">
+          <!--<div class="card bg-info">-->
+          <div class="card bg-light">
             <div class="card-body">
-              <b>Next Test:</b> Simfest Air Race, Saturday 10th August from 1000z to 1800z
+              <b>Next Test:</b> To be organized
             </div>
           </div>
         </div>
