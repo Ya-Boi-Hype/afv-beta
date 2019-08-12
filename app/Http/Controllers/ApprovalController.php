@@ -31,6 +31,7 @@ class ApprovalController extends Controller
         $afvApproval = AfvApiController::doPUT('api/v1/users/enabled', [$data]);
         if ($afvApproval == 200) {
             $approval->setAsApproved();
+
             return redirect()->back()->withSuccess('User successfully approved!')->withApprove('');
         } else {
             return redirect()->back()->withError("AFV Server replied with $afvApproval")->withApprove('');
@@ -60,6 +61,7 @@ class ApprovalController extends Controller
         $afvApproval = AfvApiController::doPUT('api/v1/users/enabled', [$data]);
         if ($afvApproval == 200) {
             $approval->setAsPending();
+
             return redirect()->back()->withSuccess('Approval revoked!');
         } else {
             return redirect()->back()->withError("AFV Server replied with $afvApproval");
@@ -89,6 +91,7 @@ class ApprovalController extends Controller
         $afvServer = AfvApiController::approveCIDs($cids);
         if ($afvServer == 200) {
             $pending->setAsApproved();
+
             return redirect()->back()->withSuccess('Users successfully approved!')->withApprove('');
         } else {
             return redirect()->back()->withError("AFV Server replied with $afvServer")->withApprove('');
