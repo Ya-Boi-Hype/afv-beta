@@ -34,6 +34,7 @@ class TransceiverController extends Controller
         if ($request->has('search')) {
             return redirect()->route('transceivers.search', ['search' => $request->input('search')]);
         }
+
         return view('sections.transceivers.index');
     }
 
