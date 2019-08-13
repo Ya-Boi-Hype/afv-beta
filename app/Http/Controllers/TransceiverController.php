@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Webpatser\Uuid\Uuid;
 use Illuminate\Http\Request;
 
 class TransceiverController extends Controller
@@ -16,14 +15,14 @@ class TransceiverController extends Controller
     public function search(Request $request)
     {
         $request->validate([
-            'search' => 'required|string',
+            'search' => 'present',
         ]);
-        $data = ['searchText' => $request->input('search')];
+        $data = ['searchText' => $request->input('search', '')];
 
         try {
             $searchResults = AfvApiController::doPOST('api/v1/stations/transceivers/search', $data);
-        } catch (Exception $e) {
-            return redirect()->back()->withError(['AFV Server Error', 'Server replied with '.$e->getMessage()]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withError(['Poopsie - '.$e->getCode(), 'Server response: '.$e->getMessage()])->withInput();
         }
 
         return view('sections.transceivers.search_results')->withSearchResults(json_decode($searchResults));
@@ -65,26 +64,29 @@ class TransceiverController extends Controller
         $request->validate([
             'lat' => 'required|numeric|max:90|min:-90',
             'lon' => 'required|numeric|max:180|min:-180',
-            'name' => 'required|string|alpha_dash',
+            'name' => 'required|string',
             'alt_msl' => 'required|integer',
             'alt_agl' => 'required|integer',
         ]);
 
-        $transceiverID = (string) Uuid::generate();
         try {
-            $response = AfvApiController::doPUT('api/v1/stations/transceivers', [
-                'TransceiverID' => $transceiverID,
+            $response = AfvApiController::doPOST('api/v1/stations/transceivers', [
                 'Name' => $request->input('name'),
                 'LatDeg' => $request->input('lat'),
                 'LonDeg' => $request->input('lon'),
                 'AltMslM' => $request->input('alt_msl'),
                 'AltAglM' => $request->input('alt_agl'),
             ]);
-
-            return redirect()->route('transceivers.show', ['name' => $request->input('name')])->withSuccess(['Transceiver created', $response]);
         } catch (\Exception $e) {
-            return redirect()->back()->withError(['AFV Server Error', 'Server replied with '.$e->getMessage()])->withInput();
+            if ($e->getCode() == 400) {
+                return redirect()->back()->withErrors(['name' => 'Name must be unique'])->withError(['Invalid Name', 'This name already exists'])->withInput();
+            } else {
+                return redirect()->back()->withError(['Error '.$e->getCode(), 'Server response: '.$e->getMessage()])->withInput();
+            }
         }
+
+        $transceiver = json_decode($response);
+        return redirect()->route('transceivers.show', ['name' => $transceiver->name])->withSuccess(['Transceiver created', 'UUID (debug use only): '.$transceiver->transceiverID]);
     }
 
     /**
@@ -96,11 +98,19 @@ class TransceiverController extends Controller
     public function show($name)
     {
         try {
-            $response = AfvApiController::doGET("api/v1/stations/transceivers/$name");
-            $transceiver = json_decode($response);
+            $searchFor = rawurlencode($name);
+            $response = AfvApiController::doGET("api/v1/stations/transceivers/$searchFor");
         } catch (\Exception $e) {
-            return redirect()->route('transceivers.index')->withError(['AFV Server Error', 'Server replied with '.$e->getMessage()])->withInput();
+            if ($e->getCode() == 404){
+                abort(404);
+            } else {
+                echo "Code: ".$e->getCode()."<br>";
+                echo "Response: ".$e->getMessage()."<br>";
+                return redirect()->back()->withError([$e->getCode(), 'Server response: '.$e->getMessage()]);
+            }
         }
+        
+        $transceiver = json_decode($response);
 
         echo '<pre>';
         print_r($transceiver);

@@ -24,7 +24,7 @@
           <!-- /.card-header -->
           <div class="card-body">
             <form class="form-horizontal" method="GET" action="{{ route('transceivers.index') }}">
-              <input type="text" class="form-control @error('search') is-invalid @enderror" name="search" placeholder="EGLL 1" value="{{ old('search') }}" required>
+              <input type="text" class="form-control @error('search') is-invalid @enderror" name="search" placeholder="EGLL 1" value="{{ old('search') }}">
               <button type="submit" class="btn btn-success mt-3 w-100">Search</button>
             </form>
           </div>

@@ -71,10 +71,11 @@ class AfvApiController extends Controller
         $result = curl_exec($ch); // Send the request
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
         curl_close($ch); // End cURL
+        
         if ($httpCode == 200) {
             return $result;
         } else {
-            throw new \Exception("HTTP Code $httpCode");
+            throw new \Exception($result, $httpCode);
         }
     }
 
@@ -107,10 +108,8 @@ class AfvApiController extends Controller
 
         if ($httpCode == 200) {
             return $result;
-        } elseif ($httpCode == 400) {
-            throw new \Exception('HTTP Code 400. Try changing some fields.');
         } else {
-            throw new \Exception("HTTP Code $httpCode");
+            throw new \Exception($result, $httpCode);
         }
     }
 
@@ -143,10 +142,8 @@ class AfvApiController extends Controller
 
         if ($httpCode == 200) {
             return $result;
-        } elseif ($httpCode == 400) {
-            throw new \Exception('HTTP Code 400. Try changing some fields.');
         } else {
-            throw new \Exception("HTTP Code $httpCode");
+            throw new \Exception($result, $httpCode);
         }
     }
 }

@@ -84,12 +84,19 @@
         transceivers = [],
         show_url = '{{ route("transceivers.show", ":name") }}';
     search_results.transceivers.forEach(function (transceiver) {
-        var popup = '<a href="'+show_url.replace(':name', transceiver.name)+'">';
+        var url = show_url.replace(':name', transceiver.name);
+        var popup = '<a href="'+encodeURI(url)+'">';
         popup += '<b>' + transceiver.name + '</b>';
         popup += '</a>';
         transceivers.push(L.marker([transceiver.latDeg, transceiver.lonDeg]).addTo(map).bindPopup(popup));
+        draw_range(transceiver);
     });
     map.fitBounds(L.featureGroup(transceivers).getBounds());
+
+    function draw_range(transceiver){
+      var RadiusMeters = 4193.18014745372 * Math.sqrt(transceiver.altMslM)
+      L.circle([transceiver.latDeg, transceiver.lonDeg], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map).bindPopup('Range: '+String(RadiusMeters)+'m');
+    }
   </script>
 
   <!-- DataTables -->
