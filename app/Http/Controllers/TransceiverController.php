@@ -7,7 +7,6 @@ use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 
 class TransceiverController extends Controller
 {
-    
     /**
      * Performs a search for the given parameters.
      *
@@ -19,7 +18,7 @@ class TransceiverController extends Controller
         $request->validate([
             'search' => 'present',
         ]);
-        $search = ($request->input('search')) ?? ""; // Because 'convertEmptyStringstoNull' middleware made API return 500
+        $search = ($request->input('search')) ?? ''; // Because 'convertEmptyStringstoNull' middleware made API return 500
         $data = ['searchText' => $search];
 
         try {
@@ -116,6 +115,7 @@ class TransceiverController extends Controller
         }
 
         $transceiver = json_decode($response);
+
         return view('sections.transceivers.show')->withTransceiver($transceiver);
     }
 
@@ -127,7 +127,7 @@ class TransceiverController extends Controller
      */
     public function edit($id)
     {
-        abort(404, "Site being worked on");
+        abort(404, 'Site being worked on');
     }
 
     /**
@@ -139,7 +139,7 @@ class TransceiverController extends Controller
      */
     public function update(Request $request, $id)
     {
-        abort(404, "Site being worked on");
+        abort(404, 'Site being worked on');
     }
 
     /**
@@ -150,6 +150,6 @@ class TransceiverController extends Controller
      */
     public function destroy($id)
     {
-        abort(404, "Site being worked on");
+        abort(404, 'Site being worked on');
     }
 }
