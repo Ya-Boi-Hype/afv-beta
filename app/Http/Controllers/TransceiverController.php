@@ -161,7 +161,7 @@ class TransceiverController extends Controller
             }
         }
 
-        echo "Response: ";
+        echo 'Response: ';
         print_r($response);
         die();
 
@@ -181,6 +181,7 @@ class TransceiverController extends Controller
         try {
             $id = rawurlencode($id);
             $response = AfvApiController::doDELETE("api/v1/stations/transceivers/$id");
+
             return redirect()->route('transceivers.index')->withSuccess(['Transceiver Deleted', null]);
         } catch (\Exception $e) {
             if ($e->getCode() == 404) {
