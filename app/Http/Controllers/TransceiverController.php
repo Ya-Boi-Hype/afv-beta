@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 
 class TransceiverController extends Controller
 {
+    
     /**
      * Performs a search for the given parameters.
      *
@@ -17,7 +19,8 @@ class TransceiverController extends Controller
         $request->validate([
             'search' => 'present',
         ]);
-        $data = ['searchText' => $request->input('search', '')];
+        $search = ($request->input('search')) ?? ""; // Because 'convertEmptyStringstoNull' middleware made API return 500
+        $data = ['searchText' => $search];
 
         try {
             $searchResults = AfvApiController::doPOST('api/v1/stations/transceivers/search', $data);
@@ -113,12 +116,6 @@ class TransceiverController extends Controller
         }
 
         $transceiver = json_decode($response);
-
-        /*echo '<pre>';
-        print_r($transceiver);
-        echo '</pre>';
-        die();*/
-
         return view('sections.transceivers.show')->withTransceiver($transceiver);
     }
 
@@ -130,7 +127,7 @@ class TransceiverController extends Controller
      */
     public function edit($id)
     {
-        //
+        abort(404, "Site being worked on");
     }
 
     /**
@@ -142,7 +139,7 @@ class TransceiverController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        abort(404, "Site being worked on");
     }
 
     /**
@@ -153,6 +150,6 @@ class TransceiverController extends Controller
      */
     public function destroy($id)
     {
-        //
+        abort(404, "Site being worked on");
     }
 }
