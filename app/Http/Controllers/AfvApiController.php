@@ -14,7 +14,7 @@ class AfvApiController extends Controller
 
     protected static $base; // Base API URL
     protected static $bearer; // Token to authenticate to API
- 
+
     /**
      * Gets authentication token.
      *
@@ -52,7 +52,7 @@ class AfvApiController extends Controller
     }
 
     /**
-     * Enables the webserver to act as the authenticated user
+     * Enables the webserver to act as the authenticated user.
      *
      * @param $cid Optional - User to impersonate | Defaults to authenticated user
      * @throws Exception
@@ -192,6 +192,5 @@ class AfvApiController extends Controller
     public static function impersonate()
     {
         self::init();
-        
     }
 }
