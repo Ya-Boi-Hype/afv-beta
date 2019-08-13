@@ -124,7 +124,20 @@ class TransceiverController extends Controller
      */
     public function edit($id)
     {
-        abort(404, 'Site being worked on');
+        try {
+            $searchFor = rawurlencode($id);
+            $response = AfvApiController::doGET("api/v1/stations/transceivers/$searchFor");
+        } catch (\Exception $e) {
+            if ($e->getCode() == 404) {
+                abort(404);
+            } else {
+                return redirect()->back()->withError([$e->getCode(), 'Server response: '.$e->getMessage()]);
+            }
+        }
+
+        $transceiver = json_decode($response);
+
+        return view('sections.transceivers.edit')->withTransceiver($transceiver);
     }
 
     /**
@@ -161,13 +174,9 @@ class TransceiverController extends Controller
             }
         }
 
-        echo 'Response: ';
-        print_r($response);
-        die();
-
         $transceiver = json_decode($response);
 
-        return redirect()->route('transceivers.show', ['id' => $transceiver->transceiverID])->withSuccess(['Transceiver successfully updated', null]);
+        return redirect()->route('transceivers.show', ['id' => $transceiver->transceiverID])->withSuccess(['Transceiver updated', null]);
     }
 
     /**

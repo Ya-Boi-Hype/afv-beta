@@ -9,76 +9,74 @@
 
 @section('content')
 <div class="content-header">
-  <div class="col">
-    <div class="card w-100">
-      <div class="card-header row">
-        <h1 class="col-11 text-dark">Transceiver Details</h1>
-        <a class="col-1 float-right btn btn-primary btn-sm" href="{{ route('transceivers.edit', ['id' => $transceiver->transceiverID]) }}">Edit</a>
+  <div class="card w-100">
+    <div class="card-header row">
+      <h1 class="col-11 text-dark">Transceiver Details</h1>
+      <a class="col-1 float-right btn btn-primary btn-sm" href="{{ route('transceivers.edit', ['id' => $transceiver->transceiverID]) }}">Edit</a>
+    </div>
+    <div id="map" class="w-100" style="cursor:crosshair; min-height: 400px;"></div>
+    <div class="card-body row">
+      <div class="col-12">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered">
+            <tr>
+              <th>Transceiver Name</th>
+            </tr>
+            <tr>
+              <td>
+                {{ $transceiver->name }}
+              </td>
+            </tr>
+          </table>
+        </div>
+        <!-- /.table-responsive -->
       </div>
-      <div id="map" class="w-100" style="cursor:crosshair; min-height: 400px;"></div>
-      <div class="card-body row">
-        <div class="col-12">
-          <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-              <tr>
-                <th>Transceiver Name</th>
-              </tr>
-              <tr>
-                <td>
-                  {{ $transceiver->name }}
-                </td>
-              </tr>
-            </table>
-          </div>
-          <!-- /.table-responsive -->
-        </div>
-        <!-- /.col -->
+      <!-- /.col -->
 
-        <div class="col-12 col-md-6">
-          <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-              <tr>
-                <th>Altitude MSL (m)</th>
-              </tr>
-              <tr>
-                <td>
-                  {{ $transceiver->altMslM }}
-                </td>
-              </tr>
-            </table>
-          </div>
-          <!-- /.table-responsive -->
+      <div class="col-12 col-md-6">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered">
+            <tr>
+              <th>Altitude MSL (m)</th>
+            </tr>
+            <tr>
+              <td>
+                {{ $transceiver->altMslM }}
+              </td>
+            </tr>
+          </table>
         </div>
-        <!-- /.col -->
-
-        <div class="col-12 col-md-6">
-          <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-              <tr>
-                <th>Altitude AGL (m)</th>
-              </tr>
-              <tr>
-                <td>
-                  {{ $transceiver->altAglM }}
-                </td>
-              </tr>
-            </table>
-          </div>
-          <!-- /.table-responsive -->
-        </div>
-        <!-- /.col -->
-        @admin
-        <div class="col-12">
-          <form class="text-center" id="deletion" method="POST" onsubmit="return confirm('Do you really want to delete this transceiver? There\'s no way back, young padawan...');" action="{{ route('transceivers.destroy', ['id' => $transceiver->transceiverID]) }}">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-          </form>
-        </div>
-        <!-- ./col -->
-        @endadmin
+        <!-- /.table-responsive -->
       </div>
-    </div>    
+      <!-- /.col -->
+
+      <div class="col-12 col-md-6">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered">
+            <tr>
+              <th>Altitude AGL (m)</th>
+            </tr>
+            <tr>
+              <td>
+                {{ $transceiver->altAglM }}
+              </td>
+            </tr>
+          </table>
+        </div>
+        <!-- /.table-responsive -->
+      </div>
+      <!-- /.col -->
+      @admin
+      <div class="col-12">
+        <form class="text-center" id="deletion" method="POST" onsubmit="return confirm('Do you really want to delete this transceiver? There\'s no way back, young padawan...');" action="{{ route('transceivers.destroy', ['id' => $transceiver->transceiverID]) }}">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+      </div>
+      <!-- ./col -->
+      @endadmin
+    </div>
   </div>
 </div>
 @endsection

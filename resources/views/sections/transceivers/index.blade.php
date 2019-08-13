@@ -162,7 +162,8 @@
     @if(! $errors->has('lat') && ! $errors->has('lon') && old('lat') && old('lon'))
       marker = L.marker([{{ old('lat') }}, {{ old('lon') }}], {
           draggable: 'true'
-      }).addTo(map)
+      }).addTo(map);
+      draw_range();
       marker.on('dragend', function(event) {
         marker.setLatLng(marker.getLatLng(), {
           draggable: 'true'
@@ -181,6 +182,12 @@
         marker = L.marker(e.latlng, {
             draggable: 'true'
         }).addTo(map);
+
+        var position = e.latlng.wrap();
+        $('#lat').val(position.lat);
+        $('#lon').val(position.lng);
+        draw_range();
+
         marker.on('dragend', function(event) {
           marker.setLatLng(marker.getLatLng(), {
             draggable: 'true'
@@ -188,14 +195,8 @@
           var position = marker.getLatLng().wrap();
           $('#lat').val(position.lat);
           $('#lon').val(position.lng);
-          
           draw_range();
         });
-        var position = e.latlng.wrap();
-        $('#lat').val(position.lat);
-        $('#lon').val(position.lng);
-
-        draw_range();
     });
     
     $('#altMslM').on('input', function(e){
