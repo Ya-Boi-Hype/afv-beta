@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Discord_Account;
 
 class DiscordUsersAPIController extends Controller
