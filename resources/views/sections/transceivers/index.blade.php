@@ -157,8 +157,8 @@
     L.control.layers(maps).addTo(map);
 
     // Marker Setup
-    var marker;
-    var ring;
+    var marker,
+        ring;
     @if(! $errors->has('lat') && ! $errors->has('lon') && old('lat') && old('lon'))
       marker = L.marker([{{ old('lat') }}, {{ old('lon') }}], {
           draggable: 'true'
@@ -171,9 +171,7 @@
         $('#lat').val(position.lat);
         $('#lon').val(position.lng);
 
-        if (ring) map.removeLayer(ring);
-        var RadiusMeters = 4193.18014745372 * Math.sqrt($('#altMslM').val())
-        ring = L.circle([position.lat, position.lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map);
+        draw_range();
       });
     @endif
 
@@ -191,26 +189,25 @@
           $('#lat').val(position.lat);
           $('#lon').val(position.lng);
           
-          if (ring) map.removeLayer(ring);
-          var RadiusMeters = 4193.18014745372 * Math.sqrt($('#altMslM').val())
-          ring = L.circle([position.lat, position.lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map);
+          draw_range();
         });
         var position = e.latlng.wrap();
         $('#lat').val(position.lat);
         $('#lon').val(position.lng);
 
-        if (ring) map.removeLayer(ring);
-        var RadiusMeters = 4193.18014745372 * Math.sqrt($('#altMslM').val())
-        ring = L.circle([e.latlng.lat, e.latlng.lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map);
+        draw_range();
     });
     
     $('#altMslM').on('input', function(e){
-      if(ring) map.removeLayer(ring);
-      if (marker) {
-        var RadiusMeters = 4193.18014745372 * Math.sqrt($('#altMslM').val())
-        var position = marker.getLatLng();
-        ring = L.circle([position.lat, position.lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map);
-      }
+      draw_range();
     });
+
+    function draw_range(){
+      if(marker){
+        if (ring) map.removeLayer(ring);
+        var RadiusMeters = 4193.18014745372 * Math.sqrt($('#altMslM').val());
+        ring = L.circle([marker.getLatLng().lat, marker.getLatLng().lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map);
+      }
+    }
 </script>
 @endsection

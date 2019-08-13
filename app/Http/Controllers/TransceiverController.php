@@ -114,17 +114,10 @@ class TransceiverController extends Controller
 
         $transceiver = json_decode($response);
 
-        echo '<pre>';
+        /*echo '<pre>';
         print_r($transceiver);
         echo '</pre>';
-        die();
-        $transceiver = [
-            'name' => 'Test',
-            'lat' => 0.0,
-            'lng' => 0.0,
-            'alt_msl' => 0.0,
-            'alt_agl' => 21,
-        ];
+        die();*/
 
         return view('sections.transceivers.show')->withTransceiver($transceiver);
     }

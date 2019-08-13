@@ -42,3 +42,11 @@ body{
 #transceivers_filter{
     float: right !important;
 }
+
+path.leaflet-interactive{
+    cursor: crosshair;
+}
+
+.leaflet-marker-icon.leaflet-interactive{
+    cursor: move;
+}
