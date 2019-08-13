@@ -86,6 +86,7 @@ class TransceiverController extends Controller
         }
 
         $transceiver = json_decode($response);
+
         return redirect()->route('transceivers.show', ['name' => $transceiver->name])->withSuccess(['Transceiver created', 'UUID (debug use only): '.$transceiver->transceiverID]);
     }
 
@@ -101,15 +102,16 @@ class TransceiverController extends Controller
             $searchFor = rawurlencode($name);
             $response = AfvApiController::doGET("api/v1/stations/transceivers/$searchFor");
         } catch (\Exception $e) {
-            if ($e->getCode() == 404){
+            if ($e->getCode() == 404) {
                 abort(404);
             } else {
-                echo "Code: ".$e->getCode()."<br>";
-                echo "Response: ".$e->getMessage()."<br>";
+                echo 'Code: '.$e->getCode().'<br>';
+                echo 'Response: '.$e->getMessage().'<br>';
+
                 return redirect()->back()->withError([$e->getCode(), 'Server response: '.$e->getMessage()]);
             }
         }
-        
+
         $transceiver = json_decode($response);
 
         echo '<pre>';

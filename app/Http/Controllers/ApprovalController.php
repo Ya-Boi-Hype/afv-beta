@@ -66,6 +66,7 @@ class ApprovalController extends Controller
         }
 
         $approval->setAsPending();
+
         return redirect()->back()->withSuccess('Approval revoked!');
     }
 
@@ -99,14 +100,15 @@ class ApprovalController extends Controller
         } catch (Exception $e) {
             return redirect()->back()->withError($e->getcode().' - '.$e->getMessage())->withApprove('');
         }
-        
+
         $approval->setAsApproved();
+
         return redirect()->back()->withSuccess('Users successfully approved!')->withApprove('');
     }
 
     public function sync()
     {
-        $data = array();
+        $data = [];
         $approved = Approval::approved()->pluck('user_id');
         foreach ($approved as $cid) {
             $data[] = ['Username' => (string) $cid, 'Enabled' => true];
