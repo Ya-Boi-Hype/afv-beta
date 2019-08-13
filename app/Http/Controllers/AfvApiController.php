@@ -14,7 +14,7 @@ class AfvApiController extends Controller
 
     protected static $base; // Base API URL
     protected static $bearer; // Token to authenticate to API
- 
+
     /**
      * Gets authentication token.
      *
