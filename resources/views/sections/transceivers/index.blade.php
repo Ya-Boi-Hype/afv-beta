@@ -173,7 +173,7 @@
 
         if (ring) map.removeLayer(ring);
         var RadiusMeters = 4193.18014745372 * Math.sqrt($('#altMslM').val())
-        ring = L.circle([position.lat, position.lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map).bindPopup('Range: '+String(RadiusMeters)+'m');
+        ring = L.circle([position.lat, position.lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map);
       });
     @endif
 
@@ -193,7 +193,7 @@
           
           if (ring) map.removeLayer(ring);
           var RadiusMeters = 4193.18014745372 * Math.sqrt($('#altMslM').val())
-          ring = L.circle([position.lat, position.lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map).bindPopup('Range: '+String(RadiusMeters)+'m');
+          ring = L.circle([position.lat, position.lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map);
         });
         var position = e.latlng.wrap();
         $('#lat').val(position.lat);
@@ -201,7 +201,7 @@
 
         if (ring) map.removeLayer(ring);
         var RadiusMeters = 4193.18014745372 * Math.sqrt($('#altMslM').val())
-        ring = L.circle([e.latlng.lat, e.latlng.lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map).bindPopup('Range: '+String(RadiusMeters)+'m');
+        ring = L.circle([e.latlng.lat, e.latlng.lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map);
     });
     
     $('#altMslM').on('input', function(e){
@@ -209,7 +209,7 @@
       if (marker) {
         var RadiusMeters = 4193.18014745372 * Math.sqrt($('#altMslM').val())
         var position = marker.getLatLng();
-        ring = L.circle([position.lat, position.lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map).bindPopup('Range: '+String(RadiusMeters)+'m');
+        ring = L.circle([position.lat, position.lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map);
       }
     });
 </script>
