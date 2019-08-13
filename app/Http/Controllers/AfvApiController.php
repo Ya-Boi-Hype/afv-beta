@@ -52,7 +52,7 @@ class AfvApiController extends Controller
     }
 
     /**
-     * Enables the webserver to act as the given user
+     * Enables the webserver to act as the given user.
      *
      * @param $cid User to impersonate
      * @throws Exception
