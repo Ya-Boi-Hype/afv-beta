@@ -86,7 +86,7 @@
                           </tr>
                           <tr>
                             <td>
-                              <input type="number" class="form-control @error('alt_msl') is-invalid @enderror" id="altMslM" name="alt_msl" placeholder="290" value="{{ old('alt_msl') }}" min="1" required>
+                              <input type="number" class="form-control @error('alt_msl') is-invalid @enderror" id="altMslM" name="alt_msl" placeholder="290" value="{{ old('alt_msl') }}" min="0" required>
                             </td>
                           </tr>
                         </table>
@@ -103,7 +103,7 @@
                           </tr>
                           <tr>
                             <td>
-                              <input type="number" class="form-control @error('alt_agl') is-invalid @enderror" name="alt_agl" placeholder="90" value="{{ old('alt_agl') }}" min="1" required>
+                              <input type="number" class="form-control @error('alt_agl') is-invalid @enderror" name="alt_agl" placeholder="90" value="{{ old('alt_agl') }}" min="0" required>
                             </td>
                           </tr>
                         </table>

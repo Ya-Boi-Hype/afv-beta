@@ -193,9 +193,9 @@ class FPLPrefileController extends Controller
             case 'CID':
                 return $this->get($request)->withError('Please check your CID/Password');
             default:
-                Log::error(Auth::User()->id.' - PrefileError | FSDResponse - '.$response);
+                Log::error(Auth::User()->id.' - PrefileError | FSDResponse: '.$response);
 
-                return $this->get($request)->withError("We're having trouble submitting your flightplan :(");
+                return $this->get($request)->withError("We're having trouble submitting your flightplan, but don't know why. Please let us know so we can have a look at the logs!");
         }
     }
 
@@ -212,12 +212,6 @@ class FPLPrefileController extends Controller
         } // Only fill if not done yet (A.K.A. only if this function called directly)
 
         $fp_data = $this->FP;
-
-        if (! auth()->user()->approved) {
-            $error = 'You don\'t seem to be approved for the beta';
-
-            return view('prefile.form', compact('fp_data', 'error'));
-        }
 
         if ($show_errors) {
             $errors = $this->errors;
@@ -238,10 +232,7 @@ class FPLPrefileController extends Controller
         // Populate fields (To-Do)
         if ($request->input('submit') === null) {
             return $this->get($request);
-        }
-
-        // Submit flightplan
-        else {
+        } else { // Submit flightplan
             return $this->submit($request);
         }
     }

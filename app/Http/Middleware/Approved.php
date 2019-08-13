@@ -20,6 +20,6 @@ class Approved
             return $next($request);
         }
 
-        return redirect(route('landing'))->withError(['Unauthorized', 'Only approved members may access this resource.']);
+        return redirect(route('home'))->withError(['Unauthorized', 'Only approved members may access that resource.']);
     }
 }

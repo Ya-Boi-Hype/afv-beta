@@ -68,8 +68,8 @@ class TransceiverController extends Controller
             'lat' => 'required|numeric|max:90|min:-90',
             'lon' => 'required|numeric|max:180|min:-180',
             'name' => 'required|string',
-            'alt_msl' => 'required|integer|min:1',
-            'alt_agl' => 'required|integer|min:1',
+            'alt_msl' => 'required|integer|min:0',
+            'alt_agl' => 'required|integer|min:0',
         ]);
 
         try {
@@ -90,7 +90,7 @@ class TransceiverController extends Controller
 
         $transceiver = json_decode($response);
 
-        return redirect()->route('transceivers.show', ['name' => $transceiver->name])->withSuccess(['Transceiver created', 'UUID (debug use only): '.$transceiver->transceiverID]);
+        return redirect()->route('transceivers.show', ['id' => $transceiver->transceiverID])->withSuccess(['Transceiver created', 'UUID (debug use only): '.$transceiver->transceiverID]);
     }
 
     /**
