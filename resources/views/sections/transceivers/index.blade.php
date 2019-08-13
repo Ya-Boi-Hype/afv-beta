@@ -86,7 +86,7 @@
                           </tr>
                           <tr>
                             <td>
-                              <input type="number" class="form-control @error('alt_msl') is-invalid @enderror" name="alt_msl" placeholder="290" value="{{ old('alt_msl') }}" required>
+                              <input type="number" class="form-control @error('alt_msl') is-invalid @enderror" id="altMslM" name="alt_msl" placeholder="290" value="{{ old('alt_msl') }}" min="1" required>
                             </td>
                           </tr>
                         </table>
@@ -103,7 +103,7 @@
                           </tr>
                           <tr>
                             <td>
-                              <input type="number" class="form-control @error('alt_agl') is-invalid @enderror" name="alt_agl" placeholder="90" value="{{ old('alt_agl') }}" required>
+                              <input type="number" class="form-control @error('alt_agl') is-invalid @enderror" name="alt_agl" placeholder="90" value="{{ old('alt_agl') }}" min="1" required>
                             </td>
                           </tr>
                         </table>
@@ -158,6 +158,7 @@
 
     // Marker Setup
     var marker;
+    var ring;
     @if(! $errors->has('lat') && ! $errors->has('lon') && old('lat') && old('lon'))
       marker = L.marker([{{ old('lat') }}, {{ old('lon') }}], {
           draggable: 'true'
@@ -169,6 +170,10 @@
         var position = marker.getLatLng().wrap();
         $('#lat').val(position.lat);
         $('#lon').val(position.lng);
+
+        if (ring) map.removeLayer(ring);
+        var RadiusMeters = 4193.18014745372 * Math.sqrt($('#altMslM').val())
+        ring = L.circle([position.lat, position.lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map).bindPopup('Range: '+String(RadiusMeters)+'m');
       });
     @endif
 
@@ -185,10 +190,27 @@
           var position = marker.getLatLng().wrap();
           $('#lat').val(position.lat);
           $('#lon').val(position.lng);
+          
+          if (ring) map.removeLayer(ring);
+          var RadiusMeters = 4193.18014745372 * Math.sqrt($('#altMslM').val())
+          ring = L.circle([position.lat, position.lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map).bindPopup('Range: '+String(RadiusMeters)+'m');
         });
         var position = e.latlng.wrap();
         $('#lat').val(position.lat);
         $('#lon').val(position.lng);
+
+        if (ring) map.removeLayer(ring);
+        var RadiusMeters = 4193.18014745372 * Math.sqrt($('#altMslM').val())
+        ring = L.circle([e.latlng.lat, e.latlng.lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map).bindPopup('Range: '+String(RadiusMeters)+'m');
+    });
+    
+    $('#altMslM').on('input', function(e){
+      if(ring) map.removeLayer(ring);
+      if (marker) {
+        var RadiusMeters = 4193.18014745372 * Math.sqrt($('#altMslM').val())
+        var position = marker.getLatLng();
+        ring = L.circle([position.lat, position.lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map).bindPopup('Range: '+String(RadiusMeters)+'m');
+      }
     });
 </script>
 @endsection

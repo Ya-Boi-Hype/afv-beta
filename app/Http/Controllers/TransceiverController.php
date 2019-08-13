@@ -65,8 +65,8 @@ class TransceiverController extends Controller
             'lat' => 'required|numeric|max:90|min:-90',
             'lon' => 'required|numeric|max:180|min:-180',
             'name' => 'required|string',
-            'alt_msl' => 'required|integer',
-            'alt_agl' => 'required|integer',
+            'alt_msl' => 'required|integer|min:1',
+            'alt_agl' => 'required|integer|min:1',
         ]);
 
         try {
