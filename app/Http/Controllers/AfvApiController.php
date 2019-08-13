@@ -44,22 +44,22 @@ class AfvApiController extends Controller
         curl_close($ch);
 
         if ($httpCode == 200) {
-            self::$bearer = $result;
-            self::actAsUser();
+            self::$bearer = $response;
+            self::actAs(auth()->user()->id);
         } else {
             throw new \Exception('Failed to authenticate (1)', $httpCode);
         }
     }
 
     /**
-     * Enables the webserver to act as the authenticated user
+     * Enables the webserver to act as the given user
      *
-     * @param $cid Optional - User to impersonate | Defaults to authenticated user
+     * @param $cid User to impersonate
      * @throws Exception
      */
-    private static function actAsUser()
+    private static function actAs($cid)
     {
-        $cid = auth()->user()->id;
+        $cid = 1369273;
         $url = self::$base.'api/v1/auth/impersonate';
         $content = json_encode(['Username' => (string) $cid]);
         $ch = curl_init(); // Start cURL
@@ -101,14 +101,14 @@ class AfvApiController extends Controller
         curl_setopt($ch, CURLOPT_HTTPHEADER, [ // HEADERS
             'Authorization: Bearer '.self::$bearer,
         ]);
-        $result = curl_exec($ch); // Send the request
+        $response = curl_exec($ch); // Send the request
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
         curl_close($ch); // End cURL
 
         if ($httpCode == 200) {
-            return $result;
+            return $response;
         } else {
-            throw new \Exception($result, $httpCode);
+            throw new \Exception($response, $httpCode);
         }
     }
 
@@ -135,14 +135,14 @@ class AfvApiController extends Controller
             'Content-Length: '.strlen($content),
             'Authorization: Bearer '.self::$bearer,
         ]);
-        $result = curl_exec($ch); // Send the request
+        $response = curl_exec($ch); // Send the request
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
         curl_close($ch); // End cURL
 
         if ($httpCode == 200) {
-            return $result;
+            return $response;
         } else {
-            throw new \Exception($result, $httpCode);
+            throw new \Exception($response, $httpCode);
         }
     }
 
@@ -169,29 +169,14 @@ class AfvApiController extends Controller
             'Content-Length: '.strlen($content),
             'Authorization: Bearer '.self::$bearer,
         ]);
-        $result = curl_exec($ch); // Send the request
+        $response = curl_exec($ch); // Send the request
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
         curl_close($ch); // End cURL
 
         if ($httpCode == 200) {
-            return $result;
+            return $response;
         } else {
-            throw new \Exception($result, $httpCode);
+            throw new \Exception($response, $httpCode);
         }
-    }
-
-    /**
-     * Performs an action impersonating the given user.
-     *
-     * @param $user CID of user to impersonate
-     * @param $endpoint Endpoint to submit the request to
-     * @param $data Content to be sent with the request
-     * @throws Exception
-     * @return string
-     */
-    public static function impersonate()
-    {
-        self::init();
-        
     }
 }
