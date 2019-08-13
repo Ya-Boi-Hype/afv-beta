@@ -59,7 +59,6 @@ class AfvApiController extends Controller
      */
     private static function actAs($cid)
     {
-        $cid = 1369273;
         $url = self::$base.'api/v1/auth/impersonate';
         $content = json_encode(['Username' => (string) $cid]);
         $ch = curl_init(); // Start cURL
