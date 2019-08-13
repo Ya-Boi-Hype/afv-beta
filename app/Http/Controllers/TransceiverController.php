@@ -96,10 +96,10 @@ class TransceiverController extends Controller
      * @param  string  $name
      * @return \Illuminate\Http\Response
      */
-    public function show($name)
+    public function show($id)
     {
         try {
-            $searchFor = rawurlencode($name);
+            $searchFor = rawurlencode($id);
             $response = AfvApiController::doGET("api/v1/stations/transceivers/$searchFor");
         } catch (\Exception $e) {
             if ($e->getCode() == 404) {
