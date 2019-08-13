@@ -69,7 +69,7 @@
         <!-- /.col -->
         @admin
         <div class="col-12">
-          <form class="text-center" id="deletion" method="POST" onsubmit="return confirm('Do you really want to delete this transceiver? There\'s no way back, young man...');" action="{{ route('transceivers.destroy', ['id' => $transceiver->transceiverID]) }}">
+          <form class="text-center" id="deletion" method="POST" onsubmit="return confirm('Do you really want to delete this transceiver? There\'s no way back, young padawan...');" action="{{ route('transceivers.destroy', ['id' => $transceiver->transceiverID]) }}">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger btn-sm">Delete</button>

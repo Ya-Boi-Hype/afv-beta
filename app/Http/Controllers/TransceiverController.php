@@ -89,13 +89,13 @@ class TransceiverController extends Controller
 
         $transceiver = json_decode($response);
 
-        return redirect()->route('transceivers.show', ['id' => $transceiver->transceiverID])->withSuccess(['Transceiver created', 'UUID (debug use only): '.$transceiver->transceiverID]);
+        return redirect()->route('transceivers.show', ['id' => $transceiver->transceiverID])->withSuccess(['Transceiver created', null]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  string  $name
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -107,9 +107,6 @@ class TransceiverController extends Controller
             if ($e->getCode() == 404) {
                 abort(404);
             } else {
-                echo 'Code: '.$e->getCode().'<br>';
-                echo 'Response: '.$e->getMessage().'<br>';
-
                 return redirect()->back()->withError([$e->getCode(), 'Server response: '.$e->getMessage()]);
             }
         }
@@ -122,7 +119,7 @@ class TransceiverController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -134,22 +131,63 @@ class TransceiverController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        abort(404, 'Site being worked on');
+        $request->validate([
+            'lat' => 'required|numeric|max:90|min:-90',
+            'lon' => 'required|numeric|max:180|min:-180',
+            'name' => 'required|string',
+            'alt_msl' => 'required|integer|min:0',
+            'alt_agl' => 'required|integer|min:0',
+        ]);
+
+        try {
+            $response = AfvApiController::doPUT('api/v1/stations/transceivers', [
+                'TransceiverID' => $id,
+                'Name' => $request->input('name'),
+                'LatDeg' => $request->input('lat'),
+                'LonDeg' => $request->input('lon'),
+                'AltMslM' => $request->input('alt_msl'),
+                'AltAglM' => $request->input('alt_agl'),
+            ]);
+        } catch (\Exception $e) {
+            if ($e->getCode() == 400) {
+                return redirect()->back()->withErrors(['name' => 'Name must be unique'])->withError(['Invalid Name', 'This name already exists'])->withInput();
+            } else {
+                return redirect()->back()->withError(['Error '.$e->getCode(), 'Server response: '.$e->getMessage()])->withInput();
+            }
+        }
+
+        echo "Response: ";
+        print_r($response);
+        die();
+
+        $transceiver = json_decode($response);
+
+        return redirect()->route('transceivers.show', ['id' => $transceiver->transceiverID])->withSuccess(['Transceiver successfully updated', null]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        abort(404, 'Site being worked on');
+        try {
+            $id = rawurlencode($id);
+            $response = AfvApiController::doDELETE("api/v1/stations/transceivers/$id");
+            return redirect()->route('transceivers.index')->withSuccess(['Transceiver Deleted', null]);
+        } catch (\Exception $e) {
+            if ($e->getCode() == 404) {
+                abort(404);
+            } else {
+                return redirect()->back()->withError([$e->getCode(), 'Server response: '.$e->getMessage()]);
+            }
+        }
     }
 }

@@ -92,7 +92,6 @@
         transceivers.push(L.marker([transceiver.latDeg, transceiver.lonDeg]).addTo(map).bindPopup(popup));
         draw_range(transceiver);
     });
-    map.fitBounds(L.featureGroup(transceivers).getBounds());
 
     function draw_range(transceiver){
       var RadiusMeters = 4193.18014745372 * Math.sqrt(transceiver.altMslM)

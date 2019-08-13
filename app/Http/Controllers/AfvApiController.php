@@ -179,4 +179,38 @@ class AfvApiController extends Controller
             throw new \Exception($response, $httpCode);
         }
     }
+
+    /**
+     * Submits a DELETE Request.
+     *
+     * @param $endpoint Endpoint to submit the request to
+     * @param $data Content to be sent with the request
+     * @throws Exception
+     * @return string
+     */
+    public static function doDELETE($endpoint, $data = [])
+    {
+        self::init();
+        $url = self::$base.$endpoint;
+        $content = json_encode($data);
+        $ch = curl_init(); // Start cURL
+        curl_setopt($ch, CURLOPT_URL, $url); // DESTINATION
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE'); // TYPE
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $content); // CONTENT
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the actual content of response
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [ // HEADERS
+            'Content-Type: application/json',
+            'Content-Length: '.strlen($content),
+            'Authorization: Bearer '.self::$bearer,
+        ]);
+        $response = curl_exec($ch); // Send the request
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
+        curl_close($ch); // End cURL
+
+        if ($httpCode == 200) {
+            return $response;
+        } else {
+            throw new \Exception($response, $httpCode);
+        }
+    }
 }
