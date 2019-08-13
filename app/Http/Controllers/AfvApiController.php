@@ -14,7 +14,7 @@ class AfvApiController extends Controller
 
     protected static $base; // Base API URL
     protected static $bearer; // Token to authenticate to API
-
+ 
     /**
      * Gets authentication token.
      *
@@ -39,15 +39,48 @@ class AfvApiController extends Controller
             'Content-Length: '.strlen($content),
         ]);
         // Send the request
-        $result = curl_exec($ch);
+        $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        if (! $result) {
-            throw new \Exception('Authentication Failure');
+        if ($httpCode == 200) {
+            self::$bearer = $result;
+            self::actAsUser();
+        } else {
+            throw new \Exception('Failed to authenticate (1)', $httpCode);
         }
+    }
 
-        self::$bearer = $result;
+    /**
+     * Enables the webserver to act as the authenticated user
+     *
+     * @param $cid Optional - User to impersonate | Defaults to authenticated user
+     * @throws Exception
+     */
+    private static function actAsUser()
+    {
+        $cid = auth()->user()->id;
+        $url = self::$base.'api/v1/auth/impersonate';
+        $content = json_encode(['Username' => (string) $cid]);
+        $ch = curl_init(); // Start cURL
+        curl_setopt($ch, CURLOPT_URL, $url); // DESTINATION
+        curl_setopt($ch, CURLOPT_POST, true); // POST Request
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $content); // CONTENT
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the actual content of response
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [ // HEADERS
+            'Content-Type: application/json',
+            'Content-Length: '.strlen($content),
+            'Authorization: Bearer '.self::$bearer,
+        ]);
+        $response = curl_exec($ch); // Send the request
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
+        curl_close($ch); // End cURL
+
+        if ($httpCode != 200) {
+            throw new \Exception('Failed to authenticate (2)', $httpCode);
+        } else {
+            self::$bearer = $response;
+        }
     }
 
     /**
@@ -145,5 +178,20 @@ class AfvApiController extends Controller
         } else {
             throw new \Exception($result, $httpCode);
         }
+    }
+
+    /**
+     * Performs an action impersonating the given user.
+     *
+     * @param $user CID of user to impersonate
+     * @param $endpoint Endpoint to submit the request to
+     * @param $data Content to be sent with the request
+     * @throws Exception
+     * @return string
+     */
+    public static function impersonate()
+    {
+        self::init();
+        
     }
 }
