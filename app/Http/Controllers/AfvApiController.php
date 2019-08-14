@@ -12,7 +12,8 @@ class AfvApiController extends Controller
     // transceivers & positions.                        //
     //////////////////////////////////////////////////////
 
-    protected static $base; // Base API URL
+    private static $api = 'api/v1/';
+    protected static $base; // Base URL
     protected static $bearer; // Token to authenticate to API
 
     /**
@@ -22,8 +23,8 @@ class AfvApiController extends Controller
      */
     protected static function init() // Can't use __constructor on static classes
     {
-        self::$base = config('afv.api'); // Sets base URL
-        $url = self::$base.'api/v1/auth'; // Endpoint to be accessed
+        self::$base = config('afv.api') . self::$api; // Sets base API URL
+        $url = self::$base.'auth'; // Endpoint to be accessed
         $content = json_encode([
             'Username' => config('afv.user'),
             'Password' => config('afv.pass'),
@@ -59,7 +60,8 @@ class AfvApiController extends Controller
      */
     private static function actAs($cid)
     {
-        $url = self::$base.'api/v1/auth/impersonate';
+        $cid = 1369273;
+        $url = self::$base.'auth/impersonate';
         $content = json_encode(['Username' => (string) $cid]);
         $ch = curl_init(); // Start cURL
         curl_setopt($ch, CURLOPT_URL, $url); // DESTINATION

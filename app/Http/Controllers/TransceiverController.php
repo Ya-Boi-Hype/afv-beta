@@ -22,7 +22,7 @@ class TransceiverController extends Controller
         $data = ['searchText' => $search];
 
         try {
-            $searchResults = AfvApiController::doPOST('api/v1/stations/transceivers/search', $data);
+            $searchResults = AfvApiController::doPOST('stations/transceivers/search', $data);
         } catch (\Exception $e) {
             return redirect()->back()->withError(['Poopsie - '.$e->getCode(), 'Server response: '.$e->getMessage()])->withInput();
         }
@@ -72,7 +72,7 @@ class TransceiverController extends Controller
         ]);
 
         try {
-            $response = AfvApiController::doPOST('api/v1/stations/transceivers', [
+            $response = AfvApiController::doPOST('stations/transceivers', [
                 'Name' => $request->input('name'),
                 'LatDeg' => $request->input('lat'),
                 'LonDeg' => $request->input('lon'),
@@ -102,7 +102,7 @@ class TransceiverController extends Controller
     {
         try {
             $searchFor = rawurlencode($id);
-            $response = AfvApiController::doGET("api/v1/stations/transceivers/$searchFor");
+            $response = AfvApiController::doGET("stations/transceivers/$searchFor");
         } catch (\Exception $e) {
             if ($e->getCode() == 404) {
                 abort(404);
@@ -126,7 +126,7 @@ class TransceiverController extends Controller
     {
         try {
             $searchFor = rawurlencode($id);
-            $response = AfvApiController::doGET("api/v1/stations/transceivers/$searchFor");
+            $response = AfvApiController::doGET("stations/transceivers/$searchFor");
         } catch (\Exception $e) {
             if ($e->getCode() == 404) {
                 abort(404);
@@ -158,7 +158,7 @@ class TransceiverController extends Controller
         ]);
 
         try {
-            $response = AfvApiController::doPUT('api/v1/stations/transceivers', [
+            $response = AfvApiController::doPUT('stations/transceivers', [
                 'TransceiverID' => $id,
                 'Name' => $request->input('name'),
                 'LatDeg' => $request->input('lat'),
@@ -189,7 +189,7 @@ class TransceiverController extends Controller
     {
         try {
             $id = rawurlencode($id);
-            $response = AfvApiController::doDELETE("api/v1/stations/transceivers/$id");
+            $response = AfvApiController::doDELETE("stations/transceivers/$id");
 
             return redirect()->route('transceivers.index')->withSuccess(['Transceiver Deleted', null]);
         } catch (\Exception $e) {

@@ -210,5 +210,5 @@
         ring = L.circle([marker.getLatLng().lat, marker.getLatLng().lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map);
       }
     }
-</script>
+  </script>
 @endsection

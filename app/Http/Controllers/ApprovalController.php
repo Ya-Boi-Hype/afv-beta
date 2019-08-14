@@ -30,7 +30,7 @@ class ApprovalController extends Controller
         $data = ['Username' => (string) $cid, 'Enabled' => true];
 
         try {
-            AfvApiController::doPUT('api/v1/users/enabled', [$data]);
+            AfvApiController::doPUT('users/enabled', [$data]);
             $approval->setAsApproved();
 
             return redirect()->back()->withSuccess('User successfully approved!')->withApprove('');
@@ -60,7 +60,7 @@ class ApprovalController extends Controller
 
         $data = ['Username' => (string) $cid, 'Enabled' => false];
         try {
-            AfvApiController::doPUT('api/v1/users/enabled', [$data]);
+            AfvApiController::doPUT('users/enabled', [$data]);
         } catch (Exception $e) {
             return redirect()->back()->withError($e->getcode().' - '.$e->getMessage())->withApprove('');
         }
@@ -96,7 +96,7 @@ class ApprovalController extends Controller
         }
 
         try {
-            AfvApiController::doPUT('api/v1/users/enabled', $data);
+            AfvApiController::doPUT('users/enabled', $data);
         } catch (Exception $e) {
             return redirect()->back()->withError($e->getcode().' - '.$e->getMessage())->withApprove('');
         }
@@ -115,7 +115,7 @@ class ApprovalController extends Controller
         }
 
         try {
-            AfvApiController::doPUT('api/v1/users/enabled', $data);
+            AfvApiController::doPUT('users/enabled', $data);
         } catch (Exception $e) {
             return redirect()->back()->withError($e->getcode().' - '.$e->getMessage());
         }
