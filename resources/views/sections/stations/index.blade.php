@@ -9,11 +9,7 @@
 @endsection
 
 @section('content')
-<!-- Main content ->
-<div class="content-header">
-
-</div>
-<!-- ./content-header -->
+<!-- Main content -->
 <div class="content-header flex-fill d-flex">
   <div class="col-12 flex-fill d-flex">
     <div class="card w-100 flex-fill d-flex">
