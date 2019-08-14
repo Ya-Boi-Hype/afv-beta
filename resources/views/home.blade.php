@@ -44,10 +44,11 @@
       <div class="card card-body mb-4">
         
         <div class="content-header">
-          <!--<div class="card bg-info">-->
-          <div class="card bg-light">
+          <div class="card bg-info">
+          <!--<div class="card bg-light">-->
             <div class="card-body">
-              <b>Next Test:</b> To be organized
+              <b><u>X-Plane Pilots Needed</u></b><br>
+              <b>Next Test:</b> Thursday, 15th August - 1800z until 2100z | EGLL -> EGCC<br>
             </div>
           </div>
         </div>

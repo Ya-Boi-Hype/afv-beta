@@ -121,7 +121,7 @@
           <a href="#" class="nav-link disabled text-secondary {{ Request::is('positions*') ? 'active' : null }}">
             <i class="nav-icon fas fa-headset"></i>
             <p>
-              Positions
+              Stations
             </p>
           </a>
         </li>
