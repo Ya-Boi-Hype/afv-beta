@@ -23,7 +23,7 @@ class AfvApiController extends Controller
      */
     protected static function init() // Can't use __constructor on static classes
     {
-        self::$base = config('afv.api') . self::$api; // Sets base API URL
+        self::$base = config('afv.api').self::$api; // Sets base API URL
         $url = self::$base.'auth'; // Endpoint to be accessed
         $content = json_encode([
             'Username' => config('afv.user'),
