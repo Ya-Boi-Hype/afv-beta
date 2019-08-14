@@ -16,8 +16,8 @@
     <div class="card w-100">
       <div class="card-header">
           <h1 class="m-0 text-dark">Search Results</h1>
-          @if($searchResults->total > 10)
-          Showing the first <b>10 out of {{ $searchResults->total }} matches</b>
+          @if($searchResults->total > count($searchResults->transceivers))
+          Showing the first <b>{{ count($searchResults->transceivers) }} out of {{ $searchResults->total }} matches</b>
           @else
           <b>{{ $searchResults->total }} matches</b>
           @endif
