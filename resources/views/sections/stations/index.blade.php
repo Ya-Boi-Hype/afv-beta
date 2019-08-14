@@ -21,7 +21,7 @@
         <div class="card-body row flex-fill">
           <ul class="col-12 col-md-3 bg-light" id="data-tree">
             @foreach($searchResults->stations as $station)
-            <li>{{ $station->name }}
+            <li id="{{ $station->stationID }}">{{ $station->name }}
               @if(count($station->childStations))
               <ul>
                 @include('sections.stations.handle_childs', ['childs' => $station->childStations])

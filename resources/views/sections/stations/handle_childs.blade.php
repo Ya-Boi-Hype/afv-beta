@@ -1,5 +1,5 @@
 @foreach($childs as $child)
-  <li>{{ $child->name }}
+  <li id="{{ $station->stationID }}">{{ $child->name }}
     @if(count($child->childStations))
     <ul>
       @include('sections.stations.handle_childs', ['childs' => $child->childStations])
