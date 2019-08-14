@@ -15,7 +15,7 @@ class StationController extends Controller
     {
         $data = ['searchText' => 'LON'];
         $response = AfvApiController::doPOST('stations/search', $data);
-        
+
         return view('sections.stations.index')->withSearchResults(json_decode($response));
     }
 
