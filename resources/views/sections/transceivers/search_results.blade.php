@@ -95,7 +95,7 @@
 
     function draw_range(transceiver){
       var RadiusMeters = 4193.18014745372 * Math.sqrt(transceiver.altMslM)
-      L.circle([transceiver.latDeg, transceiver.lonDeg], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map).bindPopup('Range: '+String(RadiusMeters)+'m');
+      L.circle([transceiver.latDeg, transceiver.lonDeg], {radius: RadiusMeters, fillOpacity: 0, color: '#ce6262'}).addTo(map).bindPopup('Range: '+String(RadiusMeters)+'m');
     }
   </script>
 
