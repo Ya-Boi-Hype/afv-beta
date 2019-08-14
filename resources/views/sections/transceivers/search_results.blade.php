@@ -17,7 +17,7 @@
       <div class="card-header">
           <h1 class="m-0 text-dark">Search Results</h1>
           @if($searchResults->total > count($searchResults->transceivers))
-          Showing the first <b>{{ count($searchResults->transceivers) }} out of {{ $searchResults->total }} matches</b>
+          Only showing <b>{{ count($searchResults->transceivers) }} out of {{ $searchResults->total }} matches</b>
           @else
           <b>{{ $searchResults->total }} matches</b>
           @endif
