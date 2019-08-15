@@ -7,7 +7,9 @@ use App\Models\User;
 use Vatsim\OAuth\SSO;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Input;
+use App\Http\Controllers\AfvApiController;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 /**
@@ -94,8 +96,8 @@ class LoginController extends Controller
 
     public function logout()
     {
+        Cache::forget('permissions'.auth()->user()->id);
         auth()->logout();
-
         return redirect(route('home'))->withSuccess(['Logout', 'You have been successfully logged out']);
     }
 }

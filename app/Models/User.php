@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\AfvApiController;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -53,6 +55,17 @@ class User extends Authenticatable
     public function getPendingAttribute()
     {
         return (bool) $this->has_request && ! $this->approved;
+    }
+
+    public function getPermissionsAttribute()
+    {
+        try{
+            return Cache::rememberForever('permissions'.$this->id, function () {
+                return AfvApiController::getPermissions($this->id);
+            });
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 
     public function scopePending(Builder $query)

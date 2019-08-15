@@ -19,9 +19,10 @@ class AfvApiController extends Controller
     /**
      * Gets authentication token.
      *
+     * @param $impersonate Act as another user or not | Default true
      * @throws Exception
      */
-    protected static function init() // Can't use __constructor on static classes
+    protected static function init($impersonate = true) // Can't use __constructor on static classes
     {
         self::$base = config('afv.api').self::$api; // Sets base API URL
         $url = self::$base.'auth'; // Endpoint to be accessed
@@ -46,7 +47,9 @@ class AfvApiController extends Controller
 
         if ($httpCode == 200) {
             self::$bearer = $response;
-            self::actAs(auth()->user()->id);
+            if ($impersonate){
+                self::actAs(auth()->user()->id);
+            }
         } else {
             throw new \Exception('Failed to authenticate (1)', $httpCode);
         }
@@ -92,9 +95,9 @@ class AfvApiController extends Controller
      * @throws Exception
      * @return string
      */
-    public static function doGET($endpoint)
+    public static function doGET($endpoint, $impersonate = true)
     {
-        self::init();
+        self::init($impersonate);
         $url = self::$base.$endpoint;
         $ch = curl_init(); // Start cURL
         curl_setopt($ch, CURLOPT_URL, $url); // DESTINATION
@@ -121,9 +124,9 @@ class AfvApiController extends Controller
      * @throws Exception
      * @return string
      */
-    public static function doPOST($endpoint, $data = [])
+    public static function doPOST($endpoint, $data = [], $impersonate = true)
     {
-        self::init();
+        self::init($impersonate);
         $url = self::$base.$endpoint;
         $content = json_encode($data);
         $ch = curl_init(); // Start cURL
@@ -155,9 +158,9 @@ class AfvApiController extends Controller
      * @throws Exception
      * @return string
      */
-    public static function doPUT($endpoint, $data = [])
+    public static function doPUT($endpoint, $data = [], $impersonate = true)
     {
-        self::init();
+        self::init($impersonate);
         $url = self::$base.$endpoint;
         $content = json_encode($data);
         $ch = curl_init(); // Start cURL
@@ -189,9 +192,9 @@ class AfvApiController extends Controller
      * @throws Exception
      * @return string
      */
-    public static function doDELETE($endpoint, $data = [])
+    public static function doDELETE($endpoint, $data = [], $impersonate = true)
     {
-        self::init();
+        self::init($impersonate);
         $url = self::$base.$endpoint;
         $content = json_encode($data);
         $ch = curl_init(); // Start cURL
@@ -213,5 +216,19 @@ class AfvApiController extends Controller
         } else {
             throw new \Exception($response, $httpCode);
         }
+    }
+
+    /**
+     * Gets the permissions of the given user
+     *
+     * @param $cid User to get the permissions of
+     * @throws Exception
+     * @return array
+     */
+    public static function getPermissions($cid)
+    {
+        $endpoint = 'users/'.$cid.'/permissions';
+        $response = self::doGET($endpoint, false); // Initialize with the server token (not the authenticated user's)
+        return json_decode($response);
     }
 }
