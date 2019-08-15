@@ -16,7 +16,7 @@ class ManagePermissions
     public function handle($request, Closure $next)
     {
         $user = auth()->user();
-        if (in_array("User Permission Write", $user->permissions) || $user->admin) {
+        if (in_array('User Permission Write', $user->permissions) || $user->admin) {
             return $next($request);
         }
 
