@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\AfvApiController;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
+use App\Http\Controllers\AfvApiController;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -59,7 +59,7 @@ class User extends Authenticatable
 
     public function getPermissionsAttribute()
     {
-        try{
+        try {
             return Cache::rememberForever('permissions'.$this->id, function () {
                 return AfvApiController::getPermissions($this->id);
             });
