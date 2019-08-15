@@ -97,8 +97,9 @@
         </li>
         @endapproved
         
-        @admin
+        @hasSomePermission
         <li class="nav-header">ADMIN</li>
+        @managesApprovals
         <li class="nav-item">
           <a href="{{ route('admin') }}" class="nav-link {{ Request::is('admin*') ? 'active' : null }}">
             <i class="nav-icon fas fa-user-shield"></i>
@@ -107,7 +108,8 @@
             </p>
           </a>
         </li>
-
+        @endmanagesApprovals
+        @facilityEngineer
         <li class="nav-item">
           <a href="{{ route('transceivers.index') }}" class="nav-link {{ Request::is('transceivers*') ? 'active' : null }}">
             <i class="nav-icon fas fa-broadcast-tower"></i>
@@ -116,16 +118,16 @@
             </p>
           </a>
         </li>
-
-        <li class="nav-item">
+        {{--<li class="nav-item">
           <a href="#" class="nav-link disabled text-secondary {{ Request::is('positions*') ? 'active' : null }}">
             <i class="nav-icon fas fa-headset"></i>
             <p>
               Stations
             </p>
           </a>
-        </li>
-        @endadmin
+        </li>--}}
+        @endfacilityEngineer
+        @endhasSomePermission
 
         @endauth
       </ul>

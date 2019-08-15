@@ -9,7 +9,6 @@ Route::get('/', 'PageController@home')->name('home');
 Route::middleware('guest')->group(function () {
     Route::get('login', 'Auth\LoginController@login')->name('auth.login');
     Route::get('verify-login', 'Auth\LoginController@verifyLogin')->name('auth.login.verify');
-    // Route::get('complete-login', 'Auth\LoginController@completeLogin')->name('auth.login.complete');
 });
 
 //--------------------------------------------------------------------------
@@ -47,18 +46,24 @@ Route::middleware(['auth', 'approved'])->group(function () {
 //--------------------------------------------------------------------------
 // Admin Endpoint
 //--------------------------------------------------------------------------
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('admin', 'AdminPageController')->name('admin');
-    Route::patch('user/random/approval', 'ApprovalController@random')->name('users.random');
-    Route::patch('user/all/approval', 'ApprovalController@sync')->name('users.sync');
-    Route::patch('user/{cid}/approval', 'ApprovalController@approve')->name('users.approve');
-    Route::delete('user/{cid}/approval', 'ApprovalController@revoke')->name('users.revoke');
-    Route::patch('user/{cid}/discord', 'DiscordAccountController@update')->name('users.discord');
-    Route::patch('user/admin', 'AdminController@add')->name('admin.add');
-    Route::delete('user/admin', 'AdminController@remove')->name('admin.remove');
-    Route::resource('transceivers', 'TransceiverController');
-    Route::get('transceivers/search/{search}', 'TransceiverController@search')->name('transceivers.search');
-    Route::resource('stations', 'StationController');
+Route::middleware('auth')->group(function () {
+    Route::middleware('manageApprovals')->group(function () {
+        Route::get('admin', 'AdminPageController')->name('admin');
+        Route::patch('user/random/approval', 'ApprovalController@random')->name('users.random');
+        Route::patch('user/all/approval', 'ApprovalController@sync')->name('users.sync');
+        Route::patch('user/{cid}/approval', 'ApprovalController@approve')->name('users.approve');
+        Route::delete('user/{cid}/approval', 'ApprovalController@revoke')->name('users.revoke');
+        Route::patch('user/{cid}/discord', 'DiscordAccountController@update')->name('users.discord');
+    });
+    Route::middleware('managePermissions')->group(function () {
+        Route::patch('user/admin', 'AdminController@add')->name('admin.add');
+        Route::delete('user/admin', 'AdminController@remove')->name('admin.remove');
+    });
+    Route::middleware('facilityEngineer')->group(function(){
+        Route::resource('transceivers', 'TransceiverController');
+        Route::get('transceivers/search/{search}', 'TransceiverController@search')->name('transceivers.search');
+        Route::resource('stations', 'StationController');
+    });
 });
 
 //--------------------------------------------------------------------------
