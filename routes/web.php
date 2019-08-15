@@ -59,7 +59,7 @@ Route::middleware('auth')->group(function () {
         Route::patch('user/admin', 'AdminController@add')->name('admin.add');
         Route::delete('user/admin', 'AdminController@remove')->name('admin.remove');
     });
-    Route::middleware('facilityEngineer')->group(function(){
+    Route::middleware('facilityEngineer')->group(function () {
         Route::resource('transceivers', 'TransceiverController');
         Route::get('transceivers/search/{search}', 'TransceiverController@search')->name('transceivers.search');
         Route::resource('stations', 'StationController');

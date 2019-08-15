@@ -16,7 +16,7 @@ class FacilityEngineer
     public function handle($request, Closure $next)
     {
         $user = auth()->user();
-        if (in_array("Facility Engineer", $user->permissions) || $user->admin) {
+        if (in_array('Facility Engineer', $user->permissions) || $user->admin) {
             return $next($request);
         }
 

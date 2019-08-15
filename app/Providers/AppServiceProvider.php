@@ -41,15 +41,15 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Blade::if('facilityEngineer', function () {
-            return (bool) in_array("Facility Engineer", auth()->user()->permissions);
+            return (bool) in_array('Facility Engineer', auth()->user()->permissions);
         });
 
         Blade::if('managesApprovals', function () {
-            return (bool) in_array("User Enable Write", auth()->user()->permissions);
+            return (bool) in_array('User Enable Write', auth()->user()->permissions);
         });
 
         Blade::if('managesPermissions', function () {
-            return (bool) in_array("User Permission Write", auth()->user()->permissions);
+            return (bool) in_array('User Permission Write', auth()->user()->permissions);
         });
 
         Blade::if('hasSomePermission', function () {
