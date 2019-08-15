@@ -47,7 +47,7 @@ class AfvApiController extends Controller
 
         if ($httpCode == 200) {
             self::$bearer = $response;
-            if ($impersonate){
+            if ($impersonate) {
                 self::actAs(auth()->user()->id);
             }
         } else {
@@ -218,7 +218,7 @@ class AfvApiController extends Controller
     }
 
     /**
-     * Gets the permissions of the given user
+     * Gets the permissions of the given user.
      *
      * @param $cid User to get the permissions of
      * @throws Exception
