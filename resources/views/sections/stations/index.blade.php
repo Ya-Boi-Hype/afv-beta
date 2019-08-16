@@ -22,9 +22,9 @@
           <ul class="col-12 col-md-3 bg-light" id="data-tree">
             @foreach($searchResults->stations as $station)
             <li id="{{ $station->stationID }}">{{ $station->name }}
-              @if(count($station->childStations))
+              @if(count($station->childStationIDs))
               <ul>
-                @include('sections.stations.handle_childs', ['childs' => $station->childStations])
+                @include('sections.stations.handle_childs', ['childs' => $station->childStationIDs])
               </ul>
               @endif
             </li>

@@ -19,7 +19,7 @@ class TransceiverController extends Controller
             'search' => 'present',
         ]);
         $search = ($request->input('search')) ?? ''; // Because 'convertEmptyStringstoNull' middleware made API return 500
-        $data = ['searchText' => $search];
+        $data = ['searchText' => strtoupper($search)];
 
         try {
             $searchResults = AfvApiController::doPOST('stations/transceivers/search', $data);
@@ -66,14 +66,14 @@ class TransceiverController extends Controller
         $request->validate([
             'lat' => 'required|numeric|max:90|min:-90',
             'lon' => 'required|numeric|max:180|min:-180',
-            'name' => 'required|string',
+            'name' => 'required|string|regex:/^[a-zA-Z0-9_]+$/',
             'alt_msl' => 'required|integer|min:0',
             'alt_agl' => 'required|integer|min:0',
         ]);
 
         try {
             $response = AfvApiController::doPOST('stations/transceivers', [
-                'Name' => $request->input('name'),
+                'Name' => strtoupper($request->input('name')),
                 'LatDeg' => $request->input('lat'),
                 'LonDeg' => $request->input('lon'),
                 'AltMslM' => $request->input('alt_msl'),
@@ -152,7 +152,7 @@ class TransceiverController extends Controller
         $request->validate([
             'lat' => 'required|numeric|max:90|min:-90',
             'lon' => 'required|numeric|max:180|min:-180',
-            'name' => 'required|string',
+            'name' => 'required|string|regex:/^[a-zA-Z0-9_]+$/',
             'alt_msl' => 'required|integer|min:0',
             'alt_agl' => 'required|integer|min:0',
         ]);
@@ -160,7 +160,7 @@ class TransceiverController extends Controller
         try {
             $response = AfvApiController::doPUT('stations/transceivers', [
                 'TransceiverID' => $id,
-                'Name' => $request->input('name'),
+                'Name' => strtoupper($request->input('name')),
                 'LatDeg' => $request->input('lat'),
                 'LonDeg' => $request->input('lon'),
                 'AltMslM' => $request->input('alt_msl'),
