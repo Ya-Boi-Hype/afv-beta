@@ -77,26 +77,23 @@
         'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
          attribution: '&copy; ' + '<a href="http://www.esri.com/">Esri</a>'
     });
-    var maps = {"Streets": streets, "Satellite": satellite};
-    L.control.layers(maps).addTo(map);
+    var layers = {"Streets": streets, "Satellite": satellite};
+    L.control.layers(layers).addTo(map);
 
     // Marker Setup
     var search_results = @json($searchResults),
-        transceivers = [],
+        transceiverRanges = [],
         show_url = '{{ route("transceivers.show", ":id") }}';
     search_results.transceivers.forEach(function (transceiver) {
         var url = show_url.replace(':id', transceiver.transceiverID);
-        var popup = '<a href="'+encodeURI(url)+'">';
-        popup += '<b>' + transceiver.name + '</b>';
-        popup += '</a>';
-        transceivers.push(L.marker([transceiver.latDeg, transceiver.lonDeg]).addTo(map).bindPopup(popup));
-        draw_range(transceiver);
-    });
+        var popup = '<b>' + transceiver.name + '</b><br>';
+        
+        var range = 4193.18014745372 * Math.sqrt(transceiver.altMslM);
 
-    function draw_range(transceiver){
-      var RadiusMeters = 4193.18014745372 * Math.sqrt(transceiver.altMslM)
-      L.circle([transceiver.latDeg, transceiver.lonDeg], {radius: RadiusMeters, fillOpacity: 0, color: '#ce6262'}).addTo(map).bindPopup('Range: '+String(RadiusMeters)+'m');
-    }
+        transceiverRanges.push(L.circle([transceiver.latDeg, transceiver.lonDeg], {radius: range, fillOpacity: .3, color: '#639fff', weight: 1}).addTo(map).bindPopup(popup));
+    });
+    
+    map.fitBounds(L.featureGroup(transceiverRanges).getBounds());
   </script>
 
   <!-- DataTables -->

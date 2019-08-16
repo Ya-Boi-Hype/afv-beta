@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use GuzzleHttp\Exception\TransferException;
 
 class AfvApiController extends Controller
 {
@@ -12,8 +14,11 @@ class AfvApiController extends Controller
     // transceivers & positions.                        //
     //////////////////////////////////////////////////////
 
-    private static $api = 'api/v1/';
-    protected static $base; // Base URL
+    private static $apiVersion = 1;
+    private static $timeout = 5; // In seconds
+    private static $debug = true;
+
+    protected static $client; // \GuzzleHttp\Client instance
     protected static $bearer; // Token to authenticate to API
 
     /**
@@ -24,35 +29,43 @@ class AfvApiController extends Controller
      */
     protected static function init($impersonate = true) // Can't use __constructor on static classes
     {
-        self::$base = config('afv.api').self::$api; // Sets base API URL
-        $url = self::$base.'auth'; // Endpoint to be accessed
-        $content = json_encode([
-            'Username' => config('afv.user'),
-            'Password' => config('afv.pass'),
-            'NetworkVersion' => config('afv.networkVersion'),
+        $baseUri = sprintf('%sapi/v%d/', config('afv.api'), self::$apiVersion);
+        $client = new \GuzzleHttp\Client([
+            'base_uri' => $baseUri,
+            'timeout' => self::$timeout,
         ]);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true); // POST Request
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the actual content of response
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json',
-            'Content-Length: '.strlen($content),
-        ]);
-        // Send the request
-        $response = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
 
-        if ($httpCode == 200) {
-            self::$bearer = $response;
-            if ($impersonate) {
-                self::actAs(auth()->user()->id);
+        self::$bearer = Cache::remember('bearerServer', now()->addHours(6), function () use ($client) {
+            try{
+                $response = $client->request('POST', 'auth', [
+                    'json' => [
+                        'Username' => config('afv.user'),
+                        'Password' => config('afv.pass'),
+                        'NetworkVersion' => config('afv.networkVersion')
+                    ]
+                ]);
+            } catch (TransferException $e) {
+                throw new \Exception('Failed to authenticate (1.1)', $e->getResponse()->getStatusCode());
             }
-        } else {
-            throw new \Exception('Failed to authenticate (1)', $httpCode);
-        }
+
+            if ($response->getStatusCode() != 200) {
+                throw new \Exception('Failed to authenticate (1.2)', $response->getStatusCode());
+            }
+            
+            return (string) $response->getBody();
+        });
+
+        // Set global client with default authentication header
+        self::$client = new \GuzzleHttp\Client([
+            'base_uri' => $baseUri,
+            'timeout' => self::$timeout,
+            'headers' => ['Authorization' => 'Bearer '.self::$bearer]
+        ]);
+
+        //if ($impersonate) {
+            $cid = auth()->user()->id;
+            self::impersonate($cid, $baseUri);
+        //}
     }
 
     /**
@@ -61,29 +74,27 @@ class AfvApiController extends Controller
      * @param $cid User to impersonate
      * @throws Exception
      */
-    private static function actAs($cid)
+    private static function impersonate($cid, $baseUri)
     {
-        $url = self::$base.'auth/impersonate';
-        $content = json_encode(['Username' => (string) $cid]);
-        $ch = curl_init(); // Start cURL
-        curl_setopt($ch, CURLOPT_URL, $url); // DESTINATION
-        curl_setopt($ch, CURLOPT_POST, true); // POST Request
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $content); // CONTENT
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the actual content of response
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [ // HEADERS
-            'Content-Type: application/json',
-            'Content-Length: '.strlen($content),
-            'Authorization: Bearer '.self::$bearer,
-        ]);
-        $response = curl_exec($ch); // Send the request
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
-        curl_close($ch); // End cURL
+        self::$bearer = Cache::remember('bearer'.$cid, now()->addHours(6), function () use ($cid) {
+            try{
+                $response = self::$client->request('POST', 'auth/impersonate', ['json' => ['Username' => (string) $cid]]);
+            } catch (TransferException $e) {
+                throw new \Exception('Failed to authenticate (2.1)', $e->getResponse()->getStatusCode());
+            }
+            if ($response->getStatusCode() != 200) {
+                throw new \Exception('Failed to authenticate (2.2)', $response->getStatusCode());
+            }
+            
+            return (string) $response->getBody();
+        });
 
-        if ($httpCode != 200) {
-            throw new \Exception('Failed to authenticate (2)', $httpCode);
-        } else {
-            self::$bearer = $response;
-        }
+        // Set global client with default authentication header
+        self::$client = new \GuzzleHttp\Client([
+            'base_uri' => $baseUri,
+            'timeout' => self::$timeout,
+            'headers' => ['Authorization' => 'Bearer '.self::$bearer]
+        ]);
     }
 
     /**
@@ -94,25 +105,20 @@ class AfvApiController extends Controller
      * @throws Exception
      * @return string
      */
-    public static function doGET($endpoint, $impersonate = true)
+    public static function doGET($endpoint, $data = [], $impersonate = true)
     {
         self::init($impersonate);
-        $url = self::$base.$endpoint;
-        $ch = curl_init(); // Start cURL
-        curl_setopt($ch, CURLOPT_URL, $url); // DESTINATION
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the actual content of response
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [ // HEADERS
-            'Authorization: Bearer '.self::$bearer,
-        ]);
-        $response = curl_exec($ch); // Send the request
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
-        curl_close($ch); // End cURL
 
-        if ($httpCode == 200) {
-            return $response;
-        } else {
-            throw new \Exception($response, $httpCode);
+        try{
+            $response = self::$client->request('GET', $endpoint, ['json' => $data]);
+        } catch (TransferException $e) {
+            throw new \Exception((string) $e->getResponse()->getReasonPhrase(), $e->getResponse()->getStatusCode());
         }
+        if ($response->getStatusCode() != 200) {
+            throw new \Exception($response->getBody(), $response->getStatusCode());
+        }
+        
+        return (string) $response->getBody();
     }
 
     /**
@@ -124,29 +130,19 @@ class AfvApiController extends Controller
      * @return string
      */
     public static function doPOST($endpoint, $data = [], $impersonate = true)
-    {
+    { 
         self::init($impersonate);
-        $url = self::$base.$endpoint;
-        $content = json_encode($data);
-        $ch = curl_init(); // Start cURL
-        curl_setopt($ch, CURLOPT_URL, $url); // DESTINATION
-        curl_setopt($ch, CURLOPT_POST, true); // POST Request
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the actual content of response
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [ // HEADERS
-            'Content-Type: application/json',
-            'Content-Length: '.strlen($content),
-            'Authorization: Bearer '.self::$bearer,
-        ]);
-        $response = curl_exec($ch); // Send the request
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
-        curl_close($ch); // End cURL
 
-        if ($httpCode == 200) {
-            return $response;
-        } else {
-            throw new \Exception($response, $httpCode);
+        try{
+            $response = self::$client->request('POST', $endpoint, ['json' => $data]);
+        } catch (TransferException $e) {
+            throw new \Exception((string) $e->getResponse()->getReasonPhrase(), $e->getResponse()->getStatusCode());
         }
+        if ($response->getStatusCode() != 200) {
+            throw new \Exception($response->getBody(), $response->getStatusCode());
+        }
+        
+        return (string) $response->getBody();
     }
 
     /**
@@ -160,27 +156,17 @@ class AfvApiController extends Controller
     public static function doPUT($endpoint, $data = [], $impersonate = true)
     {
         self::init($impersonate);
-        $url = self::$base.$endpoint;
-        $content = json_encode($data);
-        $ch = curl_init(); // Start cURL
-        curl_setopt($ch, CURLOPT_URL, $url); // DESTINATION
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT'); // TYPE
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $content); // CONTENT
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the actual content of response
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [ // HEADERS
-            'Content-Type: application/json',
-            'Content-Length: '.strlen($content),
-            'Authorization: Bearer '.self::$bearer,
-        ]);
-        $response = curl_exec($ch); // Send the request
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
-        curl_close($ch); // End cURL
 
-        if ($httpCode == 200) {
-            return $response;
-        } else {
-            throw new \Exception($response, $httpCode);
+        try{
+            $response = self::$client->request('PUT', $endpoint, ['json' => $data]);
+        } catch (TransferException $e) {
+            throw new \Exception((string) $e->getResponse()->getReasonPhrase(), $e->getResponse()->getStatusCode());
         }
+        if ($response->getStatusCode() != 200) {
+            throw new \Exception($response->getBody(), $response->getStatusCode());
+        }
+        
+        return (string) $response->getBody();
     }
 
     /**
@@ -194,27 +180,17 @@ class AfvApiController extends Controller
     public static function doDELETE($endpoint, $data = [], $impersonate = true)
     {
         self::init($impersonate);
-        $url = self::$base.$endpoint;
-        $content = json_encode($data);
-        $ch = curl_init(); // Start cURL
-        curl_setopt($ch, CURLOPT_URL, $url); // DESTINATION
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE'); // TYPE
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $content); // CONTENT
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the actual content of response
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [ // HEADERS
-            'Content-Type: application/json',
-            'Content-Length: '.strlen($content),
-            'Authorization: Bearer '.self::$bearer,
-        ]);
-        $response = curl_exec($ch); // Send the request
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get response code
-        curl_close($ch); // End cURL
 
-        if ($httpCode == 200) {
-            return $response;
-        } else {
-            throw new \Exception($response, $httpCode);
+        try{
+            $response = self::$client->request('DELETE', $endpoint, ['json' => $data]);
+        } catch (TransferException $e) {
+            throw new \Exception((string) $e->getResponse()->getReasonPhrase(), $e->getResponse()->getStatusCode());
         }
+        if ($response->getStatusCode() != 200) {
+            throw new \Exception($response->getBody(), $response->getStatusCode());
+        }
+        
+        return (string) $response->getBody();
     }
 
     /**
