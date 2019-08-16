@@ -30,6 +30,11 @@ body{
     overflow-x: hidden;
 }
 
+.sidebar-dark-primary .sidebar span {
+    color: #C2C7D0;
+    cursor: pointer;
+}
+
 .nav-sidebar .nav-header:not(:first-of-type){
     padding: 0.5rem;
 }

@@ -23,10 +23,10 @@
         @approved
         <li class="nav-header">CLIENTS</li>
         <li class="nav-item has-treeview menu-{{ Request::is('clients/pilots*') ? 'open' : 'closed' }}">
-          <a href="#" class="nav-link {{ Request::is('clients/pilots*') ? 'active' : null }}">
+          <span class="nav-link {{ Request::is('clients/pilots*') ? 'active' : null }}">
             <i class="nav-icon fa fa-plane"></i>
             <p>Pilot Clients<i class="right fa fa-angle-left"></i></p>
-          </a>
+          </span>
           <ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="{{ route('pilots.vpilot') }}" class="nav-link {{ Request::is('clients/pilots/vpilot*') ? 'active' : null }}">
@@ -41,10 +41,10 @@
           </ul>
         </li>
         <li class="nav-item has-treeview menu-{{ Request::is('clients/atc*') ? 'open' : 'closed' }}">
-          <a href="#" class="nav-link {{ Request::is('clients/atc*') ? 'active' : null }}">
+          <span class="nav-link {{ Request::is('clients/atc*') ? 'active' : null }}">
             <i class="nav-icon fas fa-satellite-dish"></i>
             <p>ATC Clients<i class="right fa fa-angle-left"></i></p>
-          </a>
+          </span>
           <ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="{{ route('atc.euroscope') }}" class="nav-link {{ Request::is('clients/atc/euroscope*') ? 'active' : null }}">
@@ -60,10 +60,10 @@
         </li>
 
         <li class="nav-item has-treeview menu-{{ Request::is('clients/atis*') ? 'open' : 'closed' }}">
-          <a href="#" class="nav-link {{ Request::is('clients/atis*') ? 'active' : null }}">
+          <span class="nav-link {{ Request::is('clients/atis*') ? 'active' : null }}">
             <i class="nav-icon fas fa-cloud-sun"></i>
             <p>ATIS Clients<i class="right fa fa-angle-left"></i></p>
-          </a>
+          </span>
           <ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="{{ route('atis.euroscope') }}" class="nav-link {{ Request::is('clients/atis/euroscope*') ? 'active' : null }}">
