@@ -19,7 +19,7 @@ class ApprovalController extends Controller
             $request->validate([
                 'cid' => 'integer|min:0|max:1500000',
             ]);
-            $searchResults = Approval::where('user_id', 'like', '%'.$request->input('cid').'%')->whereNot('user_id', auth()->user()->id)->take(10);
+            $searchResults = Approval::where('user_id', 'like', '%'.$request->input('cid').'%')->whereNot('user_id', '!=', auth()->user()->id)->take(10);
         } elseif ($request->has('name')) {
             $request->validate([
                 'name' => 'string',
@@ -27,7 +27,7 @@ class ApprovalController extends Controller
             $searchString = $request->input('name');
             $searchResults = Approval::whereHas('user', function ($query) use ($searchString){
                 $query->where('name_first', 'like', '%'.$searchString.'%')->orWhere('name_last', 'like', '%'.$searchString.'%');
-            })->whereNot('user_id', auth()->user()->id)->take(10);
+            })->where('user_id', '!=', auth()->user()->id)->take(10);
         } else {
             return redirect()->back();
         }

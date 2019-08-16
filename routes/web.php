@@ -50,8 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('manageApprovals')->group(function () {
         Route::resource('approvals', 'ApprovalController')->only(['index', 'edit', 'update']);
     });
-    /*TBD
-    Route::middleware('managePermissions')->group(function () {
+    /*Route::middleware('managePermissions')->group(function () {
         Route::patch('user/admin', 'AdminController@add')->name('admin.add');
         Route::delete('user/admin', 'AdminController@remove')->name('admin.remove');
     });*/
