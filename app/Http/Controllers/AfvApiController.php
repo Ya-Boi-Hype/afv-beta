@@ -62,10 +62,10 @@ class AfvApiController extends Controller
             'headers' => ['Authorization' => 'Bearer '.self::$bearer],
         ]);
 
-        //if ($impersonate) {
-        $cid = auth()->user()->id;
-        self::impersonate($cid, $baseUri);
-        //}
+        if ($impersonate) {
+            $cid = auth()->user()->id;
+            self::impersonate($cid, $baseUri);
+        }
     }
 
     /**
