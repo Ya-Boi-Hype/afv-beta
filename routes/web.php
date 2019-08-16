@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
         Route::patch('user/{cid}/approval', 'ApprovalController@approve')->name('users.approve');
         Route::delete('user/{cid}/approval', 'ApprovalController@revoke')->name('users.revoke');
         Route::patch('user/{cid}/discord', 'DiscordAccountController@update')->name('users.discord');
+        Route::resource('approvals', 'ApprovalControllerNew');
     });
     Route::middleware('managePermissions')->group(function () {
         Route::patch('user/admin', 'AdminController@add')->name('admin.add');
