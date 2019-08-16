@@ -106,9 +106,9 @@
   <script>
     $(function () {
       $("#results").DataTable({
-        "paging": false,
-        "lengthChange": false,
-        "searching": false,
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
         "ordering": true,
         "info": false,
         "autoWidth": true,
