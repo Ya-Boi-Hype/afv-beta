@@ -25,7 +25,7 @@ class ApprovalControllerNew extends Controller
                 'name' => 'string',
             ]);
             $searchString = $request->input('name');
-            $searchResults = Approval::whereHas('user', function ($query) use ($searchString){
+            $searchResults = Approval::whereHas('user', function ($query) use ($searchString) {
                 $query->where('name_first', 'like', '%'.$searchString.'%')->orWhere('name_last', 'like', '%'.$searchString.'%');
             })->take(10);
         } else {
