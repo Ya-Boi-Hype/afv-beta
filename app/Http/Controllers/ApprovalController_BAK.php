@@ -32,6 +32,7 @@ class ApprovalController_BAK extends Controller
         try {
             AfvApiController::doPUT('users/enabled', [$data]);
             $approval->setAsApproved();
+
             return redirect()->back()->withSuccess('User successfully approved!')->withApprove('');
         } catch (Exception $e) {
             return redirect()->back()->withError('AFV Server replied with '.$e->getMessage())->withApprove('');

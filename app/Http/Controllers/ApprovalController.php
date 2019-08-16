@@ -25,7 +25,7 @@ class ApprovalController extends Controller
                 'name' => 'string',
             ]);
             $searchString = $request->input('name');
-            $searchResults = Approval::whereHas('user', function ($query) use ($searchString){
+            $searchResults = Approval::whereHas('user', function ($query) use ($searchString) {
                 $query->where('name_first', 'like', '%'.$searchString.'%')->orWhere('name_last', 'like', '%'.$searchString.'%');
             })->whereNot('user_id', auth()->user()->id)->take(10);
         } else {
@@ -107,15 +107,15 @@ class ApprovalController extends Controller
     public function update(Request $request, Approval $approval)
     {
         $request->validate([
-            'action' => 'string|in:approve,revoke'
+            'action' => 'string|in:approve,revoke',
         ]);
 
-        if ($request->input('action') == "approve"){
+        if ($request->input('action') == 'approve') {
             $data = ['Username' => (string) $approval->user_id, 'Enabled' => true];
             try {
                 AfvApiController::doPUT('users/enabled', [$data]);
                 $approval->setAsApproved();
-                if($approval->user) {
+                if ($approval->user) {
                     return redirect()->route('approvals.edit', ['approval' => $approval])->withSuccess(['Ta Daaaa!', 'User approved']);
                 } else {
                     return redirect()->route('approvals.edit', ['approval' => $approval])->withWarn(['Approved', 'User won\'t receive an email (not registered)']);
@@ -128,6 +128,7 @@ class ApprovalController extends Controller
             try {
                 AfvApiController::doPUT('users/enabled', [$data]);
                 $approval->setAsPending();
+
                 return redirect()->route('approvals.edit', ['approval' => $approval])->withSuccess(['Woosh!', 'User approval revoked']);
             } catch (Exception $e) {
                 return redirect()->route('approvals.edit', ['approval' => $approval])->withError([$e->getCode(), 'AFV Server replied with '.$e->getMessage()]);
