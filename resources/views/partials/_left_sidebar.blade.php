@@ -101,10 +101,10 @@
         <li class="nav-header">ADMIN</li>
         @managesApprovals
         <li class="nav-item">
-          <a href="{{ route('admin') }}" class="nav-link {{ Request::is('admin*') ? 'active' : null }}">
-            <i class="nav-icon fas fa-user-shield"></i>
+          <a href="{{ route('approvals.index') }}" class="nav-link {{ Request::is('approvals*') ? 'active' : null }}">
+            <i class="nav-icon fas fa-user-check"></i>
             <p>
-              Admin Console
+              Approvals
             </p>
           </a>
         </li>

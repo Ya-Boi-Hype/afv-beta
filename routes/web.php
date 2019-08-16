@@ -48,22 +48,16 @@ Route::middleware(['auth', 'approved'])->group(function () {
 //--------------------------------------------------------------------------
 Route::middleware('auth')->group(function () {
     Route::middleware('manageApprovals')->group(function () {
-        Route::get('admin', 'AdminPageController')->name('admin');
-        Route::patch('user/random/approval', 'ApprovalController@random')->name('users.random');
-        Route::patch('user/all/approval', 'ApprovalController@sync')->name('users.sync');
-        Route::patch('user/{cid}/approval', 'ApprovalController@approve')->name('users.approve');
-        Route::delete('user/{cid}/approval', 'ApprovalController@revoke')->name('users.revoke');
-        Route::patch('user/{cid}/discord', 'DiscordAccountController@update')->name('users.discord');
-        Route::resource('approvals', 'ApprovalControllerNew');
+        Route::resource('approvals', 'ApprovalController')->only(['index', 'edit', 'update']);
     });
-    Route::middleware('managePermissions')->group(function () {
+    /*Route::middleware('managePermissions')->group(function () {
         Route::patch('user/admin', 'AdminController@add')->name('admin.add');
         Route::delete('user/admin', 'AdminController@remove')->name('admin.remove');
-    });
+    });*/
     Route::middleware('facilityEngineer')->group(function () {
         Route::resource('transceivers', 'TransceiverController');
         Route::get('transceivers/search/{search}', 'TransceiverController@search')->name('transceivers.search');
-        Route::resource('stations', 'StationController')->only(['index', 'edit', 'update']);
+        Route::resource('stations', 'StationController');
     });
 });
 

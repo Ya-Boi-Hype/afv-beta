@@ -4,122 +4,145 @@ namespace App\Http\Controllers;
 
 use App\Models\Approval;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ApprovalController extends Controller
 {
     /**
-     * Approve a new user.
+     * Performs a search for the given parameters.
      *
-     * @param $cid CID to approve
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function approve($cid, Request $request)
+    private function search(Request $request)
     {
-        try {
-            $approval = Approval::pending()->where('user_id', $cid)->firstOrFail(); // See if user has a pending approval
-        } catch (ModelNotFoundException $e) {
-            if (Approval::where('user_id', $cid)->exists()) {
-                return redirect()->back()->withError('User is already approved')->withApprove('');
-            } else {
-                return redirect()->back()->withError('User has not submitted a request to join the beta')->withApprove('');
-            }
+        if ($request->has('cid')) {
+            $request->validate([
+                'cid' => 'integer|min:0|max:1500000',
+            ]);
+            $searchResults = Approval::where('user_id', 'like', '%'.$request->input('cid').'%')->whereNot('user_id', auth()->user()->id)->take(10);
+        } elseif ($request->has('name')) {
+            $request->validate([
+                'name' => 'string',
+            ]);
+            $searchString = $request->input('name');
+            $searchResults = Approval::whereHas('user', function ($query) use ($searchString){
+                $query->where('name_first', 'like', '%'.$searchString.'%')->orWhere('name_last', 'like', '%'.$searchString.'%');
+            })->whereNot('user_id', auth()->user()->id)->take(10);
+        } else {
+            return redirect()->back();
         }
 
-        $data = ['Username' => (string) $cid, 'Enabled' => true];
-
-        try {
-            AfvApiController::doPUT('users/enabled', [$data]);
-            $approval->setAsApproved();
-
-            return redirect()->back()->withSuccess('User successfully approved!')->withApprove('');
-        } catch (Exception $e) {
-            return redirect()->back()->withError('AFV Server replied with '.$e->getMessage())->withApprove('');
-        }
+        return view('sections.approvals.search_results')->withSearchResults($searchResults);
     }
 
     /**
-     * Revoke a user's approval.
+     * Display a listing of the resource.
      *
-     * @param $cid CID to revoke
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function revoke($cid, Request $request)
+    public function index(Request $request)
     {
-        try {
-            $approval = Approval::approved()->where('user_id', $cid)->firstOrFail(); // User approved?
-        } catch (ModelNotFoundException $e) {
-            if (Approval::where('user_id', $cid)->exists()) { // User pending?
-                return redirect()->back()->withError('Approval is already pending');
-            } else {
-                return redirect()->back()->withError('User has not submitted a request to join the beta'); // No requests
-            }
+        if ($request->has('cid') || $request->has('name')) {
+            return $this->search($request);
         }
 
-        $data = ['Username' => (string) $cid, 'Enabled' => false];
-        try {
-            AfvApiController::doPUT('users/enabled', [$data]);
-        } catch (Exception $e) {
-            return redirect()->back()->withError($e->getcode().' - '.$e->getMessage())->withApprove('');
-        }
+        $approved = Approval::approved()->count();
+        $pending = Approval::pending()->count();
+        $total = $approved + $pending;
 
-        $approval->setAsPending();
-
-        return redirect()->back()->withSuccess('Approval revoked!');
+        return view('sections.approvals.index', compact('total', 'approved', 'pending'));
     }
 
     /**
-     * Approves qty random users.
+     * Show the form for creating a new resource.
      *
-     * @param $qty Quantity of random users to approve
-     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function random(Request $request)
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Approval  $approval
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Approval $approval)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Approval  $approval
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Approval $approval)
+    {
+        return view('sections.approvals.edit', compact('approval'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Approval  $approval
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Approval $approval)
     {
         $request->validate([
-            'qty' => 'required|numeric|min:1',
+            'action' => 'string|in:approve,revoke'
         ]);
 
-        $qty = $request->input('qty');
-        $pending = Approval::pending()->take($qty)->inRandomOrder()->get();
-        if (! $pending->count()) { // No approvals pending
-            return redirect()->back()->withError('No pending approvals')->withApprove('');
+        if ($request->input('action') == "approve"){
+            $data = ['Username' => (string) $approval->user_id, 'Enabled' => true];
+            try {
+                AfvApiController::doPUT('users/enabled', [$data]);
+                $approval->setAsApproved();
+                if($approval->user) {
+                    return redirect()->route('approvals.edit', ['approval' => $approval])->withSuccess(['Ta Daaaa!', 'User approved']);
+                } else {
+                    return redirect()->route('approvals.edit', ['approval' => $approval])->withWarn(['Approved', 'User won\'t receive an email (not registered)']);
+                }
+            } catch (Exception $e) {
+                return redirect()->route('approvals.edit', ['approval' => $approval])->withError([$e->getCode(), 'AFV Server replied with '.$e->getMessage()]);
+            }
+        } else {
+            $data = ['Username' => (string) $approval->user_id, 'Enabled' => false];
+            try {
+                AfvApiController::doPUT('users/enabled', [$data]);
+                $approval->setAsPending();
+                return redirect()->route('approvals.edit', ['approval' => $approval])->withSuccess(['Woosh!', 'User approval revoked']);
+            } catch (Exception $e) {
+                return redirect()->route('approvals.edit', ['approval' => $approval])->withError([$e->getCode(), 'AFV Server replied with '.$e->getMessage()]);
+            }
         }
-
-        $cids = $pending->pluck('user_id');
-        $data = [];
-        foreach ($cids as $cid) {
-            $data[] = ['Username' => (string) $cid, 'Enabled' => true];
-        }
-
-        try {
-            AfvApiController::doPUT('users/enabled', $data);
-        } catch (Exception $e) {
-            return redirect()->back()->withError($e->getcode().' - '.$e->getMessage())->withApprove('');
-        }
-
-        $approval->setAsApproved();
-
-        return redirect()->back()->withSuccess('Users successfully approved!')->withApprove('');
     }
 
-    public function sync()
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Approval  $approval
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Approval $approval)
     {
-        $data = [];
-        $approved = Approval::approved()->pluck('user_id');
-        foreach ($approved as $cid) {
-            $data[] = ['Username' => (string) $cid, 'Enabled' => true];
-        }
-
-        try {
-            AfvApiController::doPUT('users/enabled', $data);
-        } catch (Exception $e) {
-            return redirect()->back()->withError($e->getcode().' - '.$e->getMessage());
-        }
-
-        return redirect()->back()->withSuccess('Users successfully submitted!');
+        //
     }
 }
