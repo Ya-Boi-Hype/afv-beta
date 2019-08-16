@@ -36,13 +36,13 @@ class AfvApiController extends Controller
         ]);
 
         self::$bearer = Cache::remember('bearerServer', now()->addHours(6), function () use ($client) {
-            try{
+            try {
                 $response = $client->request('POST', 'auth', [
                     'json' => [
                         'Username' => config('afv.user'),
                         'Password' => config('afv.pass'),
-                        'NetworkVersion' => config('afv.networkVersion')
-                    ]
+                        'NetworkVersion' => config('afv.networkVersion'),
+                    ],
                 ]);
             } catch (TransferException $e) {
                 throw new \Exception('Failed to authenticate (1.1)', $e->getResponse()->getStatusCode());
@@ -51,7 +51,7 @@ class AfvApiController extends Controller
             if ($response->getStatusCode() != 200) {
                 throw new \Exception('Failed to authenticate (1.2)', $response->getStatusCode());
             }
-            
+
             return (string) $response->getBody();
         });
 
@@ -59,12 +59,12 @@ class AfvApiController extends Controller
         self::$client = new \GuzzleHttp\Client([
             'base_uri' => $baseUri,
             'timeout' => self::$timeout,
-            'headers' => ['Authorization' => 'Bearer '.self::$bearer]
+            'headers' => ['Authorization' => 'Bearer '.self::$bearer],
         ]);
 
         //if ($impersonate) {
-            $cid = auth()->user()->id;
-            self::impersonate($cid, $baseUri);
+        $cid = auth()->user()->id;
+        self::impersonate($cid, $baseUri);
         //}
     }
 
@@ -77,7 +77,7 @@ class AfvApiController extends Controller
     private static function impersonate($cid, $baseUri)
     {
         self::$bearer = Cache::remember('bearer'.$cid, now()->addHours(6), function () use ($cid) {
-            try{
+            try {
                 $response = self::$client->request('POST', 'auth/impersonate', ['json' => ['Username' => (string) $cid]]);
             } catch (TransferException $e) {
                 throw new \Exception('Failed to authenticate (2.1)', $e->getResponse()->getStatusCode());
@@ -85,7 +85,7 @@ class AfvApiController extends Controller
             if ($response->getStatusCode() != 200) {
                 throw new \Exception('Failed to authenticate (2.2)', $response->getStatusCode());
             }
-            
+
             return (string) $response->getBody();
         });
 
@@ -93,7 +93,7 @@ class AfvApiController extends Controller
         self::$client = new \GuzzleHttp\Client([
             'base_uri' => $baseUri,
             'timeout' => self::$timeout,
-            'headers' => ['Authorization' => 'Bearer '.self::$bearer]
+            'headers' => ['Authorization' => 'Bearer '.self::$bearer],
         ]);
     }
 
@@ -109,7 +109,7 @@ class AfvApiController extends Controller
     {
         self::init($impersonate);
 
-        try{
+        try {
             $response = self::$client->request('GET', $endpoint, ['json' => $data]);
         } catch (TransferException $e) {
             throw new \Exception((string) $e->getResponse()->getReasonPhrase(), $e->getResponse()->getStatusCode());
@@ -117,7 +117,7 @@ class AfvApiController extends Controller
         if ($response->getStatusCode() != 200) {
             throw new \Exception($response->getBody(), $response->getStatusCode());
         }
-        
+
         return (string) $response->getBody();
     }
 
@@ -130,10 +130,10 @@ class AfvApiController extends Controller
      * @return string
      */
     public static function doPOST($endpoint, $data = [], $impersonate = true)
-    { 
+    {
         self::init($impersonate);
 
-        try{
+        try {
             $response = self::$client->request('POST', $endpoint, ['json' => $data]);
         } catch (TransferException $e) {
             throw new \Exception((string) $e->getResponse()->getReasonPhrase(), $e->getResponse()->getStatusCode());
@@ -141,7 +141,7 @@ class AfvApiController extends Controller
         if ($response->getStatusCode() != 200) {
             throw new \Exception($response->getBody(), $response->getStatusCode());
         }
-        
+
         return (string) $response->getBody();
     }
 
@@ -157,7 +157,7 @@ class AfvApiController extends Controller
     {
         self::init($impersonate);
 
-        try{
+        try {
             $response = self::$client->request('PUT', $endpoint, ['json' => $data]);
         } catch (TransferException $e) {
             throw new \Exception((string) $e->getResponse()->getReasonPhrase(), $e->getResponse()->getStatusCode());
@@ -165,7 +165,7 @@ class AfvApiController extends Controller
         if ($response->getStatusCode() != 200) {
             throw new \Exception($response->getBody(), $response->getStatusCode());
         }
-        
+
         return (string) $response->getBody();
     }
 
@@ -181,7 +181,7 @@ class AfvApiController extends Controller
     {
         self::init($impersonate);
 
-        try{
+        try {
             $response = self::$client->request('DELETE', $endpoint, ['json' => $data]);
         } catch (TransferException $e) {
             throw new \Exception((string) $e->getResponse()->getReasonPhrase(), $e->getResponse()->getStatusCode());
@@ -189,7 +189,7 @@ class AfvApiController extends Controller
         if ($response->getStatusCode() != 200) {
             throw new \Exception($response->getBody(), $response->getStatusCode());
         }
-        
+
         return (string) $response->getBody();
     }
 
