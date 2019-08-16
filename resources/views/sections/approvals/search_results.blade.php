@@ -16,7 +16,7 @@
     <div class="card w-100">
       <div class="card-header">
           <h1 class="m-0 text-dark">Search Results</h1>
-          <b>{{ $searchResults->count() }} matches</b>
+          <b>{{ $searchResults->count() }} matches - Showing a maximum of 10</b>
       </div>
       <!-- /.card-header -->
       <div class="card-body">
@@ -31,7 +31,7 @@
           @if ($searchResults->count())
           <tbody>
             @foreach($searchResults->cursor() as $approval)
-            <tr onclick="window.location='{{ route('approvals.show', ['approval' => $approval]) }}';">
+            <tr onclick="window.location='{{ route('approvals.edit', ['approval' => $approval]) }}';">
               <td class="w-25">{{ $approval->user_id }}</td>
               <td class="w-50">{{ ($approval->user->full_name) ?? 'Unknown' }}</td>
               <td class="w-25">{{ $approval->approved ? 'True' : 'False' }}</td>

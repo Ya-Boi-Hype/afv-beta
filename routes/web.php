@@ -63,7 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('facilityEngineer')->group(function () {
         Route::resource('transceivers', 'TransceiverController');
         Route::get('transceivers/search/{search}', 'TransceiverController@search')->name('transceivers.search');
-        Route::resource('stations', 'StationController');
+        Route::resource('stations', 'StationController')->only(['index', 'edit', 'update']);
     });
 });
 
