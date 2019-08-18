@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 
 class TransceiverController extends Controller
 {
+    protected static $resultsPerPage = 15;
     /**
      * Performs a search for the given parameters.
      *
@@ -17,9 +19,11 @@ class TransceiverController extends Controller
     {
         $request->validate([
             'search' => 'present',
+            'page' => 'nullable|integer',
         ]);
         $search = ($request->input('search')) ?? ''; // Because 'convertEmptyStringstoNull' middleware made API return 500
-        $data = ['searchText' => strtoupper($search)];
+        $currentPage = ($request->input('page')) ?? 1;
+        $data = ['searchText' => strtoupper($search), 'skip' => self::$resultsPerPage * ($currentPage - 1), 'take' => self::$resultsPerPage];
 
         try {
             $searchResults = AfvApiController::doPOST('stations/transceivers/search', $data);
@@ -27,7 +31,20 @@ class TransceiverController extends Controller
             return redirect()->back()->withError(['Poopsie - '.$e->getCode(), 'Server response: '.$e->getMessage()])->withInput();
         }
 
-        return view('sections.transceivers.search_results')->withSearchResults(json_decode($searchResults));
+        $data = json_decode($searchResults);
+
+        $searchResults = new LengthAwarePaginator(
+            $data->transceivers,
+            $data->total,
+            self::$resultsPerPage,
+            $currentPage,
+            [
+                'path'=>route('transceivers.index'),
+                'query' => ['search' => $search],
+            ]
+        );
+        
+        return view('sections.transceivers.search_results', compact('searchResults'));
     }
 
     /**

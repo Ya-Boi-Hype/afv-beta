@@ -15,12 +15,8 @@
   <div class="col">
     <div class="card w-100">
       <div class="card-header">
-          <h1 class="m-0 text-dark">Search Results</h1>
-          @if($searchResults->total > count($searchResults->transceivers))
-          Only showing <b>{{ count($searchResults->transceivers) }} out of {{ $searchResults->total }} matches</b>
-          @else
-          <b>{{ $searchResults->total }} matches</b>
-          @endif
+        <h1 class="m-0 text-dark">Search Results</h1>
+        Items <b>{{ $searchResults->firstItem() }}-{{ $searchResults->lastItem() }}</b> of {{ $searchResults->total() }}
       </div>
       <!-- /.card-header -->
       <div id="map" class="w-100" style="cursor:crosshair; min-height: 400px;"></div>
@@ -32,6 +28,7 @@
         <option value="FL350">FL350 Range</option>
       </select>
       <div class="card-body">
+        {{ $searchResults->links() }}
         <table id="results" class="table table-bordered table-hover">
           <thead>
             <tr>
@@ -40,9 +37,9 @@
               <th>Alt AGL (m)</th>
             </tr>
           </thead>
-          @if ($searchResults->total > 0)
+          @if ($searchResults->total() > 0)
           <tbody>
-            @foreach($searchResults->transceivers as $transceiver)
+            @foreach($searchResults as $transceiver)
             <tr onclick="window.location='{{ route('transceivers.show', ['id' => $transceiver->transceiverID]) }}';">
               <td>{{ $transceiver->name }}</td>
               <td>{{ $transceiver->altMslM }}</td>
@@ -50,13 +47,6 @@
             </tr>
             @endforeach
           </tbody>
-          <tfoot>
-            <tr>
-              <th>Name</th>
-              <th>Alt MSL (m)</th>
-              <th>Alt AGL (m)</th>
-            </tr>
-          </tfoot>
           @endif
         </table>
       </div>
@@ -88,7 +78,7 @@
     L.control.layers(layers).addTo(map);
 
     // Marker Setup
-    var search_results = @json($searchResults),
+    var search_results = @json($searchResults->toArray()['data']),
         transceiverRanges = [],
         show_url = '{{ route("transceivers.show", ":id") }}';
     
@@ -104,13 +94,10 @@
         map.removeLayer(transceiverRanges[i]);
       }
 
-      search_results.transceivers.forEach(function (transceiver) {
-        var url = show_url.replace(':id', transceiver.transceiverID);
-        var popup = '<b>' + transceiver.name + '</b><br>';
-        
+      search_results.forEach(function (transceiver) {
+        var popup = '<b>' + transceiver.name + '</b>';
         var RadiusMeters = 4193.18014745372 * Math.sqrt(transceiver.altMslM) + 4193.18014745372 * Math.sqrt(get_selected_range_height());
-
-        transceiverRanges.push(L.circle([transceiver.latDeg, transceiver.lonDeg], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262', weight: 1}).addTo(map).bindPopup('Range: '+String(RadiusMeters)+'m'));
+        transceiverRanges.push(L.circle([transceiver.latDeg, transceiver.lonDeg], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262', weight: 1}).addTo(map).bindPopup(popup));
       });
     }
 
@@ -139,9 +126,9 @@
   <script>
     $(function () {
       $("#results").DataTable({
-        "paging": true,
-        "lengthChange": true,
-        "searching": true,
+        "paging": false,
+        "lengthChange": false,
+        "searching": false,
         "ordering": true,
         "info": false,
         "autoWidth": true,
