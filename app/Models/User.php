@@ -81,4 +81,11 @@ class User extends Authenticatable
             $query2->whereNotNull('approved_at');
         });
     }
+
+    public function scopeAvailable(Builder $query)
+    {
+        return $query->whereHas('approval', function (Builder $query2) {
+            $query2->where('available_for_next_event', true);
+        });
+    }
 }

@@ -2,10 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use Auth;
 use Closure;
 
-class Approved
+class HasNoRequest
 {
     /**
      * Handle an incoming request.
@@ -16,10 +15,10 @@ class Approved
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->user()->approved || auth()->user()->admin) { // User is approved
+        if (! auth()->user()->has_request) { // User is approved
             return $next($request);
         }
 
-        return redirect(route('home'))->withError(['Unauthorized', 'Only approved members may access that resource.']);
+        return redirect(route('home'))->withError(['Unauthorized', 'You already have a request to join.']);
     }
 }

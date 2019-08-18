@@ -32,6 +32,10 @@ class AppServiceProvider extends ServiceProvider
             return auth()->user()->pending && ! auth()->user()->admin;
         });
 
+        Blade::if('canexpressavailability', function () {
+            return auth()->user()->has_request && ! auth()->user()->approval->available;
+        });
+
         Blade::if('hasnorequest', function () {
             return ! auth()->user()->has_request && ! auth()->user()->admin;
         });

@@ -17,6 +17,18 @@ class Approval extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function setAsAvailable()
+    {
+        $this->available_for_next_event = true;
+        $this->save();
+    }
+
+    public function resetAvailability()
+    {
+        $this->available_for_next_event = null;
+        $this->save();
+    }
+
     public function setAsApproved()
     {
         $this->approved_at = now();
@@ -40,6 +52,11 @@ class Approval extends Model
         return (bool) $this->approved_at;
     }
 
+    public function getAvailableAttribute()
+    {
+        return (bool) !is_null($this->available_for_next_event);
+    }
+
     public function scopeApproved(Builder $query)
     {
         return $query->whereNotNull('approved_at');
@@ -48,5 +65,10 @@ class Approval extends Model
     public function scopePending(Builder $query)
     {
         return $query->whereNull('approved_at');
+    }
+
+    public function scopeAvailable(Builder $query)
+    {
+        return $query->where('available_for_next_event', true);
     }
 }
