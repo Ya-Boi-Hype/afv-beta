@@ -68,6 +68,27 @@
           <!-- /.card-body -->
         </div>
         <!-- /.card -->
+
+        <div class="card">
+          <div class="card-header">
+            <h1>Event Availabilities</h1>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body row text-center">
+            <div class="col-12 col-md-6">
+              <a class="btn btn-success" href="{{ route('approvals.availabilities') }}">View All</a>
+            </div>
+            <div class="col-12 col-md-6">
+              <form action="{{ route('approvals.availabilities.reset') }}" method="post">
+                @csrf
+                @method('PUT')
+                <button class="btn btn-danger" action="submit">Reset All Availabilities</button>
+              </form>
+            </div>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
       </div>
       <!-- /.card-body -->
     </div>

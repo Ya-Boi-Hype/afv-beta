@@ -19,7 +19,7 @@ class ApprovalController extends Controller
             $request->validate([
                 'cid' => 'integer|min:0|max:1500000',
             ]);
-            $searchResults = Approval::where('user_id', 'like', '%'.$request->input('cid').'%')->where('user_id', '!=', auth()->user()->id)->take(10);
+            $searchResults = Approval::where('user_id', 'like', '%'.$request->input('cid').'%')->where('user_id', '!=', auth()->user()->id);
         } elseif ($request->has('name')) {
             $request->validate([
                 'name' => 'string',
@@ -27,7 +27,7 @@ class ApprovalController extends Controller
             $searchString = $request->input('name');
             $searchResults = Approval::whereHas('user', function ($query) use ($searchString) {
                 $query->where('name_first', 'like', '%'.$searchString.'%')->orWhere('name_last', 'like', '%'.$searchString.'%');
-            })->where('user_id', '!=', auth()->user()->id)->take(10);
+            })->where('user_id', '!=', auth()->user()->id);
         } else {
             return redirect()->back();
         }
@@ -76,14 +76,25 @@ class ApprovalController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the approvals that have expressed availability.
      *
-     * @param  \App\Models\Approval  $approval
      * @return \Illuminate\Http\Response
      */
-    public function show(Approval $approval)
+    public function availabilities()
     {
-        //
+        $searchResults = Approval::available()->where('user_id', '!=', auth()->user()->id);
+        return view('sections.approvals.search_results', compact('searchResults'));
+    }
+
+    /**
+     * Reset approval's availabilities
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function resetAvailabilities()
+    {
+        Approval::available()->update(['available_for_next_event' => null]);
+        return redirect()->route('approvals.index')->withSuccess(['Done!', 'All availabilities have been reset']);
     }
 
     /**

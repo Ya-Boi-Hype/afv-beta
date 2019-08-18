@@ -13,7 +13,7 @@
     <div class="card w-100">
       <div class="card-header">
           <h1 class="m-0 text-dark">Search Results</h1>
-          <b>{{ $searchResults->count() }} matches - Showing a maximum of 10</b>
+          <b>{{ $searchResults->count() }} matches</b>
       </div>
       <!-- /.card-header -->
       <div class="card-body">
@@ -56,9 +56,9 @@
   <script>
     $(function () {
       $("#results").DataTable({
-        "paging": false,
-        "lengthChange": false,
-        "searching": false,
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
         "ordering": true,
         "info": false,
         "autoWidth": false,

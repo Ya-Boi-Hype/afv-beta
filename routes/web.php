@@ -59,6 +59,8 @@ Route::middleware('auth')->group(function () {
     // Approval Management Endpoint
     //--------------------------------------------------------------------------
     Route::middleware('manageApprovals')->group(function () {
+        Route::get('approvals/available', 'ApprovalController@availabilities')->name('approvals.availabilities');
+        Route::put('approvals/available', 'ApprovalController@resetAvailabilities')->name('approvals.availabilities.reset');
         Route::resource('approvals', 'ApprovalController')->only(['index', 'edit', 'update']);
     });
 
