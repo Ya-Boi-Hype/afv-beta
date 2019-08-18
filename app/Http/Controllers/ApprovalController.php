@@ -83,17 +83,19 @@ class ApprovalController extends Controller
     public function availabilities()
     {
         $searchResults = Approval::available()->where('user_id', '!=', auth()->user()->id);
+
         return view('sections.approvals.search_results', compact('searchResults'));
     }
 
     /**
-     * Reset approval's availabilities
+     * Reset approval's availabilities.
      *
      * @return \Illuminate\Http\Response
      */
     public function resetAvailabilities()
     {
         Approval::available()->update(['available_for_next_event' => null]);
+
         return redirect()->route('approvals.index')->withSuccess(['Done!', 'All availabilities have been reset']);
     }
 
