@@ -68,9 +68,17 @@ Route::middleware('auth')->group(function () {
     // Facility Engineering Endpoint
     //--------------------------------------------------------------------------
     Route::middleware('facilityEngineer')->group(function () {
-        Route::resource('transceivers', 'TransceiverController');
+        Route::resource('transceivers', 'TransceiverController')->except(['destroy']);
         Route::get('transceivers/search/{search}', 'TransceiverController@search')->name('transceivers.search');
-        Route::resource('stations', 'StationController');
+        Route::resource('stations', 'StationController')->except(['destroy']);
+    });
+
+    //--------------------------------------------------------------------------
+    // Facility Engineering ADMIN Endpoint
+    //--------------------------------------------------------------------------
+    Route::middleware('admin')->group(function () {
+        Route::resource('transceivers', 'TransceiverController')->only(['destroy']);
+        Route::resource('stations', 'StationController')->only(['destroy']);;
     });
 });
 
