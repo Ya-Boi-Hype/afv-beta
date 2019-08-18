@@ -54,7 +54,7 @@ class Approval extends Model
 
     public function getAvailableAttribute()
     {
-        return (bool) !is_null($this->available_for_next_event);
+        return (bool) ! is_null($this->available_for_next_event);
     }
 
     public function scopeApproved(Builder $query)
