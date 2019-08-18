@@ -24,6 +24,13 @@
       </div>
       <!-- /.card-header -->
       <div id="map" class="w-100" style="cursor:crosshair; min-height: 400px;"></div>
+      <select class="w-100 bg-light" id="view_range">
+        <option value="GND">Radio Range</option>
+        <option value="FL050">FL050 Range</option>
+        <option value="FL100">FL100 Range</option>
+        <option value="FL150">FL150 Range</option>
+        <option value="FL350">FL350 Range</option>
+      </select>
       <div class="card-body">
         <table id="results" class="table table-bordered table-hover">
           <thead>
@@ -84,16 +91,45 @@
     var search_results = @json($searchResults),
         transceiverRanges = [],
         show_url = '{{ route("transceivers.show", ":id") }}';
-    search_results.transceivers.forEach(function (transceiver) {
+    
+    draw_ranges();
+    map.fitBounds(L.featureGroup(transceiverRanges).getBounds());
+
+
+    $('#view_range').on('change', draw_ranges);
+
+
+    function draw_ranges(){
+      for (var i = 0; i < transceiverRanges.length; i++) {
+        map.removeLayer(transceiverRanges[i]);
+      }
+
+      search_results.transceivers.forEach(function (transceiver) {
         var url = show_url.replace(':id', transceiver.transceiverID);
         var popup = '<b>' + transceiver.name + '</b><br>';
         
-        var range = 4193.18014745372 * Math.sqrt(transceiver.altMslM);
+        var RadiusMeters = 4193.18014745372 * Math.sqrt(transceiver.altMslM) + 4193.18014745372 * Math.sqrt(get_selected_range_height());
 
-        transceiverRanges.push(L.circle([transceiver.latDeg, transceiver.lonDeg], {radius: range, fillOpacity: .3, color: '#639fff', weight: 1}).addTo(map).bindPopup(popup));
-    });
-    
-    map.fitBounds(L.featureGroup(transceiverRanges).getBounds());
+        transceiverRanges.push(L.circle([transceiver.latDeg, transceiver.lonDeg], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262', weight: 1}).addTo(map).bindPopup('Range: '+String(RadiusMeters)+'m'));
+      });
+    }
+
+    function get_selected_range_height(){
+      switch($('#view_range').val()) {
+        case 'GND':
+          return 0;
+        case 'FL050':
+          return 1524;
+        case 'FL100':
+          return 3048;
+        case 'FL150':
+          return 4572;
+        case 'FL350':
+          return 10668;
+        default:
+          return 0;
+      }
+    }
   </script>
 
   <!-- DataTables -->

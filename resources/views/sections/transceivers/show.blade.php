@@ -15,6 +15,13 @@
       <a class="col-1 float-right btn btn-primary btn-sm" href="{{ route('transceivers.edit', ['id' => $transceiver->transceiverID]) }}">Edit</a>
     </div>
     <div id="map" class="w-100" style="cursor:crosshair; min-height: 400px;"></div>
+    <select class="w-100 bg-light" id="view_range">
+      <option value="GND">Radio Range</option>
+      <option value="FL050">FL050 Range</option>
+      <option value="FL100">FL100 Range</option>
+      <option value="FL150">FL150 Range</option>
+      <option value="FL350">FL350 Range</option>
+    </select> 
     <div class="card-body row">
       <div class="col-12">
         <div class="table-responsive">
@@ -99,8 +106,36 @@
       L.control.layers(maps).addTo(map);
 
       // Marker Setup
-      L.marker([transceiver.latDeg, transceiver.lonDeg]).addTo(map);
-      var RadiusMeters = 4193.18014745372 * Math.sqrt(transceiver.altMslM)
-      L.circle([transceiver.latDeg, transceiver.lonDeg], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map).bindPopup('Range: '+String(RadiusMeters)+'m');
+      var ring;
+      var marker = L.marker([transceiver.latDeg, transceiver.lonDeg]).addTo(map);
+      var radius_base = 4193.18014745372 * Math.sqrt({{ $transceiver->altMslM }});
+      draw_range();
+
+      $('#view_range').on('change', draw_range);
+
+      function draw_range(){
+        if(marker){
+          if (ring) map.removeLayer(ring);
+          var RadiusMeters = radius_base + 4193.18014745372 * Math.sqrt(get_selected_range_height());
+          ring = L.circle([transceiver.latDeg, transceiver.lonDeg], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262', weight: 1}).addTo(map).bindPopup('Range: '+String(RadiusMeters)+'m');
+        }
+      }
+
+      function get_selected_range_height(){
+        switch($('#view_range').val()) {
+          case 'GND':
+            return 0;
+          case 'FL050':
+            return 1524;
+          case 'FL100':
+            return 3048;
+          case 'FL150':
+            return 4572;
+          case 'FL350':
+            return 10668;
+          default:
+            return 0;
+        }
+      }
     </script>
 @endsection

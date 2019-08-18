@@ -16,6 +16,13 @@
     </div>
     <!-- /.card-header -->
     <div id="map" class="w-100" style="cursor:crosshair; min-height: 400px;"></div>
+    <select class="w-100 bg-light" id="view_range">
+      <option value="GND">Radio Range</option>
+      <option value="FL050">FL050 Range</option>
+      <option value="FL100">FL100 Range</option>
+      <option value="FL150">FL150 Range</option>
+      <option value="FL350">FL350 Range</option>
+    </select>
     <div class="card-body">
       <form class="form-horizontal" method="POST" action="{{ route('transceivers.update', ['id' => $transceiver->transceiverID]) }}">
         @csrf
@@ -191,16 +198,33 @@
           draw_range();
         });
     });
+
     
-    $('#altMslM').on('input', function(e){
-      draw_range();
-    });
+    $('#altMslM').on('input', draw_range);
+    $('#view_range').on('change', draw_range);
 
     function draw_range(){
       if(marker){
         if (ring) map.removeLayer(ring);
-        var RadiusMeters = 4193.18014745372 * Math.sqrt($('#altMslM').val());
-        ring = L.circle([marker.getLatLng().lat, marker.getLatLng().lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map);
+        var RadiusMeters = 4193.18014745372 * Math.sqrt($('#altMslM').val()) + 4193.18014745372 * Math.sqrt(get_selected_range_height());
+        ring = L.circle([marker.getLatLng().lat, marker.getLatLng().lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262', weight: 1}).addTo(map);
+      }
+    }
+
+    function get_selected_range_height(){
+      switch($('#view_range').val()) {
+        case 'GND':
+          return 0;
+        case 'FL050':
+          return 1524;
+        case 'FL100':
+          return 3048;
+        case 'FL150':
+          return 4572;
+        case 'FL350':
+          return 10668;
+        default:
+          return 0;
       }
     }
 </script>

@@ -209,14 +209,13 @@
     });
     
     $('#altMslM').on('input', draw_range);
-
     $('#view_range').on('change', draw_range);
 
     function draw_range(){
       if(marker){
         if (ring) map.removeLayer(ring);
         var RadiusMeters = 4193.18014745372 * Math.sqrt($('#altMslM').val()) + 4193.18014745372 * Math.sqrt(get_selected_range_height());
-        ring = L.circle([marker.getLatLng().lat, marker.getLatLng().lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262'}).addTo(map);
+        ring = L.circle([marker.getLatLng().lat, marker.getLatLng().lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262', weight: 1}).addTo(map);
       }
     }
 
@@ -234,7 +233,7 @@
           return 10668;
         default:
           return 0;
-      } 
+      }
     }
   </script>
 @endsection
