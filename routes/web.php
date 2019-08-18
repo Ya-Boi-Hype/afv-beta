@@ -78,7 +78,7 @@ Route::middleware('auth')->group(function () {
     //--------------------------------------------------------------------------
     Route::middleware('admin')->group(function () {
         Route::resource('transceivers', 'TransceiverController')->only(['destroy']);
-        Route::resource('stations', 'StationController')->only(['destroy']);;
+        Route::resource('stations', 'StationController')->only(['destroy']);
     });
 });
 
