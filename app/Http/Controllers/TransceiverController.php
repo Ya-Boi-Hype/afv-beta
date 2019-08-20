@@ -8,6 +8,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class TransceiverController extends Controller
 {
     protected static $resultsPerPage = 15;
+
     /**
      * Performs a search for the given parameters.
      *
@@ -43,7 +44,7 @@ class TransceiverController extends Controller
                 'query' => ['search' => $search],
             ]
         );
-        
+
         return view('sections.transceivers.search_results', compact('searchResults'));
     }
 
