@@ -129,7 +129,7 @@
         "paging": false,
         "lengthChange": false,
         "searching": false,
-        "ordering": true,
+        "ordering": false,
         "info": false,
         "autoWidth": true,
       })

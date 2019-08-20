@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 
 class TransceiverController extends Controller
 {
@@ -22,8 +21,9 @@ class TransceiverController extends Controller
             'page' => 'nullable|integer',
         ]);
         $search = ($request->input('search')) ?? ''; // Because 'convertEmptyStringstoNull' middleware made API return 500
+        $search = strtoupper($search);
         $currentPage = ($request->input('page')) ?? 1;
-        $data = ['searchText' => strtoupper($search), 'skip' => self::$resultsPerPage * ($currentPage - 1), 'take' => self::$resultsPerPage];
+        $data = ['searchText' => $search, 'skip' => self::$resultsPerPage * ($currentPage - 1), 'take' => self::$resultsPerPage];
 
         try {
             $searchResults = AfvApiController::doPOST('stations/transceivers/search', $data);
@@ -69,7 +69,7 @@ class TransceiverController extends Controller
      */
     public function create()
     {
-        return view('sections.transceivers.create');
+        //
     }
 
     /**
@@ -130,7 +130,7 @@ class TransceiverController extends Controller
 
         $transceiver = json_decode($response);
 
-        return view('sections.transceivers.show')->withTransceiver($transceiver);
+        return view('sections.transceivers.show', compact('transceiver'));
     }
 
     /**
