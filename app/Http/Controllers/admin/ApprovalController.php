@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Approval;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\AfvApicontroller;
+use App\Http\Controllers\AfvApiController;
 
 class ApprovalController extends Controller
 {
