@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Approval;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\AfvApicontroller;
 
 class ApprovalController extends Controller
 {
@@ -88,11 +90,36 @@ class ApprovalController extends Controller
     }
 
     /**
+     * Approves all approvals with availability for an event
+     */
+    public function approveAvailable()
+    {
+        $newApprovals = Approval::available()->pending();
+        $requestData = [];
+
+        foreach($newApprovals->cursor() as $approval){
+            $requestData[] = ['Username' => (string)$approval->user->id, 'Enabled' => true];
+        }
+
+        try {
+            AfvApiController::doPUT('users/enabled', $requestData);
+        } catch (Exception $e) {
+            return redirect()->back()->withError([$e->getCode(), 'AFV Server replied with '.$e->getMessage()]);
+        }
+
+        foreach($newApprovals->cursor() as $approval){
+            $approval->setAsApproved();
+        }
+
+        return redirect()->back()->withSuccess(['Done!', 'All users have been approved :)']);
+    }
+
+    /**
      * Reset approval's availabilities.
      *
      * @return \Illuminate\Http\Response
      */
-    public function resetAvailabilities()
+    public function resetAvailable()
     {
         Approval::available()->update(['available_for_next_event' => null]);
 

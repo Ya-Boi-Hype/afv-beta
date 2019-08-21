@@ -59,9 +59,9 @@ Route::middleware('auth')->group(function () {
     // Approval Management Endpoint
     //--------------------------------------------------------------------------
     Route::middleware('manageApprovals')->group(function () {
-        Route::get('approvals/available', 'ApprovalController@availabilities')->name('approvals.availabilities');
-        Route::put('approvals/available', 'ApprovalController@resetAvailabilities')->name('approvals.availabilities.reset');
-        Route::resource('approvals', 'ApprovalController')->only(['index', 'edit', 'update']);
+        Route::get('approvals/available', 'Admin\ApprovalController@availabilities')->name('approvals.availabilities');
+        Route::delete('approvals/available', 'Admin\ApprovalController@resetAvailable')->name('approvals.availabilities.reset');
+        Route::resource('approvals', 'Admin\ApprovalController')->only(['index', 'edit', 'update']);
     });
 
     //--------------------------------------------------------------------------
@@ -93,3 +93,6 @@ Route::get('discord/accounts', 'DiscordUsersAPIController');
 Route::get('vatsim-data', function () {
     return response(Storage::get('vatsim-data.json'))->header('Content-Type', 'application/json');
 });
+
+
+Route::get('test', 'Admin\ApprovalController@approveAvailable');

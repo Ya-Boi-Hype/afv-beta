@@ -81,7 +81,7 @@
             <div class="col-12 col-md-6">
               <form action="{{ route('approvals.availabilities.reset') }}" method="post">
                 @csrf
-                @method('PUT')
+                @method('DELETE')
                 <button class="btn btn-danger" action="submit">Reset All Availabilities</button>
               </form>
             </div>

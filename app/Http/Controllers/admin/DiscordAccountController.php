@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Models\Discord_Account;
+use App\Http\Controllers\Controller;
 
 class DiscordAccountController extends Controller
 {
