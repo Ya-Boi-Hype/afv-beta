@@ -90,15 +90,15 @@ class ApprovalController extends Controller
     }
 
     /**
-     * Approves all approvals with availability for an event
+     * Approves all approvals with availability for an event.
      */
     public function approveAvailable()
     {
         $newApprovals = Approval::available()->pending();
         $requestData = [];
 
-        foreach($newApprovals->cursor() as $approval){
-            $requestData[] = ['Username' => (string)$approval->user->id, 'Enabled' => true];
+        foreach ($newApprovals->cursor() as $approval) {
+            $requestData[] = ['Username' => (string) $approval->user->id, 'Enabled' => true];
         }
 
         try {
@@ -107,7 +107,7 @@ class ApprovalController extends Controller
             return redirect()->back()->withError([$e->getCode(), 'AFV Server replied with '.$e->getMessage()]);
         }
 
-        foreach($newApprovals->cursor() as $approval){
+        foreach ($newApprovals->cursor() as $approval) {
             $approval->setAsApproved();
         }
 
