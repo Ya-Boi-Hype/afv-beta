@@ -46,7 +46,7 @@ class AfvApiController extends Controller
                         'NetworkVersion' => config('afv.networkVersion'),
                     ],
                 ]);
-            } catch (TransferException | ClientError  | ServerError $e) {
+            } catch (TransferException | ClientError | ServerError $e) {
                 throw new \Exception('Failed to authenticate (1.1)', $e->getResponse()->getStatusCode());
             }
 
@@ -81,7 +81,7 @@ class AfvApiController extends Controller
         self::$bearer = Cache::remember('bearer'.$cid, now()->addHours(6), function () use ($cid) {
             try {
                 $response = self::$client->request('POST', 'auth/impersonate', ['json' => ['Username' => (string) $cid]]);
-            } catch (TransferException | ClientError  | ServerError $e) {
+            } catch (TransferException | ClientError | ServerError $e) {
                 throw new \Exception('Failed to authenticate (2.1)', $e->getResponse()->getStatusCode());
             }
             if ($response->getStatusCode() != 200) {
@@ -113,7 +113,7 @@ class AfvApiController extends Controller
 
         try {
             $response = self::$client->request('GET', $endpoint, ['json' => $data]);
-        } catch (TransferException | ClientError  | ServerError $e) {
+        } catch (TransferException | ClientError | ServerError $e) {
             throw new \Exception((string) $e->getResponse()->getReasonPhrase(), $e->getResponse()->getStatusCode());
         }
         if ($response->getStatusCode() != 200) {
@@ -137,7 +137,7 @@ class AfvApiController extends Controller
 
         try {
             $response = self::$client->request('POST', $endpoint, ['json' => $data]);
-        } catch (TransferException | ClientError  | ServerError $e) {
+        } catch (TransferException | ClientError | ServerError $e) {
             throw new \Exception((string) $e->getResponse()->getReasonPhrase(), $e->getResponse()->getStatusCode());
         }
         if ($response->getStatusCode() != 200) {
@@ -161,7 +161,7 @@ class AfvApiController extends Controller
 
         try {
             $response = self::$client->request('PUT', $endpoint, ['json' => $data]);
-        } catch (TransferException | ClientError  | ServerError $e) {
+        } catch (TransferException | ClientError | ServerError $e) {
             throw new \Exception((string) $e->getResponse()->getReasonPhrase(), $e->getResponse()->getStatusCode());
         }
         if ($response->getStatusCode() != 200) {
@@ -185,7 +185,7 @@ class AfvApiController extends Controller
 
         try {
             $response = self::$client->request('DELETE', $endpoint, ['json' => $data]);
-        } catch (TransferException | ClientError  | ServerError $e) {
+        } catch (TransferException | ClientError | ServerError $e) {
             throw new \Exception((string) $e->getResponse()->getReasonPhrase(), $e->getResponse()->getStatusCode());
         }
         if ($response->getStatusCode() != 200) {
