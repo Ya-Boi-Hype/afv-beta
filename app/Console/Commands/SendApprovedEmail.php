@@ -2,26 +2,25 @@
 
 namespace App\Console\Commands;
 
-use Mail;
-use App\Models\User;
-use App\Mail\BetaUpdate;
 use Illuminate\Console\Command;
+use App\Models\Approval;
+use App\Notifications\UpdateEmail;
 
-class SendUpdateEmail extends Command
+class SendApprovedEmail extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'email:send';
+    protected $signature = 'approved:sendmail';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Send the beta update email to all recipients.';
+    protected $description = 'Sends an update email to all approved users';
 
     /**
      * Create a new command instance.
@@ -40,9 +39,11 @@ class SendUpdateEmail extends Command
      */
     public function handle()
     {
-        $users = User::all();
-        foreach ($users as $user) {
-            Mail::to($user)->queue(new BetaUpdate());
+        $approvals = Approval::approved();
+        foreach ($approvals->cursor() as $approval) {
+            if ($approval->user){
+                $approval->user->notify(new UpdateEmail());
+            }
         }
     }
 }
