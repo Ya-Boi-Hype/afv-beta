@@ -96,10 +96,10 @@ Route::get('vatsim-data', function () {
 
 Route::get('test', 'Admin\ApprovalController@approveAvailable');
 
-Route::get('mail',  function(){
+Route::get('mail', function () {
     return (new \Illuminate\Notifications\Messages\MailMessage)
     ->subject('Audio For VATSIM - Welcome to the beta team')
-    ->greeting("Hello, !")
+    ->greeting('Hello, !')
     ->line('Thanks for signing up for the Audio for VATSIM beta.')
     ->line('We are pleased to invite you to join the testing team.')
     ->line('For instructions on how to join please go to https://afv-beta.vatsim.net for more info.')
