@@ -79,7 +79,14 @@
               <a class="btn btn-success" href="{{ route('approvals.availabilities') }}">View All</a>
             </div>
             <div class="col-12 col-md-6">
-              <form action="{{ route('approvals.availabilities.reset') }}" method="post">
+              <form action="{{ route('approvals.availabilities.approve') }}" onsubmit="return confirm('Do you really want to approve all available users?')" method="post">
+                @csrf
+                @method('PUT')
+                <button class="btn btn-success" action="submit">Approve all</button>
+              </form>
+            </div>
+            <div class="col-12">
+              <form action="{{ route('approvals.availabilities.reset') }}" onsubmit="return confirm('Do you really want to reset availability for all users?')" method="post">
                 @csrf
                 @method('DELETE')
                 <button class="btn btn-danger" action="submit">Reset All Availabilities</button>

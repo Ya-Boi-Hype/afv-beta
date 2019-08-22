@@ -60,6 +60,7 @@ Route::middleware('auth')->group(function () {
     //--------------------------------------------------------------------------
     Route::middleware('manageApprovals')->group(function () {
         Route::get('approvals/available', 'Admin\ApprovalController@availabilities')->name('approvals.availabilities');
+        Route::put('approvals/available', 'Admin\ApprovalController@approveAvailable')->name('approvals.availabilities.approve');
         Route::delete('approvals/available', 'Admin\ApprovalController@resetAvailable')->name('approvals.availabilities.reset');
         Route::resource('approvals', 'Admin\ApprovalController')->only(['index', 'edit', 'update']);
     });
