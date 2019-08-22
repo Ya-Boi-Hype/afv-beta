@@ -41,6 +41,8 @@ a {
 
 a img {
     border: none;
+    color: #fff;
+    text-shadow: 0 1px 0 #00536f;
 }
 
 /* Typography */

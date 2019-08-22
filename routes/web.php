@@ -94,15 +94,4 @@ Route::get('vatsim-data', function () {
     return response(Storage::get('vatsim-data.json'))->header('Content-Type', 'application/json');
 });
 
-Route::get('test', 'Admin\ApprovalController@approveAvailable');
-
-Route::get('mail',  function(){
-    return (new \Illuminate\Notifications\Messages\MailMessage)
-    ->subject('Audio For VATSIM - Welcome to the beta team')
-    ->greeting("Hello, !")
-    ->line('Thanks for signing up for the Audio for VATSIM beta.')
-    ->line('We are pleased to invite you to join the testing team.')
-    ->line('For instructions on how to join please go to https://afv-beta.vatsim.net for more info.')
-    ->line('Regards,')
-    ->salutation('The Audio For VATSIM Team');
-});
+//Route::get('test', 'Admin\ApprovalController@approveAvailable');

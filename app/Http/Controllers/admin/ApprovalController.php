@@ -103,7 +103,7 @@ class ApprovalController extends Controller
 
         try {
             AfvApiController::doPUT('users/enabled', $requestData);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->back()->withError([$e->getCode(), 'AFV Server replied with '.$e->getMessage()]);
         }
 
@@ -160,7 +160,7 @@ class ApprovalController extends Controller
                 } else {
                     return redirect()->route('approvals.edit', ['approval' => $approval])->withWarn(['Approved', 'User won\'t receive an email (not registered)']);
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return redirect()->route('approvals.edit', ['approval' => $approval])->withError([$e->getCode(), 'AFV Server replied with '.$e->getMessage()]);
             }
         } else {
@@ -170,7 +170,7 @@ class ApprovalController extends Controller
                 $approval->setAsPending();
 
                 return redirect()->route('approvals.edit', ['approval' => $approval])->withSuccess(['Woosh!', 'User approval revoked']);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return redirect()->route('approvals.edit', ['approval' => $approval])->withError([$e->getCode(), 'AFV Server replied with '.$e->getMessage()]);
             }
         }

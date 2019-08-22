@@ -1,8 +1,9 @@
 @component('mail::message')
-# Beta Team Application Update
-
+@if (! empty($greeting))
+# {{ $greeting }}
+@else
 Dear Audio for VATSIM Beta Applicant,
-
+@endif
 We wanted to provide you with an update on the beta testing and the tester selection.
 
 We have conducted 3 localized tests on our beta server and have found some small issues each time which have been resolved quickly by our development team.

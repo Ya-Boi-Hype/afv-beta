@@ -33,9 +33,6 @@ class InterestConfirmationEmail extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject('Audio For VATSIM - Request Received')
             ->greeting("Hello, $notifiable->name_first!")
-            ->line('Thanks for signing up for the voice beta.  We will be selecting people to load test the new voice infrastructure in stages.')
-            ->line('You will receive further information when selected by email - thanks again for your support!')
-            ->line('Regards,')
-            ->salutation('The Audio For VATSIM Team');
+            ->markdown('emails.request_confirmation');
     }
 }

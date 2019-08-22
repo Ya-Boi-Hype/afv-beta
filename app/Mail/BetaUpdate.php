@@ -27,6 +27,6 @@ class BetaUpdate extends Mailable
      */
     public function build()
     {
-        return $this->from('noreply@vatsim.net')->subject('Beta Team Application Update')->markdown('emails.beta.update');
+        return $this->from('noreply@vatsim.net')->subject('Beta Team Application Update')->markdown('emails.update');
     }
 }
