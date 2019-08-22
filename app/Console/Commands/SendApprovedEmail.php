@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\Approval;
+use Illuminate\Console\Command;
 use App\Notifications\UpdateEmail;
 
 class SendApprovedEmail extends Command
@@ -41,7 +41,7 @@ class SendApprovedEmail extends Command
     {
         $approvals = Approval::approved();
         foreach ($approvals->cursor() as $approval) {
-            if ($approval->user){
+            if ($approval->user) {
                 $approval->user->notify(new UpdateEmail());
             }
         }

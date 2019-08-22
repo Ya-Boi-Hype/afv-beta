@@ -44,7 +44,7 @@ class StationController extends Controller
                 'query' => ['search' => $search],
             ]
         );
-        
+
         return view('sections.stations.search_results', compact('searchResults'));
     }
 
@@ -102,12 +102,12 @@ class StationController extends Controller
                 return redirect()->back()->withError([$e->getCode(), 'Server response: '.$e->getMessage()]);
             }
         }
-        
+
         $station = json_decode($response);
 
-        echo "<pre>";
+        echo '<pre>';
         print_r($station);
-        echo "</pre>";
+        echo '</pre>';
         die();
 
         return view('sections.transceivers.show', compact('station'));
