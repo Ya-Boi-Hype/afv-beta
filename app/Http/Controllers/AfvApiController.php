@@ -51,7 +51,7 @@ class AfvApiController extends Controller
             }
 
             if ($response->getStatusCode() != 200) {
-                throw new \Exception('Failed to authenticate (1.2)', $response->getStatusCode());
+                throw new \Exception('Failed to authenticate (1.1)', $response->getStatusCode());
             }
 
             return (string) $response->getBody();
@@ -161,9 +161,9 @@ class AfvApiController extends Controller
 
         try {
             $response = self::$client->request('PUT', $endpoint, ['json' => $data]);
-        } catch (TransferException | ClientError | ServerError $e) {
+        /*} catch (TransferException | ClientError | ServerError $e) {
             throw new \Exception((string) $e->getResponse()->getReasonPhrase(), $e->getResponse()->getStatusCode());
-        }
+        }*/
         if ($response->getStatusCode() != 200) {
             throw new \Exception($response->getBody(), $response->getStatusCode());
         }
