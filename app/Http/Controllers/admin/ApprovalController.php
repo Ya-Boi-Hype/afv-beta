@@ -95,19 +95,14 @@ class ApprovalController extends Controller
     public function approveAvailable()
     {
         $newApprovals = Approval::available()->pending();
-        $requestData = [];
 
         foreach ($newApprovals->cursor() as $approval) {
-            $requestData[] = ['Username' => (string) $approval->user()->id, 'Enabled' => true];
-        }
-
-        try {
-            AfvApiController::doPUT('users/enabled', $requestData);
-        } catch (\Exception $e) {
-            return redirect()->back()->withError([$e->getCode(), 'AFV Server replied with '.$e->getMessage()]);
-        }
-
-        foreach ($newApprovals->cursor() as $approval) {
+            try{
+                $requestData = ['Username' => (string) $approval->user()->id, 'Enabled' => true];
+                AfvApiController::doPUT('users/enabled', [$requestData]);
+            } catch (\Exception $e){
+                continue;
+            }
             $approval->setAsApproved();
         }
 
