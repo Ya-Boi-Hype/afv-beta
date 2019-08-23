@@ -98,7 +98,7 @@ class ApprovalController extends Controller
         $requestData = [];
 
         foreach ($newApprovals->cursor() as $approval) {
-            $requestData[] = ['Username' => (string) $approval->user->id, 'Enabled' => true];
+            $requestData[] = ['Username' => (string) $approval->user()->id, 'Enabled' => true];
         }
 
         try {
