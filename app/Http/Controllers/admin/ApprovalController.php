@@ -94,7 +94,7 @@ class ApprovalController extends Controller
      */
     public function approveAvailable()
     {
-        $newApprovals = Approval::available()->pending();
+        $newApprovals = Approval::available()->where('approved_at', null);
 
         foreach ($newApprovals->cursor() as $approval) {
             try{
