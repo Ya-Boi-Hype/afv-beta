@@ -97,10 +97,10 @@ class ApprovalController extends Controller
         $newApprovals = Approval::available()->pending();
 
         foreach ($newApprovals->cursor() as $approval) {
-            try{
+            try {
                 $requestData = ['Username' => (string) $approval->user()->id, 'Enabled' => true];
                 AfvApiController::doPUT('users/enabled', [$requestData]);
-            } catch (\Exception $e){
+            } catch (\Exception $e) {
                 continue;
             }
             $approval->setAsApproved();
