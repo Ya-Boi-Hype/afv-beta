@@ -1,2 +1,2 @@
 *.sqlite
-migrations/2019_08_21_212437_create_jobs_table.php
+migrations/2019_08_23_194425_create_jobs_table.php

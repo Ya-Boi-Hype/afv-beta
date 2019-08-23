@@ -94,5 +94,3 @@ Route::get('discord/accounts', 'DiscordUsersAPIController');
 Route::get('vatsim-data', function () {
     return response(Storage::get('vatsim-data.json'))->header('Content-Type', 'application/json');
 });
-
-//Route::get('test', 'Admin\ApprovalController@approveAvailable');
