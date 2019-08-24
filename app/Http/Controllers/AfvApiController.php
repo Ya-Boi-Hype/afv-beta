@@ -205,7 +205,7 @@ class AfvApiController extends Controller
     public static function getPermissions($cid)
     {
         $endpoint = 'users/'.$cid.'/permissions';
-        $response = self::doGET($endpoint, false); // Initialize with the server token (not the authenticated user's)
+        $response = self::doGET($endpoint, [], false); // Initialize with the server token (not the authenticated user's)
         return json_decode($response);
     }
 }
