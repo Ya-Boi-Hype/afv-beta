@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 /**
- * For the nerds using DB queue (aka me in testing environment)
+ * For the nerds using DB queue (aka me in testing environment).
  */
 class CreateJobsTable extends Migration
 {
