@@ -46,8 +46,8 @@
           <div class="card bg-info">
           <!--<div class="card bg-light">-->
             <div class="card-body">
-              <b>Next Test:</b> <u>Sunday, 25th August from 1300z to 1700z</u><br>
-              <i><a class="text-primary" href="https://live.vatsim.uk/" target="_blank">VATSIM UK Live! 2019</a></i> | Fly in between any UK airports with full ATC all the way!
+              <b>Next Test:</b> <u>Saturday, 31st August from 1200z to 1500z</u><br>
+              <i>VATKOR</i> | Fly between RKSS and RKPC with ATC coverage all along!<hr>
             </div>
           </div>
         </div>
@@ -65,8 +65,8 @@
     <div class="col">
       <div class="card">
         <div class="card-body">
-          <b>Next Test:</b> <u>Sunday, 25th August from 1300z to 1700z</u><br>
-          <i><a class="text-primary" href="https://live.vatsim.uk/" target="_blank">VATSIM UK Live! 2019</a></i> | Fly in between any UK airports with full ATC all the way!<hr>
+          <b>Next Test:</b> <u>Saturday, 31st August from 1200z to 1500z</u><br>
+          <i>VATKOR</i> | Fly between RKSS and RKPC with ATC coverage all along!<hr>
           @canexpressavailability
           <form action="{{ route('request.available') }}" method="post">
             @csrf
