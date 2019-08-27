@@ -47,7 +47,7 @@
           <!--<div class="card bg-light">-->
             <div class="card-body">
               <b>Next Test:</b> <u>Saturday, 31st August from 1200z to 1500z</u><br>
-              <i>VATKOR</i> | Fly between RKSS and RKPC with ATC coverage all along!<hr>
+              <i>VATKOR</i> | Fly between RKSS and RKPC with ATC coverage all along!
             </div>
           </div>
         </div>
