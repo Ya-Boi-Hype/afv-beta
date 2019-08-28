@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\PermissionsUpdated;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
@@ -123,6 +124,9 @@ class PermissionsController extends Controller
         }
 
         Cache::forget("permissions$id");
+
+        event(new PermissionsUpdated($id, $requestPermissions));
+
         return redirect()->route('permissions.edit', ['id' => $id])->withSuccess(['Done!', 'User Permissions Updated']);
     }
 
