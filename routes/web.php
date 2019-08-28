@@ -56,6 +56,13 @@ Route::middleware('auth')->group(function () {
     });
 
     //--------------------------------------------------------------------------
+    // Permission Management Endpoint
+    //--------------------------------------------------------------------------
+    Route::middleware('managePermissions')->group(function () {
+        Route::resource('permissions', 'Admin\PermissionsController')->only(['index', 'edit', 'update']);
+    });
+
+    //--------------------------------------------------------------------------
     // Approval Management Endpoint
     //--------------------------------------------------------------------------
     Route::middleware('manageApprovals')->group(function () {

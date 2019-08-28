@@ -109,6 +109,16 @@
           </a>
         </li>
         @endmanagesApprovals
+        @managesPermissions
+        <li class="nav-item">
+          <a href="{{ route('permissions.index') }}" class="nav-link {{ Request::is('permissions*') ? 'active' : null }}">
+            <i class="nav-icon fas fa-user-lock"></i>
+            <p>
+              Permissions
+            </p>
+          </a>
+        </li>
+        @endmanagesPermissions
         @facilityEngineer
         <li class="nav-item">
           <a href="{{ route('transceivers.index') }}" class="nav-link {{ Request::is('transceivers*') ? 'active' : null }}">
