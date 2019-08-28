@@ -17,15 +17,15 @@ class SendPermissionsUpdatedMail
      */
     public function handle(PermissionsUpdated $event)
     {
-        try{
+        try {
             $user = User::findOrFail($event->user);
         } catch (ModelNotFoundException $e) {
             return;
         }
 
-        if(! count($event->permissions)) {
+        if (! count($event->permissions)) {
             return;
-        } else{
+        } else {
             $user->notify(new PermissionsUpdatedEmail($event->permissions));
         }
     }

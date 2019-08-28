@@ -4,7 +4,6 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
 class PermissionsUpdatedEmail extends Notification
@@ -12,7 +11,7 @@ class PermissionsUpdatedEmail extends Notification
     use Queueable;
 
     public $permissions;
-    
+
     /**
      * Create a new notification instance.
      *
@@ -43,6 +42,7 @@ class PermissionsUpdatedEmail extends Notification
     public function toMail($notifiable)
     {
         $permissions = $this->permissions;
+
         return (new MailMessage)
             ->subject('Audio For VATSIM - Permissions Updated')
             ->greeting("Hi, $notifiable->name_first!")
