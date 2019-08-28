@@ -9,12 +9,11 @@ use App\Http\Controllers\AfvApiController;
 
 class PermissionsController extends Controller
 {
-
     protected $availablePermissions = [
-        "Facility Engineer",
-        "User Enable Write",
-        "User Permission Read",
-        "User Permission Write"
+        'Facility Engineer',
+        'User Enable Write',
+        'User Permission Read',
+        'User Permission Write',
     ];
 
     /**
@@ -24,9 +23,10 @@ class PermissionsController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->has('id')){
+        if ($request->has('id')) {
             $request->validate(['id' => 'integer|min:800000|max:1500000']);
             $cid = $request->input('id');
+
             return redirect()->route('permissions.edit', ['id' => $cid]);
         } else {
             return view('sections.permissions.index');
@@ -73,10 +73,10 @@ class PermissionsController extends Controller
      */
     public function edit($id)
     {
-        if ($id == auth()->user()->id ){
+        if ($id == auth()->user()->id) {
             return redirect()->back()->withError(['Nice try', 'You can\'t edit your own permissions']);
         }
-        try{
+        try {
             $response = AfvApiController::doGET("users/$id/permissions");
             $hasPermissions = json_decode($response);
         } catch (\Exception $e) {
@@ -90,7 +90,7 @@ class PermissionsController extends Controller
         }
 
         $allPermissions = $this->availablePermissions;
-        
+
         return view('sections.permissions.edit', compact('id', 'hasPermissions', 'allPermissions'));
     }
 
@@ -103,26 +103,27 @@ class PermissionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($id == auth()->user()->id ){
+        if ($id == auth()->user()->id) {
             return redirect()->back()->withError(['Nice try', 'You can\'t edit your own permissions']);
         }
 
         $requestPermissions = [];
 
-        foreach($this->availablePermissions as $permission) {
+        foreach ($this->availablePermissions as $permission) {
             $searchFor = str_replace(' ', '_', $permission);
-            if ($request->input($searchFor, 'off') === 'on'){
+            if ($request->input($searchFor, 'off') === 'on') {
                 $requestPermissions[] = $permission;
             }
         }
 
-        try{
+        try {
             AfvApiController::doPUT("users/$id/permissions", $requestPermissions);
         } catch (\Exception $e) {
             return redirect()->back()->withError($e->getCode(), $e->getMessage());
         }
 
         Cache::forget("permissions$id");
+
         return redirect()->route('permissions.edit', ['id' => $id])->withSuccess(['Done!', 'User Permissions Updated']);
     }
 
