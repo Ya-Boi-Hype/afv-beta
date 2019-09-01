@@ -80,18 +80,18 @@
 
         <li class="nav-header">ISSUES</li>
         <li class="nav-item">
-          <a href="{{ route('issues') }}" class="nav-link {{ Request::is('issues*') ? 'active' : null }}">
-            <i class="nav-icon fas fa-poop"></i>
+          <a href="/faq" class="nav-link">
+            <i class="nav-icon fas fa-book-open"></i>
             <p>
-              Reporting Issues
+              FAQ
             </p>
           </a>
         </li>
         <li class="nav-item">
-          <a href="{{ route('knowledge_base') }}" class="nav-link {{ Request::is('knowledge-base*') ? 'active' : null }}">
-            <i class="nav-icon fas fa-book-open"></i>
+          <a href="{{ route('issues') }}" class="nav-link {{ Request::is('issues*') ? 'active' : null }}">
+            <i class="nav-icon fas fa-poop"></i>
             <p>
-              Knowledge Base
+              Reporting Issues
             </p>
           </a>
         </li>
