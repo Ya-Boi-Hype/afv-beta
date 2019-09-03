@@ -89,10 +89,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('stations', 'StationController')->only('destroy');
         Route::get('/this-is-unsafe', function()
         {
-            echo 'Before: '.config('afv.netVer').'<br>';
+            echo 'Before: '.config('afv.networkVersion').'<br>';
             Artisan::call('config:cache');
             Artisan::call('cache:clear');
-            echo 'After: '.config('afv.netVer');
+            echo 'After: '.config('afv.networkVersion');
         });
     });
 });
