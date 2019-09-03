@@ -87,6 +87,13 @@ Route::middleware('auth')->group(function () {
     Route::middleware('admin')->group(function () {
         Route::resource('transceivers', 'TransceiverController')->only('destroy');
         Route::resource('stations', 'StationController')->only('destroy');
+        Route::get('/this-is-unsafe', function()
+        {
+            echo 'Before: '.config('afv.netVer').'<br>';
+            Artisan::call('config:cache');
+            Artisan::call('cache:clear');
+            echo 'After: '.config('afv.netVer');
+        });
     });
 });
 
