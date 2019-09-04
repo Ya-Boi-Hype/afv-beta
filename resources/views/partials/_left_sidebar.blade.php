@@ -34,8 +34,8 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('pilots.others') }}" class="nav-link {{ Request::is('clients/pilots/others*') ? 'active' : null }}">
-                <p>Others</p>
+              <a href="{{ route('pilots.swift) }}" class="nav-link {{ Request::is('clients/pilots/swift*') ? 'active' : null }}">
+                <p>Swift</p>
               </a>
             </li>
           </ul>
