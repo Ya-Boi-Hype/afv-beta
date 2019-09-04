@@ -65,7 +65,7 @@
             </tr>
             <tr>
               <td>
-                {{ $transceiver->HeightAglM }}
+                {{ $transceiver->heightAglM }}
               </td>
             </tr>
           </table>
