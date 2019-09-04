@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Discord_Account;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Wohali\OAuth2\Client\Provider\Discord;
 use Wohali\OAuth2\Client\Provider\Exception\DiscordIdentityProviderException;
@@ -42,7 +43,7 @@ class DiscordOAuth2Controller extends Controller
         ];
         $authUrl = $this->provider->getAuthorizationUrl($options);
         //$authUrl = $this->provider->getAuthorizationUrl();
-        session()->put('oauth2state'.auth()->user()->id, $this->provider->getState());
+        session()->put('oauth2state', $this->provider->getState());
         session()->save();
         header('Location: '.$authUrl);
         die();
@@ -61,9 +62,13 @@ class DiscordOAuth2Controller extends Controller
         }
 
         if (empty($get->input('state')) || ($get->input('state') !== session('oauth2state'))) {
-            session()->forget('oauth2state'.auth()->user()->id);
+            $expects = session('oauth2state');
+            $receives = $get->input('state', 'None');
+            $cid = auth()->user()->id;
+            Log::error("State mismatch ($cid): Expected $expects - Received $receives");
+            session()->forget('oauth2state');
 
-            return redirect()->route('home')->withError(['State Mismatch', 'Stop breaking our stuff! You\'ll have to give it another try :P']);
+            return redirect()->route('home')->withError(['State Mismatch', 'Please try again. It it still fails, let us know.']);
         }
 
         try {
