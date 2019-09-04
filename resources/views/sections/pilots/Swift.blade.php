@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Other Pilot Clients')
+@section('title', 'Swift')
 
 @section('content')
 <!-- Content Header (Page header) -->
