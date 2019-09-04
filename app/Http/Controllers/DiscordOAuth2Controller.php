@@ -63,7 +63,7 @@ class DiscordOAuth2Controller extends Controller
         if (empty($get->input('state')) || ($get->input('state') !== session('oauth2state'))) {
             session()->forget('oauth2state');
 
-            return redirect()->route('home')->withError(['Breaker', 'Stop breaking our stuff! You\'ll have to give it another try :P']);
+            return redirect()->route('home')->withError(['State Mismatch', 'Stop breaking our stuff! You\'ll have to give it another try :P']);
         }
 
         try {
