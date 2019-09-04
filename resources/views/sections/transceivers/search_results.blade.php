@@ -42,8 +42,8 @@
             @foreach($searchResults as $transceiver)
             <tr onclick="window.location='{{ route('transceivers.show', ['id' => $transceiver->transceiverID]) }}';">
               <td>{{ $transceiver->name }}</td>
-              <td>{{ $transceiver->altMslM }}</td>
-              <td>{{ $transceiver->altAglM }}</td>
+              <td>{{ $transceiver->heightMslM }}</td>
+              <td>{{ $transceiver->heightMslM }}</td>
             </tr>
             @endforeach
           </tbody>
@@ -96,7 +96,7 @@
 
       search_results.forEach(function (transceiver) {
         var popup = '<b>' + transceiver.name + '</b>';
-        var RadiusMeters = 4193.18014745372 * Math.sqrt(transceiver.altMslM) + 4193.18014745372 * Math.sqrt(get_selected_range_height());
+        var RadiusMeters = 4193.18014745372 * Math.sqrt(transceiver.heightMslM) + 4193.18014745372 * Math.sqrt(get_selected_range_height());
         transceiverRanges.push(L.circle([transceiver.latDeg, transceiver.lonDeg], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262', weight: 1}).addTo(map).bindPopup(popup));
       });
     }

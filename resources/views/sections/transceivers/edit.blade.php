@@ -76,7 +76,7 @@
                     </tr>
                     <tr>
                       <td>
-                        <input type="number" class="form-control @error('alt_msl') is-invalid @enderror" id="altMslM" name="alt_msl" placeholder="290" value="{{ old('alt_msl') ?? $transceiver->altMslM }}" min="0" required>
+                        <input type="number" class="form-control @error('alt_msl') is-invalid @enderror" id="heightMslM" name="alt_msl" placeholder="290" value="{{ old('alt_msl') ?? $transceiver->heightMslM }}" min="0" required>
                       </td>
                     </tr>
                   </table>
@@ -93,7 +93,7 @@
                     </tr>
                     <tr>
                       <td>
-                        <input type="number" class="form-control @error('alt_agl') is-invalid @enderror" name="alt_agl" placeholder="90" value="{{ old('alt_agl') ?? $transceiver->altAglM }}" min="0" required>
+                        <input type="number" class="form-control @error('alt_agl') is-invalid @enderror" name="alt_agl" placeholder="90" value="{{ old('alt_agl') ?? $transceiver->heightAglM }}" min="0" required>
                       </td>
                     </tr>
                   </table>
@@ -200,13 +200,13 @@
     });
 
     
-    $('#altMslM').on('input', draw_range);
+    $('#heightMslM').on('input', draw_range);
     $('#view_range').on('change', draw_range);
 
     function draw_range(){
       if(marker){
         if (ring) map.removeLayer(ring);
-        var RadiusMeters = 4193.18014745372 * Math.sqrt($('#altMslM').val()) + 4193.18014745372 * Math.sqrt(get_selected_range_height());
+        var RadiusMeters = 4193.18014745372 * Math.sqrt($('#heightMslM').val()) + 4193.18014745372 * Math.sqrt(get_selected_range_height());
         ring = L.circle([marker.getLatLng().lat, marker.getLatLng().lng], {radius: RadiusMeters, fillOpacity: .3, color: '#ce6262', weight: 1}).addTo(map);
       }
     }

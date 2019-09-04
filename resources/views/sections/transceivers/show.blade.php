@@ -48,7 +48,7 @@
             </tr>
             <tr>
               <td>
-                {{ $transceiver->altMslM }}
+                {{ $transceiver->heightMslM }}
               </td>
             </tr>
           </table>
@@ -65,7 +65,7 @@
             </tr>
             <tr>
               <td>
-                {{ $transceiver->altAglM }}
+                {{ $transceiver->HeightAglM }}
               </td>
             </tr>
           </table>
@@ -108,7 +108,7 @@
       // Marker Setup
       var ring;
       var marker = L.marker([transceiver.latDeg, transceiver.lonDeg]).addTo(map);
-      var radius_base = 4193.18014745372 * Math.sqrt({{ $transceiver->altMslM }});
+      var radius_base = 4193.18014745372 * Math.sqrt({{ $transceiver->heightMslM }});
       draw_range();
 
       $('#view_range').on('change', draw_range);

@@ -94,8 +94,8 @@ class TransceiverController extends Controller
                 'Name' => strtoupper($request->input('name')),
                 'LatDeg' => $request->input('lat'),
                 'LonDeg' => $request->input('lon'),
-                'AltMslM' => $request->input('alt_msl'),
-                'AltAglM' => $request->input('alt_agl'),
+                'HeightMslM' => $request->input('alt_msl'),
+                'HeightAglM' => $request->input('alt_agl'),
             ]);
         } catch (\Exception $e) {
             if ($e->getCode() == 400) {
@@ -181,8 +181,8 @@ class TransceiverController extends Controller
                 'Name' => strtoupper($request->input('name')),
                 'LatDeg' => $request->input('lat'),
                 'LonDeg' => $request->input('lon'),
-                'AltMslM' => $request->input('alt_msl'),
-                'AltAglM' => $request->input('alt_agl'),
+                'HeightMslM' => $request->input('alt_msl'),
+                'HeightAglM' => $request->input('alt_agl'),
             ]);
         } catch (\Exception $e) {
             if ($e->getCode() == 400) {
