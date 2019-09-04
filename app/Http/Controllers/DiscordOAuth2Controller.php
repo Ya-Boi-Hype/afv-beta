@@ -63,7 +63,7 @@ class DiscordOAuth2Controller extends Controller
         if (empty($get->input('state')) || ($get->input('state') !== session('oauth2state'))) {
             session()->forget('oauth2state');
 
-            return redirect()->route('page')->withError(['Breaker', 'Stop breaking our stuff! You\'ll have to give it another try :P']);
+            return redirect()->route('home')->withError(['Breaker', 'Stop breaking our stuff! You\'ll have to give it another try :P']);
         }
 
         try {
@@ -75,13 +75,13 @@ class DiscordOAuth2Controller extends Controller
         try {
             $user = $this->provider->getResourceOwner($token);
         } catch (Exception $e) {
-            return redirect()->route('landing')->withError(['Hmmmm...', 'Uh, oh... we\'re having trouble finding your Discord Account']);
+            return redirect()->route('home')->withError(['Hmmmm...', 'Uh, oh... we\'re having trouble finding your Discord Account']);
         }
 
         if ( // If the user hasn't granted us the permissions we need, we ignore the token and return an error.
             ! strstr($token->getValues()['scope'], 'identify')
         ) {
-            return redirect()->route('landing')->withError(['Oops...', 'Something went wrong. Please try again']);
+            return redirect()->route('home')->withError(['Oops...', 'Something went wrong. Please try again']);
         }
 
         Discord_Account::where('id', $user->getId())->delete(); //Delete any other records using the same Discord_ID (one CID == one Discord_ID)
