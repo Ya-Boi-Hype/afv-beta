@@ -33,21 +33,21 @@
                 <p>vPilot</p>
               </a>
             </li>
-            <li class="nav-item">
+            {{--<li class="nav-item">
               <a href="{{ route('pilots.xpilot') }}" class="nav-link {{ Request::is('clients/pilots/xpilot*') ? 'active' : null }}">
                 <p>xPilot</p>
               </a>
-            </li>
+            </li>--}}
             <li class="nav-item">
               <a href="{{ route('pilots.swift') }}" class="nav-link {{ Request::is('clients/pilots/swift*') ? 'active' : null }}">
                 <p>swift</p>
               </a>
             </li>
-            <li class="nav-item">
+            {{--<li class="nav-item">
               <a href="{{ route('pilots.xsb') }}" class="nav-link {{ Request::is('clients/pilots/xsb*') ? 'active' : null }}">
                 <p>xSquawkBox</p>
               </a>
-            </li>
+            </li>--}}
           </ul>
         </li>
         <li class="nav-item has-treeview menu-{{ Request::is('clients/atc*') ? 'open' : 'closed' }}">
