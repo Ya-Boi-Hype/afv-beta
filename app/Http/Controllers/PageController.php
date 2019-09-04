@@ -29,9 +29,19 @@ class PageController extends Controller
         return view('sections.pilots.vpilot');
     }
 
+    public function xPilot()
+    {
+        return view('sections.pilots.xpilot');
+    }
+
     public function swift()
     {
         return view('sections.pilots.swift');
+    }
+
+    public function xsb()
+    {
+        return view('sections.pilots.xsquawkbox');
     }
 
     public function euroscopeAtis()

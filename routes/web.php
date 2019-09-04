@@ -37,7 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::middleware('approved')->group(function () {
         Route::get('knowledge-base', 'PageController@knowledgeBase')->name('knowledge_base');
         Route::get('clients/pilots/vpilot', 'PageController@vPilot')->name('pilots.vpilot');
+        Route::get('clients/pilots/xpilot', 'PageController@xPilot')->name('pilots.xpilot');
         Route::get('clients/pilots/swift', 'PageController@swift')->name('pilots.swift');
+        Route::get('clients/pilots/xsb', 'PageController@xsb')->name('pilots.xsb');
         Route::get('clients/atc/euroscope-client', 'PageController@euroscope')->name('atc.euroscope');
         Route::get('clients/atc/vrc-vstars-veram', 'PageController@vrc_vstars_veram')->name('atc.vrc_vstars_veram');
         Route::get('clients/atis/euroscope', 'PageController@euroscopeAtis')->name('atis.euroscope');

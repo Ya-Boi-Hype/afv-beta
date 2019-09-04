@@ -34,8 +34,18 @@
               </a>
             </li>
             <li class="nav-item">
+              <a href="{{ route('pilots.xpilot') }}" class="nav-link {{ Request::is('clients/pilots/xpilot*') ? 'active' : null }}">
+                <p>xPilot</p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a href="{{ route('pilots.swift') }}" class="nav-link {{ Request::is('clients/pilots/swift*') ? 'active' : null }}">
-                <p>Swift</p>
+                <p>swift</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('pilots.xsb') }}" class="nav-link {{ Request::is('clients/pilots/xsb*') ? 'active' : null }}">
+                <p>xSquawkBox</p>
               </a>
             </li>
           </ul>
