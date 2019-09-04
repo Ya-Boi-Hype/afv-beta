@@ -89,7 +89,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('admin')->group(function () {
         Route::resource('transceivers', 'TransceiverController')->only('destroy');
         Route::resource('stations', 'StationController')->only('destroy');
-        Route::view('details', function(Request $request){
+        Route::view('details', function (Request $request) {
             $approval = \App\Models\Approval::find($request->input('approval'));
             dd($approval->user);
         });
