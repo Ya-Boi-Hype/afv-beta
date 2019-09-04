@@ -8,14 +8,15 @@
     <div class="col">
       <div class="card">
         <div class="card-header">
-          <h1 class="m-0 text-dark">xPilot</h1>
+          <h1 class="m-0 text-dark">xPilot (beta release)</h1>
         </div>
         <div class="card-body">
-          <p>To use new voice as a vPilot user is very simple! <BR><BR>You just need to download and run the installer available at the link below.</p>
-          <BR><BR>This installer will create a new vPilot shortcut with <i>'AFV Beta'</i> in its name.<br><BR>
-          Use this shortcut to connect to the AFV server (you may select any server in vPilot's list).<BR><BR><strong>Don't forget to go into the settings menu and calibrate your microphone by ensuring it is bouncing in the green bar when speaking!</strong></p>
-          <img src="{{ asset('images/demos/vpilot_settings.png') }}" class="img-fluid rounded"><BR><br>
-		      <a class="btn btn-primary" href="http://vpilot.metacraft.com/Assets/Files/Installers/AfvBeta/vPilotAFVBeta-Setup-2.2.2.14.exe">Download vPilot for AFV</a>
+          <p>To use new voice as a xPilot user is very simple! Just download and run the installer available at the link below.</p>
+          <p>This installer will create a new xPilot application and install a plugin to your XPlane folder. When connecting you can select any server, as it will always connect to the AFV Beta.<p>
+          <p>To use xPilot, you will need to remove/disable other pilot clients like xSquawkBox, swift, etc... from your X-Plane plugins folder</p>
+          <p class="text-danger"><b>Don't forget to go into the settings menu and calibrate your microphone by ensuring it is bouncing in the green bar when speaking!</b></p>
+          <div class="w-100 text-center mb-3"><img src="{{ asset('images/demos/xpilot_settings.png') }}" class="img-fluid rounded"></div>
+		      <a class="btn btn-primary" href="http://xpilot.clowd.io/installers/beta/xPilot-Setup-1.0.0.6.exe">Download xPilot for AFV</a>
         </div>
 		 
       </div>
