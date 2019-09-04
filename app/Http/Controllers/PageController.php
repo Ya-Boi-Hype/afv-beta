@@ -29,9 +29,9 @@ class PageController extends Controller
         return view('sections.pilots.vpilot');
     }
 
-    public function otherPilotClients()
+    public function swift()
     {
-        return view('sections.pilots.others');
+        return view('sections.pilots.swift');
     }
 
     public function euroscopeAtis()
