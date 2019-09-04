@@ -42,7 +42,7 @@ class DiscordOAuth2Controller extends Controller
         ];
         $authUrl = $this->provider->getAuthorizationUrl($options);
         //$authUrl = $this->provider->getAuthorizationUrl();
-        session()->put('oauth2state', $this->provider->getState());
+        session()->put('oauth2state'.auth()->user()->id, $this->provider->getState());
         session()->save();
         header('Location: '.$authUrl);
         die();
@@ -61,7 +61,7 @@ class DiscordOAuth2Controller extends Controller
         }
 
         if (empty($get->input('state')) || ($get->input('state') !== session('oauth2state'))) {
-            session()->forget('oauth2state');
+            session()->forget('oauth2state'.auth()->user()->id);
 
             return redirect()->route('home')->withError(['State Mismatch', 'Stop breaking our stuff! You\'ll have to give it another try :P']);
         }
