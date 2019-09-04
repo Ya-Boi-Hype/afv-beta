@@ -18,8 +18,11 @@
         </div>
         <div class="card-body">
           @approved
-            Take a look at the different menus on the left. There you will find everything you need to start testing.<br>
-            Thanks for your help,<hr>
+            Welcome to the Audio For VATSIM Beta Test. <BR> All testing is taking place on a standalone set of VATSIM servers which are not connected to the main network.<BR><BR>
+			
+			Take a look at the different menus on the left. There you will find everything you need to start testing as a pilot or a controller<br><BR>
+			Feel free to join our discord by clicking connect on the bottom right where help will be available from the team.<BR>
+            Thanks for your help and patience with this beta testing,<hr>
             <i>The AFV Team</i>
           @endapproved
           @pending
