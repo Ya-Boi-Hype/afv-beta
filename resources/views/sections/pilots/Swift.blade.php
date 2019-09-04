@@ -23,7 +23,6 @@ When you are done it should look the same as the picture shown.
 <BR><BR>
 			<img src="{{ asset('images/demos/swiftsettings.png') }}" class="img-fluid rounded"><br><br>
             Then, open the <b>Audio For VATSIM</b> application which you installed earlier on, configure your settings and press 'Connect'.</p>
-       
         </div>
       </div>
       <!-- /.card -->
