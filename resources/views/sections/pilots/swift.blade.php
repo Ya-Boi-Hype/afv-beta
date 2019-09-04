@@ -8,7 +8,7 @@
     <div class="col">
       <div class="card">
         <div class="card-header">
-          <h1 class="m-0 text-dark">Other Pilot Clients</h1>
+          <h1 class="m-0 text-dark">Swift Pilots</h1>
         </div>
         <div class="card-body">
             <p>Swift currently does not natively support Audio For VATSIM, however with our handy little AFV Standalone client you can enjoy Audio For VATSIM with Swift!  <BR><BR> Firstly download the standalone client below and run the installer</p>
