@@ -43,7 +43,7 @@ class DiscordOAuth2Controller extends Controller
         ];
         $authUrl = $this->provider->getAuthorizationUrl($options);
         //$authUrl = $this->provider->getAuthorizationUrl();
-        Log::info("DiscordOAuth2Controller - Saving state to redirect user to login with Discord");
+        Log::info('DiscordOAuth2Controller - Saving state to redirect user to login with Discord');
         session()->put('oauth2state', $this->provider->getState());
         session()->save();
         header('Location: '.$authUrl);
