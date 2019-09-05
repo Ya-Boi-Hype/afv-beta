@@ -27,9 +27,9 @@ Route::middleware('auth')->group(function () {
     //--------------------------------------------------------------------------
     // User can express availability
     //--------------------------------------------------------------------------
-    Route::middleware('expressAvailability')->group(function () {
+    /*Route::middleware('expressAvailability')->group(function () {
         Route::put('request', 'UserRequestController@setAsAvailable')->name('request.available');
-    });
+    });*/
 
     //--------------------------------------------------------------------------
     // Approved Users Endpoint

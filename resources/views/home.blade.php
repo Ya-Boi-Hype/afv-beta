@@ -46,11 +46,9 @@
     <div class="col flex-fill d-flex">
       <div class="card card-body mb-4">
         <div class="content-header">
-          <div class="card bg-success">
-          <!--<div class="card bg-light">-->
+          <div class="card bg-light">
             <div class="card-body">
-              <b>LAST TEST:</b> <u>Wednesday, 4th September from 2300z to 0300z</u><br>
-              <a href="https://new.bvartcc.com/" target="_blank"><i>Boston Virtual ARTCC</i></a> | Fly between KBOS, KBDL and KACK for the <b>last beta test</b> before release!
+              No further tests planned
             </div>
           </div>
         </div>
@@ -66,10 +64,10 @@
   @pending
   <div class="content">
     <div class="col">
-      <div class="card bg-success">
+      <div class="card bg-light">
         <div class="card-body">
-            <b>LAST TEST:</b> <u>Wednesday, 4th September from 2300z to 0300z</u><br>
-            <a href="https://new.bvartcc.com/" target="_blank"><i>Boston Virtual ARTCC</i></a> | Fly between KBOS, KBDL and KACK for the <b>last beta test</b> before release!<hr>
+          No further tests planned
+          {{--
           @canexpressavailability
           <form action="{{ route('request.available') }}" method="post">
             @csrf
@@ -79,6 +77,7 @@
           @else
             <button class="btn btn-success disabled" disabled>Available</button>
           @endcanexpressavailability
+          --}}
         </div>
       </div>
     </div>
