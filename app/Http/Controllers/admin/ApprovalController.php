@@ -57,24 +57,32 @@ class ApprovalController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Approve n random users.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function random(Request $request)
     {
-        //
+        $request->validate([
+            'qty' => 'required|integer|min:0',
+        ]);
+
+        $newApprovals = Approval::pending()->inRandomOrder()->take($request->input('qty'));
+        $approved = 0;
+
+        foreach ($newApprovals->cursor() as $approval) {
+            try {
+                $requestData = ['Username' => (string) $approval->user_id, 'Enabled' => true];
+                AfvApiController::doPUT('users/enabled', [$requestData]);
+            } catch (\Exception $e) {
+                continue;
+            }
+            $approval->setAsApproved();
+            $approved++;
+        }
+        
+        return redirect()->route('approvals.index')->withSuccess(['Done!', "$approved users have been approved :)"]);
     }
 
     /**

@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function () {
         Route::put('approvals/available', 'Admin\ApprovalController@approveAvailable')->name('approvals.availabilities.approve');
         Route::delete('approvals/available', 'Admin\ApprovalController@resetAvailable')->name('approvals.availabilities.reset');
         Route::resource('approvals', 'Admin\ApprovalController')->only(['index', 'edit', 'update']);
+        Route::get('approvals/random', 'Admin\ApprovalController@random');
     });
 
     //--------------------------------------------------------------------------
