@@ -81,7 +81,7 @@ class ApprovalController extends Controller
             $approval->setAsApproved();
             $approved++;
         }
-        
+
         return redirect()->route('approvals.index')->withSuccess(['Done!', "$approved users have been approved :)"]);
     }
 
