@@ -19,6 +19,7 @@ Before reporting any issues or giving any feedback, please make sure that you fo
 @if (! empty($salutation))
 <i>{{ $salutation }}</i>
 @else
+Best Regards,<br>
 <i>The Audio For VATSIM Team</i>
 @endif
 
