@@ -60,7 +60,6 @@ class User extends Authenticatable
 
     public function getPermissionsAttribute()
     {
-        Log::info("Getting User Permissions");
         try {
             return Cache::rememberForever('permissions'.$this->id, function () {
                 Log::info("AFV API Request - User Permissions");
