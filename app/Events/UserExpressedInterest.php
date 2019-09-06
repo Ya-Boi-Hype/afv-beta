@@ -21,7 +21,7 @@ class UserExpressedInterest
      */
     public function __construct(Approval $approval)
     {
-        Log::info("User Expressed Interest Event");
+        Log::info('User Expressed Interest Event');
         $this->approval = $approval;
     }
 
