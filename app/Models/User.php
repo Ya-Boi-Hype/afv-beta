@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
@@ -59,11 +60,14 @@ class User extends Authenticatable
 
     public function getPermissionsAttribute()
     {
+        Log::info("Getting User Permissions");
         try {
             return Cache::rememberForever('permissions'.$this->id, function () {
+                Log::info("AFV API Request - User Permissions");
                 return AfvApiController::getPermissions($this->id);
             });
         } catch (\Exception $e) {
+            Log::warn("AFV API Request - User Permissions failed");
             return [];
         }
     }
