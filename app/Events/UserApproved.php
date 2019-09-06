@@ -21,7 +21,7 @@ class UserApproved
      */
     public function __construct(Approval $approval)
     {
-        Log::info("User Approved Event");
+        Log::info('User Approved Event');
         $this->approval = $approval;
     }
 

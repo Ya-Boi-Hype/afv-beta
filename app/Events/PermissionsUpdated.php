@@ -20,7 +20,7 @@ class PermissionsUpdated
      */
     public function __construct($user, $permissions)
     {
-        Log::info("Permissions Updated Event");
+        Log::info('Permissions Updated Event');
         $this->user = $user;
         $this->permissions = $permissions;
     }
