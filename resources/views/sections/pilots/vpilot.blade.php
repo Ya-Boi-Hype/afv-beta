@@ -15,7 +15,7 @@
           <BR><BR>This installer will create a new vPilot shortcut with <i>'AFV Beta'</i> in its name.<br><BR>
           Use this shortcut to connect to the AFV server (you may select any server in vPilot's list).<BR><BR><strong>Don't forget to go into the settings menu and calibrate your microphone by ensuring it is bouncing in the green bar when speaking!</strong></p>
            <img src="{{ asset('images/demos/vpilot_settings.png') }}" class="img-fluid rounded"><BR><br>
-		  <a class="btn btn-primary" href="http://vpilot.metacraft.com/Assets/Files/Installers/AfvBeta/vPilotAFVBeta-Setup-2.2.2.14.exe">Download vPilot for AFV</a>
+		  <a class="btn btn-primary" href="http://vpilot.metacraft.com/Assets/Files/Installers/AfvBeta/vPilotAFVBeta-Setup-2.2.2.17.exe">Download vPilot for AFV</a>
         </div>
 		 
       </div>

@@ -17,7 +17,7 @@
             <div class="w-100 text-center mb-3"><img src="{{ asset('images/demos/vClients.jpeg') }}" class="img-fluid rounded"></div>
             <div class="row mt-0">
                 <a class="btn btn-primary mx-1 mt-1" href="{{ route('client.download') }}">Download Standalone Client</a>
-                <a class="btn btn-primary mx-1 mt-1" href="http://vpilot.metacraft.com/Assets/Files/Installers/AfvBeta/VRC-AFVBeta.exe">Download VRC AFV Installer</a>
+                <a class="btn btn-primary mx-1 mt-1" href="http://vpilot.metacraft.com/Assets/Files/Installers/AfvBeta/VRCSetup1.2.6-AFVBeta.exe">Download VRC AFV Installer</a>
                 <a class="btn btn-primary mx-1 mt-1" href="http://vpilot.metacraft.com/Assets/Files/Installers/AfvBeta/vSTARS-Setup-1.1.8.1.exe">Download vSTARS AFV Installer</a>
                 <a class="btn btn-primary mx-1 mt-1" href="http://vpilot.metacraft.com/Assets/Files/Installers/AfvBeta/vERAM-Setup-1.0.7072.31690.exe">Download vERAM AFV Installer</a>
             </div>
