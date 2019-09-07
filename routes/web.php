@@ -46,11 +46,15 @@ Route::middleware('auth')->group(function () {
         Route::get('clients/atis/vatis', 'PageController@vatis')->name('atis.vatis');
         Route::get('issues', 'PageController@issues')->name('issues');
 
+        Route::get('prefile', 'FPLPrefileController@get')->name('prefile');
+        Route::post('prefile', 'FPLPrefileController@post')->name('prefile.submit');
+
         Route::get('discord/login', 'DiscordOAuth2Controller@login')->name('discord.login');
         Route::get('discord/validate', 'DiscordOAuth2Controller@validateLogin');
 
-        Route::get('prefile', 'FPLPrefileController@get')->name('prefile');
-        Route::post('prefile', 'FPLPrefileController@post')->name('prefile.submit');
+        /*Route::get('discord', function(){
+            return view('sections.discord.index')->withDiscord(auth()->user()->discord);
+        });*/
 
         Route::get('client-download', function () {
             return response()->download(storage_path('app/Audio For VATSIM.msi'));
@@ -79,17 +83,14 @@ Route::middleware('auth')->group(function () {
     // Facility Engineering Endpoint
     //--------------------------------------------------------------------------
     Route::middleware('facilityEngineer')->group(function () {
-        Route::resource('transceivers', 'TransceiverController')->except(['destroy', 'create']);
-        Route::get('transceivers/search/{search}', 'TransceiverController@search')->name('transceivers.search');
-        Route::resource('stations', 'StationController')->except(['destroy', 'create']);
+        //
     });
 
     //--------------------------------------------------------------------------
     // Facility Engineering ADMIN Endpoint
     //--------------------------------------------------------------------------
     Route::middleware('admin')->group(function () {
-        Route::resource('transceivers', 'TransceiverController')->only('destroy');
-        Route::resource('stations', 'StationController')->only('destroy');
+        //
     });
 });
 
