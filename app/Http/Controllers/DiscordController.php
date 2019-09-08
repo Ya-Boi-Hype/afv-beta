@@ -9,22 +9,22 @@ use Illuminate\Support\Facades\Auth;
 use Wohali\OAuth2\Client\Provider\Discord;
 use Wohali\OAuth2\Client\Provider\Exception\DiscordIdentityProviderException;
 
-/**
- * Class DiscordOAuth2Controller.
- */
-class DiscordOAuth2Controller extends Controller
+class DiscordController extends Controller
 {
     /**
      * @var Discord
      */
     private $provider;
 
+    /**
+     * @var array
+     */
     private $scopes = ['identify'];
 
     /**
-     * DiscordOAuth2Controller constructor.
+     * Initializes the provider variable
      */
-    public function __construct()
+    protected function initProvider()
     {
         $this->provider = new Discord([
             'clientId' => config('discord.clientId'),
@@ -34,16 +34,37 @@ class DiscordOAuth2Controller extends Controller
     }
 
     /**
-     * Redirect user to Discord Authentication for login.
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
      */
-    public function login()
+    public function index()
     {
+        $hasAccount = auth()->user()->discord()->exists();
+        return view('sections.discord.index', compact('hasAccount'));
+    }
+
+    /**
+     * Link a new account (redirects to Discord login)
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request)
+    {
+        if (! empty($request->input('code'))) {
+            return $this->store($request);
+        }
+
+        $this->initProvider();
+
         $options = [
             'scope' => $this->scopes,
         ];
         $authUrl = $this->provider->getAuthorizationUrl($options);
         //$authUrl = $this->provider->getAuthorizationUrl();
-        Log::info('DiscordOAuth2Controller - Saving state to redirect user to login with Discord');
+
+        Log::info('DiscordOAuth2Controller - Redirecting user to login');
         session()->put('oauth2state', $this->provider->getState());
         session()->save();
         header('Location: '.$authUrl);
@@ -51,22 +72,23 @@ class DiscordOAuth2Controller extends Controller
     }
 
     /**
-     * Validate the login.
+     * Link a new account (handles callback from Discord login).
      *
-     * @param Request $get
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    public function validateLogin(Request $get)
+    public function store(Request $request)
     {
+        $this->initProvider();
         $cid = auth()->user()->id;
 
-        if (empty($get->input('code'))) {
+        if (empty($request->input('code'))) {
             return redirect()->route('discord.login');
         }
 
-        if (empty($get->input('state')) || ($get->input('state') !== session('oauth2state'))) {
+        if (empty($request->input('state')) || ($request->input('state') !== session('oauth2state'))) {
             $expects = session('oauth2state');
-            $receives = $get->input('state', 'None');
+            $receives = $request->input('state', 'None');
             Log::error("State mismatch ($cid): Expected $expects - Received $receives");
             session()->forget('oauth2state');
 
@@ -74,7 +96,7 @@ class DiscordOAuth2Controller extends Controller
         }
 
         try {
-            $token = $this->provider->getAccessToken('authorization_code', ['code' => $get->input('code')]);
+            $token = $this->provider->getAccessToken('authorization_code', ['code' => $request->input('code')]);
         } catch (DiscordIdentityProviderException $e) {
             return redirect()->route('discord.login');
         }
@@ -101,5 +123,50 @@ class DiscordOAuth2Controller extends Controller
         );
 
         return redirect()->route('home')->withSuccess(['Aye!', 'Discord account successfully linked!']);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Discord_Account  $discord_Account
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Discord_Account $discord_Account)
+    {
+        abort(404);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Discord_Account  $discord_Account
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Discord_Account $discord_Account)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Discord_Account  $discord_Account
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Discord_Account $discord_Account)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Discord_Account  $discord_Account
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Discord_Account $discord_Account)
+    {
+        //
     }
 }

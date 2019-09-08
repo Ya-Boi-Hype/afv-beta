@@ -27,9 +27,9 @@ Route::middleware('auth')->group(function () {
     //--------------------------------------------------------------------------
     // User can express availability
     //--------------------------------------------------------------------------
-    /*Route::middleware('expressAvailability')->group(function () {
-        Route::put('request', 'UserRequestController@setAsAvailable')->name('request.available');
-    });*/
+    Route::middleware('expressAvailability')->group(function () {
+        // Route::put('request', 'UserRequestController@setAsAvailable')->name('request.available');
+    });
 
     //--------------------------------------------------------------------------
     // Approved Users Endpoint
@@ -49,12 +49,8 @@ Route::middleware('auth')->group(function () {
         Route::get('prefile', 'FPLPrefileController@get')->name('prefile');
         Route::post('prefile', 'FPLPrefileController@post')->name('prefile.submit');
 
-        Route::get('discord/login', 'DiscordOAuth2Controller@login')->name('discord.login');
-        Route::get('discord/validate', 'DiscordOAuth2Controller@validateLogin');
-
-        /*Route::get('discord', function(){
-            return view('sections.discord.index')->withDiscord(auth()->user()->discord);
-        });*/
+        Route::get('discord/login', 'DiscordController@create'); // Temporary, while people get the new /create route
+        Route::resource('discord', 'DiscordController')->only(['create']);
 
         Route::get('client-download', function () {
             return response()->download(storage_path('app/Audio For VATSIM.msi'));

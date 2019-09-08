@@ -29,6 +29,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function discord()
+    {
+        return $this->hasOne(Discord_Account::class);
+    }
+
     public function approval()
     {
         return $this->hasOne(Approval::class);
@@ -64,7 +69,10 @@ class User extends Authenticatable
             return Cache::rememberForever('permissions'.$this->id, function () {
                 Log::info('AFV API Request - User Permissions');
 
-                return AfvApiController::getPermissions($this->id);
+                $permissions = AfvApiController::getPermissions($this->id);
+                $permissions = array_diff($permissions, ['Facility Engineer']);
+                
+                return $permissions;
             });
         } catch (\Exception $e) {
             Log::warn('AFV API Request - User Permissions failed');
