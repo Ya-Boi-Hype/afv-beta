@@ -19,16 +19,17 @@ class Discord_Account extends Model
 
     public function getNameAttribute()
     {
-        switch($this->mode)
+        return mb_convert_case(mb_strtolower($this->user->full_name.' - '.$this->user->id), MB_CASE_TITLE, 'UTF-8');
+        /*switch($this->mode)
         {
             case 0: return $this->mode0;
             case 1: return $this->mode1;
             case 2: return $this->mode2;
             default: return $this->mode0;
-        }
+        }*/
     }
 
-    public function getMode0Attribute() // Name Surname - CID
+    /*public function getMode0Attribute() // Name Surname - CID
     {
         return mb_convert_case(mb_strtolower($this->user->full_name.' - '.$this->user->id), MB_CASE_TITLE, 'UTF-8');
     }
@@ -41,5 +42,5 @@ class Discord_Account extends Model
     public function getMode2Attribute() // CID
     {
         return (string) $this->user->id;
-    }
+    }*/
 }

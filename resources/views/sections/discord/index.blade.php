@@ -6,7 +6,7 @@
   <div class="content mt-3 flex-fill d-flex">
     <div class="col flex-fill d-flex">
       <div class="card card-body">
-        <div class="content-header">
+        {{--<div class="content-header">
           <div class="card bg-light">
             <div class="card-header">
               <h1 class="m-0 text-dark">My Preferred Name</h1>
@@ -36,7 +36,7 @@
               </form>
             </div>
           </div>
-        </div>
+        </div>--}}
         <div class="content flex-fill d-flex">
           <div class="container-fluid">
             <iframe src="https://discordapp.com/widget?id=551514966058860544&theme=light" class="h-100 w-100 discord-widget"></iframe>
