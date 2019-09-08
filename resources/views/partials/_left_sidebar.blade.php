@@ -21,6 +21,14 @@
         </li>
         @auth
         @approved
+        <li class="nav-item">
+          <a href="{{ route('discord.index') }}" class="nav-link {{ Request::is('discord*') ? 'active' : null }}">
+            <i class="nav-icon fab fa-discord"></i>
+            <p>
+              Discord
+            </p>
+          </a>
+        </li>
         <li class="nav-header">CLIENTS</li>
         <li class="nav-item has-treeview menu-{{ Request::is('clients/pilots*') ? 'open' : 'closed' }}">
           <span class="nav-link {{ Request::is('clients/pilots*') ? 'active' : null }}">

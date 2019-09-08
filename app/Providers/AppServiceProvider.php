@@ -59,5 +59,9 @@ class AppServiceProvider extends ServiceProvider
         Blade::if('hasSomePermission', function () {
             return (bool) count(auth()->user()->permissions);
         });
+
+        Blade::if('hasDiscord', function () {
+            return (bool) auth()->user()->discord;
+        });
     }
 }

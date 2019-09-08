@@ -51,7 +51,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('discord/validate', 'DiscordController@store'); // Temporary, while people get the new /create route
         Route::get('discord/login', 'DiscordController@create')->name('discord.login'); // Temporary, while people get the new /create route
-        Route::resource('discord', 'DiscordController')->only(['create']);
+        Route::resource('discord', 'DiscordController')->only(['index', 'create', 'update']);
 
         Route::get('client-download', function () {
             return response()->download(storage_path('app/Audio For VATSIM.msi'));

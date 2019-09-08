@@ -9,7 +9,7 @@ class Discord_Account extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'user_id', 'id',
+        'user_id', 'id', 'mode', 'nickname'
     ];
 
     public function user()
@@ -17,22 +17,28 @@ class Discord_Account extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function display_name()
+    public function getNameAttribute()
     {
-
+        switch($this->mode)
+        {
+            case 0: return $this->mode0;
+            case 1: return $this->mode1;
+            case 2: return $this->mode2;
+            default: return $this->mode0;
+        }
     }
 
-    public function getMode1Attribute() // Name Surname - CID
+    public function getMode0Attribute() // Name Surname - CID
     {
         return mb_convert_case(mb_strtolower($this->user->full_name.' - '.$this->user->id), MB_CASE_TITLE, 'UTF-8');
     }
     
-    public function getMode2Attribute() // Name - CID
+    public function getMode1Attribute() // Name - CID
     {
         return mb_convert_case(mb_strtolower($this->user->name_first.' - '.$this->user->id), MB_CASE_TITLE, 'UTF-8');
     }
     
-    public function getMode3Attribute() // CID
+    public function getMode2Attribute() // CID
     {
         return (string) $this->user->id;
     }

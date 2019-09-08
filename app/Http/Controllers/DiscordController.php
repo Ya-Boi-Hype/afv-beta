@@ -93,7 +93,7 @@ class DiscordController extends Controller
             Log::error("State mismatch ($cid): Expected $expects - Received $receives");
             session()->forget('oauth2state');
 
-            return redirect()->route('home')->withError(['State Mismatch', 'Please try again. It it still fails, let us know.']);
+            return redirect()->route('discord.index')->withError(['State Mismatch', 'Please try again. It it still fails, let us know.']);
         }
 
         try {
@@ -105,45 +105,45 @@ class DiscordController extends Controller
         try {
             $user = $this->provider->getResourceOwner($token);
         } catch (Exception $e) {
-            return redirect()->route('home')->withError(['Hmmmm...', 'Uh, oh... we\'re having trouble finding your Discord Account']);
+            return redirect()->route('discord.index')->withError(['Hmmmm...', 'Uh, oh... we\'re having trouble finding your Discord Account']);
         }
 
         if ( // If the user hasn't granted us the permissions we need, we ignore the token and return an error.
             ! strstr($token->getValues()['scope'], 'identify')
         ) {
-            return redirect()->route('home')->withError(['Oops...', 'Something went wrong. Please try again']);
+            return redirect()->route('discord.index')->withError(['Oops...', 'Something went wrong. Please try again']);
         }
 
         Log::info("$cid linked Discord Account");
         Discord_Account::where('id', $user->getId())->delete(); //Delete any other records using the same Discord_ID (one CID == one Discord_ID)
-        Discord_Account::updateOrCreate(
-            ['user_id' => $cid],
-            [
-                'id' => $user->getId(),
-            ]
-        );
+        
+        Discord_Account::updateOrCreate([
+            'user_id' => $cid
+        ], [
+            'id' => $user->getId(),
+        ]);
 
-        return redirect()->route('home')->withSuccess(['Aye!', 'Discord account successfully linked!']);
+        return redirect()->route('discord.index')->withSuccess(['Aye!', 'Discord account successfully linked!']);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Discord_Account  $discord_Account
+     * @param  \App\Models\Discord_Account  $discord
      * @return \Illuminate\Http\Response
      */
-    public function show(Discord_Account $discord_Account)
+    public function show(Discord_Account $discord)
     {
-        abort(404);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Discord_Account  $discord_Account
+     * @param  \App\Models\Discord_Account  $discord
      * @return \Illuminate\Http\Response
      */
-    public function edit(Discord_Account $discord_Account)
+    public function edit(Discord_Account $discord)
     {
         //
     }
@@ -152,12 +152,19 @@ class DiscordController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Discord_Account  $discord_Account
+     * @param  \App\Models\Discord_Account  $discord
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Discord_Account $discord_Account)
+    public function update(Request $request, Discord_Account $discord)
     {
-        //
+        $request->validate([
+            'account_mode' => 'required|integer|in:0,1,2',
+        ]);
+
+        $discord->mode = $request->input('account_mode');
+        $discord->save();
+
+        return redirect()->route('discord.index')->withSuccess(['No problem!', 'Allow some time for the bot to update your name on Discord']);
     }
 
     /**

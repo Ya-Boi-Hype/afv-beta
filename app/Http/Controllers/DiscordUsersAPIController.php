@@ -11,11 +11,10 @@ class DiscordUsersAPIController extends Controller
         $accounts = Discord_Account::all();
         $output = [];
 
-        foreach ($accounts as $account) {
-            $rating = $account->user->rating_atc;
+        foreach ($accounts as $discord) {
+            $rating = $discord->user->rating_atc;
             $sup = ($rating == 'SUP' || $rating == 'ADM');
-            $name = mb_convert_case(mb_strtolower($account->user->full_name.' - '.$account->user->id), MB_CASE_TITLE, 'UTF-8');
-            $output[$account->id] = ['display_name' => $name, 'approved' => $account->user->approved, 'sup' => $sup];
+            $output[$discord->id] = ['display_name' => $discord->name, 'approved' => $discord->user->approved, 'sup' => $sup];
         }
 
         return response($output)->header('Content-Type', 'application/json');
