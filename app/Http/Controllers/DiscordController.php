@@ -116,9 +116,9 @@ class DiscordController extends Controller
 
         Log::info("$cid linked Discord Account");
         Discord_Account::where('id', $user->getId())->delete(); //Delete any other records using the same Discord_ID (one CID == one Discord_ID)
-        
+
         Discord_Account::updateOrCreate([
-            'user_id' => $cid
+            'user_id' => $cid,
         ], [
             'id' => $user->getId(),
         ]);
