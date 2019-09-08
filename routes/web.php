@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function () {
         Route::post('prefile', 'FPLPrefileController@post')->name('prefile.submit');
         
         Route::get('discord/validate', 'DiscordController@store'); // Temporary, while people get the new /create route
-        Route::get('discord/login', 'DiscordController@create'); // Temporary, while people get the new /create route
+        Route::get('discord/login', 'DiscordController@create')->name('discord.login'); // Temporary, while people get the new /create route
         Route::resource('discord', 'DiscordController')->only(['create']);
 
         Route::get('client-download', function () {
