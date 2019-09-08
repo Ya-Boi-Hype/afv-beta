@@ -71,7 +71,7 @@ class User extends Authenticatable
 
                 $permissions = AfvApiController::getPermissions($this->id);
                 $permissions = array_diff($permissions, ['Facility Engineer']);
-                
+
                 return $permissions;
             });
         } catch (\Exception $e) {

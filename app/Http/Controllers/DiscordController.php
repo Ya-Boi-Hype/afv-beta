@@ -22,7 +22,7 @@ class DiscordController extends Controller
     private $scopes = ['identify'];
 
     /**
-     * Initializes the provider variable
+     * Initializes the provider variable.
      */
     protected function initProvider()
     {
@@ -41,11 +41,12 @@ class DiscordController extends Controller
     public function index()
     {
         $hasAccount = auth()->user()->discord()->exists();
+
         return view('sections.discord.index', compact('hasAccount'));
     }
 
     /**
-     * Link a new account (redirects to Discord login)
+     * Link a new account (redirects to Discord login).
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
