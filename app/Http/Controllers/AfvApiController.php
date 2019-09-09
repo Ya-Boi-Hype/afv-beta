@@ -37,7 +37,7 @@ class AfvApiController extends Controller
             'timeout' => self::$timeout,
         ]);
 
-        self::$bearer = Cache::remember('bearerServer', now()->addHours(6), function () use ($client) {
+        self::$bearer = Cache::remember('bearerServer', now()->addHours(1), function () use ($client) {
             try {
                 $response = $client->request('POST', 'auth', [
                     'json' => [
@@ -78,7 +78,7 @@ class AfvApiController extends Controller
      */
     private static function impersonate($cid, $baseUri)
     {
-        self::$bearer = Cache::remember('bearer'.$cid, now()->addHours(6), function () use ($cid) {
+        self::$bearer = Cache::remember('bearer'.$cid, now()->addHours(1), function () use ($cid) {
             try {
                 $response = self::$client->request('POST', 'auth/impersonate', ['json' => ['Username' => (string) $cid]]);
             } catch (TransferException | ClientError | ServerError $e) {
