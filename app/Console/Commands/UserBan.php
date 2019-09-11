@@ -45,6 +45,7 @@ class UserBan extends Command
             $user = User::firstOrFail('id', $cid);
         } catch (ModelNotFoundException $e) {
             echo "User $cid not found";
+
             return;
         }
 
@@ -53,6 +54,7 @@ class UserBan extends Command
             AfvApiController::doPUT('users/enabled', [$data]);
         } catch (\Exception $e) {
             echo 'Error: AFV Server replied with '.$e->getCode();
+
             return;
         }
 
