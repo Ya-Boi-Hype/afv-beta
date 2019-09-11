@@ -54,6 +54,7 @@ class UserBan extends Command
             AfvApiController::doPUT('users/enabled', [$data], $this->argument('actAs'));
         } catch (\Exception $e) {
             echo 'Error: AFV Server replied with '.$e->getCode();
+
             return;
         }
 
