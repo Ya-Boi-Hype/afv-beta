@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use App\Http\Controllers\AfvApiController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class BanUser extends Command
+class UserBan extends Command
 {
     /**
      * The name and signature of the console command.
