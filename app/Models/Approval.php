@@ -57,6 +57,11 @@ class Approval extends Model
         return (bool) ! is_null($this->available_for_next_event);
     }
 
+    public function getBannedAttribute()
+    {
+        return (bool) ! is_null($this->banned_on);
+    }
+
     public function scopeApproved(Builder $query)
     {
         return $query->whereNotNull('approved_at');
@@ -64,11 +69,13 @@ class Approval extends Model
 
     public function scopePending(Builder $query)
     {
-        return $query->whereNull('approved_at');
+        return $query->whereNull('approved_at')
+                     ->whereNull('banned_on'); // Prevents banned people from being approved
     }
 
     public function scopeAvailable(Builder $query)
     {
-        return $query->where('available_for_next_event', true);
+        return $query->where('available_for_next_event', true)
+                     ->whereNull('banned_on'); // Prevents banned people from being approved
     }
 }
