@@ -42,7 +42,7 @@ class UserBan extends Command
     {
         $cid = $this->argument('cid');
         try {
-            $user = User::firstOrFail('id', $cid);
+            $user = User::findOrFail($cid);
         } catch (ModelNotFoundException $e) {
             echo "User $cid not found";
 
@@ -54,13 +54,13 @@ class UserBan extends Command
             AfvApiController::doPUT('users/enabled', [$data],  $this->argument('actAs'));
         } catch (\Exception $e) {
             echo 'Error: AFV Server replied with '.$e->getCode();
-
             return;
         }
 
         if ($user->approval()->exists()) {
             $user->approval->setAsPending();
-            $user->approval->banned_at = now();
+            $user->approval->banned_on = now();
+            $user->approval->save();
 
             echo "$cid has been banned";
         } else {
