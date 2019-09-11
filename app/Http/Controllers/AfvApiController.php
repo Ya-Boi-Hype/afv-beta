@@ -65,7 +65,7 @@ class AfvApiController extends Controller
         ]);
 
         if ($impersonate) {
-            if(is_numeric($impersonate)){
+            if (is_numeric($impersonate)) {
                 $cid = $impersonate;
             } else {
                 $cid = auth()->user()->id;
