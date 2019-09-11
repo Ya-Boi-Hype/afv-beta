@@ -41,7 +41,7 @@ class BanUser extends Command
     public function handle()
     {
         $cid = $this->argument('cid');
-        try{
+        try {
             $user = User::firstOrFail('id', $cid);
         } catch (ModelNotFoundException $e) {
             return "User $cid not found";
@@ -51,12 +51,13 @@ class BanUser extends Command
         try {
             AfvApiController::doPUT('users/enabled', [$data]);
         } catch (\Exception $e) {
-            return "Error: AFV Server replied with ".$e->getCode();
+            return 'Error: AFV Server replied with '.$e->getCode();
         }
 
-        if ($user->approval()->exists()){
+        if ($user->approval()->exists()) {
             $user->approval->setAsPending();
             $user->approval->banned_at = now();
+
             return "$cid has been banned";
         } else {
             return "$cid removed from accessing AFV, but didn't have access to website";

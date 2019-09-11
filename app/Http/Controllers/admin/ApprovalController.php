@@ -153,10 +153,8 @@ class ApprovalController extends Controller
             'action' => 'string|in:approve,revoke',
         ]);
 
-        
-
         if ($request->input('action') == 'approve') {
-            if($approval->banned){
+            if ($approval->banned) {
                 return redirect()->route('approvals.edit', ['approval' => $approval])->withError(['User is banned', 'This user can\'t be granted access to the beta']);
             }
             $data = ['Username' => (string) $approval->user_id, 'Enabled' => true];
