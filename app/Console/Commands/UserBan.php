@@ -14,7 +14,7 @@ class UserBan extends Command
      *
      * @var string
      */
-    protected $signature = 'user:ban {cid}';
+    protected $signature = 'user:ban {cid} {actAs}';
 
     /**
      * The console command description.
@@ -50,7 +50,7 @@ class UserBan extends Command
 
         $data = ['Username' => (string) $cid, 'Enabled' => false];
         try {
-            AfvApiController::doPUT('users/enabled', [$data]);
+            AfvApiController::doPUT('users/enabled', [$data],  $this->argument('actAs'));
         } catch (\Exception $e) {
             echo 'Error: AFV Server replied with '.$e->getCode();
             return;

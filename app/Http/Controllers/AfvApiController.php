@@ -65,7 +65,11 @@ class AfvApiController extends Controller
         ]);
 
         if ($impersonate) {
-            $cid = auth()->user()->id;
+            if(is_numeric($impersonate)){
+                $cid = $impersonate;
+            } else {
+                $cid = auth()->user()->id;
+            }
             self::impersonate($cid, $baseUri);
         }
     }
