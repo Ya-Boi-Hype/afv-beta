@@ -20,8 +20,7 @@ class ApprovalController extends Controller
         if ($request->has('cid')) { // Search by CID
             $request->validate(['cid' => 'integer|min:0|max:1500000']);
             $searchResults = Approval::where('user_id', 'like', '%'.$request->input('cid').'%')->where('user_id', '!=', auth()->user()->id);
-        }
-        else { // Search by name
+        } else { // Search by name
             $request->validate(['name' => 'string']);
             $searchString = $request->input('name');
             $searchResults = Approval::whereHas('user', function ($query) use ($searchString) {
@@ -74,7 +73,7 @@ class ApprovalController extends Controller
             }
             $approved++;
         }
-        Log::info(auth()->user()->full_name . ' (' . auth()->user()->id . ') has approved ' . $request->input('qty') . " random users ($approved successful)");
+        Log::info(auth()->user()->full_name.' ('.auth()->user()->id.') has approved '.$request->input('qty')." random users ($approved successful)");
 
         return redirect()->route('approvals.index')->withSuccess(['Done!', "$approved users have been approved"]);
     }
@@ -107,7 +106,7 @@ class ApprovalController extends Controller
             }
             $approved++;
         }
-        Log::info(auth()->user()->full_name . ' (' . auth()->user()->id . ") has approved all available users ($approved successful)");
+        Log::info(auth()->user()->full_name.' ('.auth()->user()->id.") has approved all available users ($approved successful)");
 
         return redirect()->back()->withSuccess(['Done!', "$approved users have been approved"]);
     }
@@ -120,7 +119,7 @@ class ApprovalController extends Controller
     public function resetAvailable()
     {
         Approval::available()->update(['available_for_next_event' => null]);
-        Log::info(auth()->user()->full_name . ' (' . auth()->user()->id . ") has reseted event availabilities");
+        Log::info(auth()->user()->full_name.' ('.auth()->user()->id.') has reseted event availabilities');
 
         return redirect()->route('approvals.index')->withSuccess(['Done!', 'All availabilities have been reset']);
     }
@@ -159,17 +158,16 @@ class ApprovalController extends Controller
                     return redirect()->route('approvals.edit', ['approval' => $approval])->withError([$e->getCode(), 'AFV Server replied with '.$e->getMessage()]);
                 }
             }
-            Log::info(auth()->user()->full_name . ' (' . auth()->user()->id . ') has approved user ' . $approval->user_id);
-            
+            Log::info(auth()->user()->full_name.' ('.auth()->user()->id.') has approved user '.$approval->user_id);
+
             return redirect()->route('approvals.edit', ['approval' => $approval])->withSuccess(['Approved!', 'User now has access to the beta']);
-        } 
-        else {
+        } else {
             try {
                 $approval->revoke();
             } catch (\Exception $e) {
                 return redirect()->route('approvals.edit', ['approval' => $approval])->withError([$e->getCode(), 'AFV Server replied with '.$e->getMessage()]);
             }
-            Log::info(auth()->user()->full_name . ' (' . auth()->user()->id . ') has revoked user ' . $approval->user_id);
+            Log::info(auth()->user()->full_name.' ('.auth()->user()->id.') has revoked user '.$approval->user_id);
 
             return redirect()->route('approvals.edit', ['approval' => $approval])->withSuccess(['Gone with the wind', 'User approval has been revoked']);
         }

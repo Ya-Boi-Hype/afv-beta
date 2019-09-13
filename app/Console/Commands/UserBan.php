@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
-use App\Http\Controllers\AfvApiController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserBan extends Command
@@ -46,7 +45,7 @@ class UserBan extends Command
             if ($user->approval()->exists()) {
                 $approval = $user->approval;
             } else {
-                echo "Approval could not be found";
+                echo 'Approval could not be found';
 
                 return;
             }
@@ -54,13 +53,13 @@ class UserBan extends Command
             try {
                 $approval = Approval::where('user_id', $cid)->firstOrFail();
             } catch (ModelNotFoundException $e) {
-                echo "Approval could not be found";
+                echo 'Approval could not be found';
 
                 return;
             }
         }
 
-        try{
+        try {
             $approval->revoke($this->argument('actAs'));
         } catch (\Exception $e) {
             echo 'Error: AFV Server replied with code '.$e->getCode();
