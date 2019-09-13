@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use App\Models\Approval;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 
@@ -21,7 +20,6 @@ class UserExpressedInterest
      */
     public function __construct(Approval $approval)
     {
-        Log::info('User Expressed Interest Event');
         $this->approval = $approval;
     }
 

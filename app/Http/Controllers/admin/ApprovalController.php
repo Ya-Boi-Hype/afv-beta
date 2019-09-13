@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Approval;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\AfvApiController;
 
 class ApprovalController extends Controller
 {
@@ -17,24 +17,19 @@ class ApprovalController extends Controller
      */
     private function search(Request $request)
     {
-        if ($request->has('cid')) {
-            $request->validate([
-                'cid' => 'integer|min:0|max:1500000',
-            ]);
+        if ($request->has('cid')) { // Search by CID
+            $request->validate(['cid' => 'integer|min:0|max:1500000']);
             $searchResults = Approval::where('user_id', 'like', '%'.$request->input('cid').'%')->where('user_id', '!=', auth()->user()->id);
-        } elseif ($request->has('name')) {
-            $request->validate([
-                'name' => 'string',
-            ]);
+        }
+        else { // Search by name
+            $request->validate(['name' => 'string']);
             $searchString = $request->input('name');
             $searchResults = Approval::whereHas('user', function ($query) use ($searchString) {
                 $query->where('name_first', 'like', '%'.$searchString.'%')->orWhere('name_last', 'like', '%'.$searchString.'%');
             })->where('user_id', '!=', auth()->user()->id);
-        } else {
-            return redirect()->back();
         }
 
-        return view('sections.approvals.search_results')->withSearchResults($searchResults);
+        return view('sections.approvals.search_results', compact('searchResults'));
     }
 
     /**
@@ -73,16 +68,15 @@ class ApprovalController extends Controller
 
         foreach ($newApprovals->cursor() as $approval) {
             try {
-                $requestData = ['Username' => (string) $approval->user_id, 'Enabled' => true];
-                AfvApiController::doPUT('users/enabled', [$requestData]);
+                $approval->approve();
             } catch (\Exception $e) {
                 continue;
             }
-            $approval->setAsApproved();
             $approved++;
         }
+        Log::info(auth()->user()->full_name . ' (' . auth()->user()->id . ') has approved ' . $request->input('qty') . " random users ($approved successful)");
 
-        return redirect()->route('approvals.index')->withSuccess(['Done!', "$approved users have been approved :)"]);
+        return redirect()->route('approvals.index')->withSuccess(['Done!', "$approved users have been approved"]);
     }
 
     /**
@@ -103,18 +97,19 @@ class ApprovalController extends Controller
     public function approveAvailable()
     {
         $newApprovals = Approval::available()->where('approved_at', null);
+        $approved = 0;
 
         foreach ($newApprovals->cursor() as $approval) {
             try {
-                $requestData = ['Username' => (string) $approval->user_id, 'Enabled' => true];
-                AfvApiController::doPUT('users/enabled', [$requestData]);
+                $approval->approve();
             } catch (\Exception $e) {
                 continue;
             }
-            $approval->setAsApproved();
+            $approved++;
         }
+        Log::info(auth()->user()->full_name . ' (' . auth()->user()->id . ") has approved all available users ($approved successful)");
 
-        return redirect()->back()->withSuccess(['Done!', 'All users have been approved :)']);
+        return redirect()->back()->withSuccess(['Done!', "$approved users have been approved"]);
     }
 
     /**
@@ -125,6 +120,7 @@ class ApprovalController extends Controller
     public function resetAvailable()
     {
         Approval::available()->update(['available_for_next_event' => null]);
+        Log::info(auth()->user()->full_name . ' (' . auth()->user()->id . ") has reseted event availabilities");
 
         return redirect()->route('approvals.index')->withSuccess(['Done!', 'All availabilities have been reset']);
     }
@@ -154,31 +150,28 @@ class ApprovalController extends Controller
         ]);
 
         if ($request->input('action') == 'approve') {
-            if ($approval->banned) {
-                return redirect()->route('approvals.edit', ['approval' => $approval])->withError(['User is banned', 'This user can\'t be granted access to the beta']);
-            }
-            $data = ['Username' => (string) $approval->user_id, 'Enabled' => true];
             try {
-                AfvApiController::doPUT('users/enabled', [$data]);
-                $approval->setAsApproved();
-                if ($approval->user) {
-                    return redirect()->route('approvals.edit', ['approval' => $approval])->withSuccess(['Ta Daaaa!', 'User approved']);
+                $approval->approve();
+            } catch (\Exception $e) {
+                if ($e->getCode() == 0) {
+                    return redirect()->route('approvals.edit', ['approval' => $approval])->withError(['Error', $e->getMessage()]);
                 } else {
-                    return redirect()->route('approvals.edit', ['approval' => $approval])->withWarn(['Approved', 'User won\'t receive an email (not registered)']);
+                    return redirect()->route('approvals.edit', ['approval' => $approval])->withError([$e->getCode(), 'AFV Server replied with '.$e->getMessage()]);
                 }
-            } catch (\Exception $e) {
-                return redirect()->route('approvals.edit', ['approval' => $approval])->withError([$e->getCode(), 'AFV Server replied with '.$e->getMessage()]);
             }
-        } else {
-            $data = ['Username' => (string) $approval->user_id, 'Enabled' => false];
+            Log::info(auth()->user()->full_name . ' (' . auth()->user()->id . ') has approved user ' . $approval->user_id);
+            
+            return redirect()->route('approvals.edit', ['approval' => $approval])->withSuccess(['Approved!', 'User now has access to the beta']);
+        } 
+        else {
             try {
-                AfvApiController::doPUT('users/enabled', [$data]);
-                $approval->setAsPending();
-
-                return redirect()->route('approvals.edit', ['approval' => $approval])->withSuccess(['Woosh!', 'User approval revoked']);
+                $approval->revoke();
             } catch (\Exception $e) {
                 return redirect()->route('approvals.edit', ['approval' => $approval])->withError([$e->getCode(), 'AFV Server replied with '.$e->getMessage()]);
             }
+            Log::info(auth()->user()->full_name . ' (' . auth()->user()->id . ') has revoked user ' . $approval->user_id);
+
+            return redirect()->route('approvals.edit', ['approval' => $approval])->withSuccess(['Gone with the wind', 'User approval has been revoked']);
         }
     }
 

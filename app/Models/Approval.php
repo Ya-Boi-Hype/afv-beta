@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Events\UserApproved;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Http\Controllers\AfvApiController;
 
 class Approval extends Model
 {
@@ -29,8 +30,14 @@ class Approval extends Model
         $this->save();
     }
 
-    public function setAsApproved()
+    public function approve($impersonate = true)
     {
+        if ($this->banned) {
+            throw new \Exception('User is banned from the beta');
+        }
+        $data = ['Username' => (string) $this->user_id, 'Enabled' => true];
+        AfvApiController::doPUT('users/enabled', [$data], $impersonate); // Throws Exception if fails
+
         $this->approved_at = now();
         $this->save();
 
@@ -39,8 +46,11 @@ class Approval extends Model
         return $this;
     }
 
-    public function setAsPending()
+    public function revoke($impersonate = true)
     {
+        $data = ['Username' => (string) $this->user_id, 'Enabled' => false];
+        AfvApiController::doPUT('users/enabled', [$data], $impersonate); // Throws Exception if fails
+
         $this->approved_at = null;
         $this->save();
 

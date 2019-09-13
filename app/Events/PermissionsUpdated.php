@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 
@@ -20,7 +19,6 @@ class PermissionsUpdated
      */
     public function __construct($user, $permissions)
     {
-        Log::info('Permissions Updated Event');
         $this->user = $user;
         $this->permissions = $permissions;
     }

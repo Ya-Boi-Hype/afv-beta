@@ -43,28 +43,33 @@ class UserBan extends Command
         $cid = $this->argument('cid');
         try {
             $user = User::findOrFail($cid);
+            if ($user->approval()->exists()) {
+                $approval = $user->approval;
+            } else {
+                echo "Approval could not be found";
+
+                return;
+            }
         } catch (ModelNotFoundException $e) {
-            echo "User $cid not found";
+            try {
+                $approval = Approval::where('user_id', $cid)->firstOrFail();
+            } catch (ModelNotFoundException $e) {
+                echo "Approval could not be found";
 
-            return;
+                return;
+            }
         }
 
-        $data = ['Username' => (string) $cid, 'Enabled' => false];
-        try {
-            AfvApiController::doPUT('users/enabled', [$data], $this->argument('actAs'));
+        try{
+            $approval->revoke($this->argument('actAs'));
         } catch (\Exception $e) {
-            echo 'Error: AFV Server replied with '.$e->getCode();
+            echo 'Error: AFV Server replied with code '.$e->getCode();
+
             return;
         }
 
-        if ($user->approval()->exists()) {
-            $user->approval->setAsPending();
-            $user->approval->banned_on = now();
-            $user->approval->save();
-
-            echo "$cid has been banned";
-        } else {
-            echo "$cid removed from accessing AFV, but didn't have access to website";
-        }
+        $approval->banned_on = now();
+        $approval->save();
+        echo "$cid has been banned";
     }
 }
