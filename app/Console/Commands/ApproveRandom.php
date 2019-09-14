@@ -41,7 +41,7 @@ class ApproveRandom extends Command
      */
     public function handle()
     {
-        echo 'Random approvals in progress...';
+        echo 'Random approvals in progress...' . PHP_EOL;
         try {
             $user = User::findOrFail($this->argument('actAs'));
         } catch (ModelNotFoundException $e) {
