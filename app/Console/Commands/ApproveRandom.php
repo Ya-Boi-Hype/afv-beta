@@ -39,18 +39,18 @@ class ApproveRandom extends Command
      */
     public function handle()
     {
-        echo "Random approvals in progress...";
-        try{
+        echo 'Random approvals in progress...';
+        try {
             $user = User::findOrFail($this->argument('actAs'));
         } catch (ModelNotFoundException $e) {
-            echo "User not found";
+            echo 'User not found';
 
             return;
         }
 
         if (! in_array('User Enable Write', $user->permissions)) {
             echo "User can't manage approvals";
-            
+
             return;
         }
 
