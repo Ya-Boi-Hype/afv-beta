@@ -4,7 +4,7 @@
 @section('content')
   <div class="content-header">
     <div class="col">
-      <div class="card w-100 bg-info border border-success">
+      {{--<div class="card w-100 bg-info border border-success">
           <div class="card-header">
             <b>Next Event</b> - <a href="http://www.simfest.co.uk/the-italian-job" class="text-primary"><u><i>The Italian Job (Simfest UK)</i></u></a>
           </div>
@@ -27,7 +27,7 @@
             @endpending
             @endauth
           </div>
-      </div>
+      </div>--}}
       <div class="card w-100">
         @guest
           <div class="card-header">
