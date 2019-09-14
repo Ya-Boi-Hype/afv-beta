@@ -61,7 +61,7 @@ class ApproveRandom extends Command
 
         foreach ($newApprovals->cursor() as $approval) {
             try {
-                $approval->approve();
+                $approval->approve($this->argument('actAs'));
             } catch (\Exception $e) {
                 continue;
             }
