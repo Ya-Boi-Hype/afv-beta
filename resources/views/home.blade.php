@@ -4,6 +4,30 @@
 @section('content')
   <div class="content-header">
     <div class="col">
+      <div class="card w-100 bg-info border border-success">
+          <div class="card-header">
+            <b>Next Event</b> - <a href="http://www.simfest.co.uk/the-italian-job" class="text-primary"><u><i>The Italian Job (Simfest UK)</i></u></a>
+          </div>
+          <div class="card-body pt-0 pb-2">
+            <ul class="my-2 pl-3">
+              <li><b>What?</b> A tour around Italy to celebrate the end of summer.
+              <li><b>When?</b> Saturday, 14th September from 1000z onwards
+            </ul>
+            @auth
+            @pending
+            @canexpressavailability
+            <form class="form-horizontal" action="{{ route('request.available') }}" method="POST">
+              @csrf
+              @method('PUT')
+              <button action="submit" class="btn btn-primary">Express Availability</button>
+            </form>
+            @else
+            <button class="btn btn-success disabled" disabled>Availability Expressed - Please wait to be approved</button>
+            @endcanexpressavailability
+            @endpending
+            @endauth
+          </div>
+      </div>
       <div class="card w-100">
         @guest
           <div class="card-header">
