@@ -23,8 +23,6 @@ class LoginController extends Controller
 
     protected $sso;
 
-    public $redirectTo = '/testing';
-
     /**
      * Create a new controller instance.
      *
@@ -32,7 +30,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        // $this->middleware('guest')->except('logout');
 
         $this->sso = new SSO(
             config('vatsim-sso.base'),

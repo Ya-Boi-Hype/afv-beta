@@ -18,7 +18,7 @@
           <div class="w-100 text-center mb-3"><img src="{{ asset('images/demos/xpilot_settings.png') }}" class="img-fluid rounded"></div>
 		      
           <a class="btn btn-primary" href="http://xpilot.clowd.io/installers/beta/xPilot-Setup-1.0.0.6.exe">Download xPilot for AFV</a>
-          <a class="btn btn-primary" href="{{ asset('files/xPilot_Quick_Start_Guide.pdf') }}" target="_blank">Quick Start Guide</a>
+          <a class="btn btn-primary" href="{{ asset('documents/xPilot_Quick_Start_Guide.pdf') }}" target="_blank">Quick Start Guide</a>
         </div>
 		 
       </div>

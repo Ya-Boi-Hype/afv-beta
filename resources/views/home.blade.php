@@ -47,8 +47,8 @@
             </div>
           @else
             @approved
-            <div class="card-body bg-success text-white py-2">
-              Servers are up and running
+            <div class="card-body bg-warning text-white py-2">
+              Servers are up and running, but may experience occasional outages for upgrades
             </div>
             <div class="card-body pt-2">
               <p>Welcome to the <i>Audio For VATSIM</i> Beta Test.</p>

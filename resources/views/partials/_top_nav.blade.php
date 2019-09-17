@@ -9,6 +9,9 @@
     @auth
       @approved
       <li class="nav-item d-sm-inline-block">
+        <a href="{{ asset('documents/AFV User Guide.pdf') }}" target="_blank" class="nav-link">Manual</a>
+      </li>
+      <li class="nav-item d-sm-inline-block">
         <a href="https://afv-map.vatsim.net/" target="_blank" class="nav-link">Map</a>
       </li>
       <li class="nav-item d-sm-inline-block">

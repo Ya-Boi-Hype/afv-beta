@@ -19,7 +19,7 @@
             <div class="w-50 text-center my-auto"><img src="{{ asset('images/demos/xsb_server.png') }}" class="img-fluid rounded"></div>
             <div class="w-50 text-center my-auto"><img src="{{ asset('images/demos/standalone_settings_sm.png') }}" class="img-fluid rounded"></div>
           </div>
-          <a class="btn btn-primary" href="{{ route('client.download') }}">Download Standalone Client</a>
+          <a class="btn btn-primary" href="{{ route('downloads.standalone') }}">Download Standalone Client</a>
         </div>
 		 
       </div>

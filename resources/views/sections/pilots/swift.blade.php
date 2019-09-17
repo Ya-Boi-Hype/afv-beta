@@ -13,7 +13,7 @@
         <div class="card-body">
             <p>swift currently does not natively support Audio For VATSIM, however with our handy little AFV Standalone client you can enjoy Audio For VATSIM with Swift!  <BR><BR> Firstly download the standalone client below and run the installer</p>
 			
-			     <a class="btn btn-primary" href="{{ route('client.download') }}">Download Standalone Client</a>
+			     <a class="btn btn-primary" href="{{ route('downloads.standalone') }}">Download Standalone Client</a>
 			
             <p class="mt-4">Once you have installed the standalone client, open your simulator and swift as usual and connect to <b>afv-beta-fsd.vatsim.net</b>.
 			
