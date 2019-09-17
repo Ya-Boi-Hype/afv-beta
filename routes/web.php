@@ -53,7 +53,6 @@ Route::middleware('auth')->group(function () {
         Route::get('discord/login', 'DiscordController@create')->name('discord.login'); // Temporary, while people get the new /create route
         Route::resource('discord', 'DiscordController')->only(['index', 'create']);
 
-        
         Route::group(['prefix' => 'downloads', 'as' => 'downloads.'], function () {
             Route::get('standalone', 'DownloadController@standalone')->name('standalone');
             Route::get('euroscope', 'DownloadController@euroscope')->name('euroscope');
