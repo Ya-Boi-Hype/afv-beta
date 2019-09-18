@@ -3,6 +3,10 @@
 // Landing/Main Page
 Route::get('/', 'PageController@home')->name('home');
 
+
+Route::get('domain', function(){
+    return config('app.url');
+});
 //--------------------------------------------------------------------------
 // Guest Endpoint
 //--------------------------------------------------------------------------
