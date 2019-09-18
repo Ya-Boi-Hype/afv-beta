@@ -49,6 +49,7 @@ class LoginController extends Controller
             return redirect($url);
         }, function ($error) {
             Log::error('SSO Login Error - '.$error->getMessage());
+
             return redirect()->route('home')->withError(['Login failed', $error->getMessage()]);
         });
     }
@@ -70,6 +71,7 @@ class LoginController extends Controller
             },
             function ($error) use ($request) {
                 Log::error('SSO Validation Error - '.$error->getMessage());
+
                 return redirect()->route('home')->withError(['Login failed', $error->getMessage()]);
             }
         );
