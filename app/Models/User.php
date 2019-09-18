@@ -67,15 +67,13 @@ class User extends Authenticatable
     {
         try {
             return Cache::rememberForever('permissions'.$this->id, function () {
-                Log::info('AFV API Request - User Permissions');
-
                 $permissions = AfvApiController::getPermissions($this->id);
                 $permissions = array_diff($permissions, ['Facility Engineer']);
 
                 return $permissions;
             });
         } catch (\Exception $e) {
-            Log::warn('AFV API Request - User Permissions failed');
+            Log::warn('AFV Permissions Request failed');
 
             return [];
         }

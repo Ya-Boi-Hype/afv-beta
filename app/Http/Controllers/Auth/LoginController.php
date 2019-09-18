@@ -98,9 +98,7 @@ class LoginController extends Controller
 
     public function logout()
     {
-        Log::info('Auth Controller - Clearing user permissions cache');
         Cache::forget('permissions'.auth()->user()->id);
-
         auth()->logout();
 
         return redirect(route('home'))->withSuccess(['Logout', 'You have been successfully logged out']);
