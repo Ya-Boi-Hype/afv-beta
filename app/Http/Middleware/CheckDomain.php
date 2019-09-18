@@ -15,8 +15,9 @@ class CheckDomain
      */
     public function handle($request, Closure $next)
     {
-        if (request()->getHttpHost() != config('app.url')) {
-            return redirect(config('app.url').request()->path());
+        $appUrl = str_replace(array('http://', 'https://'), '', config('app.url'));
+        if (request()->getHttpHost() != $appUrl) {
+            return redirect(config('app.url').'/'.request()->path());
         }
 
         return $next($request);
