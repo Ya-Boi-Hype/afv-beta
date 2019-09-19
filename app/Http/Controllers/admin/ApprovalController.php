@@ -62,9 +62,11 @@ class ApprovalController extends Controller
             'qty' => 'required|integer|min:0',
         ]);
 
-        $newApprovals = Approval::pending()->inRandomOrder()->take($request->input('qty'));
+        $qty = $request->input('qty');
+        $newApprovals = Approval::pending()->inRandomOrder()->take($qty);
         $approved = 0;
 
+        Log::info(auth()->user()->full_name . " (" . auth()->user()->id .") is approving $qty random users");
         foreach ($newApprovals->cursor() as $approval) {
             try {
                 $approval->approve();
@@ -72,8 +74,13 @@ class ApprovalController extends Controller
                 continue;
             }
             $approved++;
+            if ($approval->user()->exists) {
+                Log::info($approval->user->full_name.' ('.$approval->user->id.') approved');
+            } else {
+                Log::info($approval->user_id.' approved');
+            }
         }
-        Log::info(auth()->user()->full_name.' ('.auth()->user()->id.') has approved '.$request->input('qty')." random users ($approved successful)");
+        Log::info(auth()->user()->full_name . " (" . auth()->user()->id .") has approved $approved random users successfully");
 
         return redirect()->route('approvals.index')->withSuccess(['Done!', "$approved users have been approved"]);
     }
@@ -98,6 +105,7 @@ class ApprovalController extends Controller
         $newApprovals = Approval::available()->where('approved_at', null);
         $approved = 0;
 
+        Log::info(auth()->user()->full_name . " (" . auth()->user()->id .") is approving all available users");
         foreach ($newApprovals->cursor() as $approval) {
             try {
                 $approval->approve();
@@ -105,8 +113,13 @@ class ApprovalController extends Controller
                 continue;
             }
             $approved++;
+            if ($approval->user()->exists) {
+                Log::info($approval->user->full_name.' ('.$approval->user->id.') approved');
+            } else {
+                Log::info($approval->user_id.' approved');
+            }
         }
-        Log::info(auth()->user()->full_name.' ('.auth()->user()->id.") has approved all available users ($approved successful)");
+        Log::info(auth()->user()->full_name . " (" . auth()->user()->id .") has approved $approved users successfully");
 
         return redirect()->back()->withSuccess(['Done!', "$approved users have been approved"]);
     }
@@ -158,7 +171,12 @@ class ApprovalController extends Controller
                     return redirect()->route('approvals.edit', ['approval' => $approval])->withError([$e->getCode(), 'AFV Server replied with '.$e->getMessage()]);
                 }
             }
-            Log::info(auth()->user()->full_name.' ('.auth()->user()->id.') has approved user '.$approval->user_id);
+            
+            if ($approval->user()->exists) {
+                Log::info(auth()->user()->full_name . " (" . auth()->user()->id .") has approved ".$approval->user->full_name.' ('.$approval->user->id.')');
+            } else {
+                Log::info(auth()->user()->full_name . " (" . auth()->user()->id .") has approved ".$approval->user->id);
+            }
 
             return redirect()->route('approvals.edit', ['approval' => $approval])->withSuccess(['Approved!', 'User now has access to the beta']);
         } else {
@@ -167,7 +185,12 @@ class ApprovalController extends Controller
             } catch (\Exception $e) {
                 return redirect()->route('approvals.edit', ['approval' => $approval])->withError([$e->getCode(), 'AFV Server replied with '.$e->getMessage()]);
             }
-            Log::info(auth()->user()->full_name.' ('.auth()->user()->id.') has revoked user '.$approval->user_id);
+
+            if ($approval->user()->exists) {
+                Log::info(auth()->user()->full_name . " (" . auth()->user()->id .") has revoked ".$approval->user->full_name.' ('.$approval->user->id.')');
+            } else {
+                Log::info(auth()->user()->full_name . " (" . auth()->user()->id .") has revoked ".$approval->user->id);
+            }
 
             return redirect()->route('approvals.edit', ['approval' => $approval])->withSuccess(['Gone with the wind', 'User approval has been revoked']);
         }

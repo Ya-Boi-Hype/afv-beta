@@ -56,19 +56,27 @@ class ApproveRandom extends Command
             return;
         }
 
+        $actAs = $this->argument('actAs');
+        $qty = $this->argument('qty');
         $approved = 0;
-        $newApprovals = Approval::pending()->inRandomOrder()->take($this->argument('qty'));
+        $newApprovals = Approval::pending()->inRandomOrder()->take($qty);
 
+        Log::info("Command user $actAs is approving $qty random users");
         foreach ($newApprovals->cursor() as $approval) {
             try {
-                $approval->approve($this->argument('actAs'));
+                $approval->approve($actAs);
             } catch (\Exception $e) {
                 continue;
             }
             $approved++;
+            if ($approval->user()->exists) {
+                Log::info($approval->user->full_name." (".$approval->user->id.") has been approved by command user $actAs");
+            } else {
+                Log::info($approval->user->id." has been approved by command user $actAs");
+            }
         }
-        Log::info($user->full_name.' ('.$user->id.') has approved '.$this->argument('qty')." random users ($approved successful)");
+        Log::info("Command user $actAs has approved $approved users successfully");
 
-        echo $this->argument('qty')." random users approved ($approved successful)";
+        echo $qty." random users approved ($approved successful)";
     }
 }

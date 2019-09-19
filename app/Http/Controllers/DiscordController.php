@@ -65,7 +65,6 @@ class DiscordController extends Controller
         $authUrl = $this->provider->getAuthorizationUrl($options);
         //$authUrl = $this->provider->getAuthorizationUrl();
 
-        Log::info('DiscordOAuth2Controller - Redirecting user to login');
         session()->put('oauth2state', $this->provider->getState());
         session()->save();
         header('Location: '.$authUrl);
@@ -90,7 +89,6 @@ class DiscordController extends Controller
         if (empty($request->input('state')) || ($request->input('state') !== session('oauth2state'))) {
             $expects = session('oauth2state');
             $receives = $request->input('state', 'None');
-            Log::error("State mismatch ($cid): Expected $expects - Received $receives");
             session()->forget('oauth2state');
 
             return redirect()->route('discord.index')->withError(['State Mismatch', 'Please try again. It it still fails, let us know.']);
@@ -114,7 +112,6 @@ class DiscordController extends Controller
             return redirect()->route('discord.index')->withError(['Oops...', 'Something went wrong. Please try again']);
         }
 
-        Log::info("$cid linked Discord Account");
         Discord_Account::where('id', $user->getId())->delete(); //Delete any other records using the same Discord_ID (one CID == one Discord_ID)
 
         Discord_Account::updateOrCreate([
