@@ -3,7 +3,6 @@
 namespace App\Listeners;
 
 use App\Events\UserApproved;
-use Illuminate\Support\Facades\Log;
 use App\Notifications\ApprovalWelcomeEmail;
 
 class SendApprovalNotification

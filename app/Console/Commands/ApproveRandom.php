@@ -70,7 +70,7 @@ class ApproveRandom extends Command
             }
             $approved++;
             if ($approval->user()->exists) {
-                Log::info($approval->user->full_name." (".$approval->user->id.") has been approved by command user $actAs");
+                Log::info($approval->user->full_name.' ('.$approval->user->id.") has been approved by command user $actAs");
             } else {
                 Log::info($approval->user->id." has been approved by command user $actAs");
             }
