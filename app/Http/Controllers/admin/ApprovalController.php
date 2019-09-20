@@ -74,7 +74,7 @@ class ApprovalController extends Controller
                 continue;
             }
             $approved++;
-            if ($approval->user()->exists) {
+            if ($approval->user) {
                 Log::info($approval->user->full_name.' ('.$approval->user->id.') approved');
             } else {
                 Log::info($approval->user_id.' approved');
@@ -113,7 +113,7 @@ class ApprovalController extends Controller
                 continue;
             }
             $approved++;
-            if ($approval->user()->exists) {
+            if ($approval->user) {
                 Log::info($approval->user->full_name.' ('.$approval->user->id.') approved');
             } else {
                 Log::info($approval->user_id.' approved');
@@ -172,7 +172,7 @@ class ApprovalController extends Controller
                 }
             }
 
-            if ($approval->user()->exists) {
+            if ($approval->user) {
                 Log::info(auth()->user()->full_name.' ('.auth()->user()->id.') has approved '.$approval->user->full_name.' ('.$approval->user->id.')');
             } else {
                 Log::info(auth()->user()->full_name.' ('.auth()->user()->id.') has approved '.$approval->user->id);
@@ -186,7 +186,7 @@ class ApprovalController extends Controller
                 return redirect()->route('approvals.edit', ['approval' => $approval])->withError([$e->getCode(), 'AFV Server replied with '.$e->getMessage()]);
             }
 
-            if ($approval->user()->exists) {
+            if ($approval->user) {
                 Log::info(auth()->user()->full_name.' ('.auth()->user()->id.') has revoked '.$approval->user->full_name.' ('.$approval->user->id.')');
             } else {
                 Log::info(auth()->user()->full_name.' ('.auth()->user()->id.') has revoked '.$approval->user->id);
