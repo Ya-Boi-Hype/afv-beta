@@ -4,16 +4,17 @@
 @section('content')
   <div class="content-header">
     <div class="col">
-      {{--<div class="card w-100 bg-info border border-success">
+      <div class="card w-100 bg-success border border-success">
           <div class="card-header">
-            <b>Next Event</b> - <a href="http://www.simfest.co.uk/the-italian-job" class="text-primary"><u><i>The Italian Job (Simfest UK)</i></u></a>
+            <b>Next Event</b>: <u>HF (Oceanic) Testing</u>
           </div>
           <div class="card-body pt-0 pb-2">
             <ul class="my-2 pl-3">
-              <li><b>What?</b> A tour around Italy to celebrate the end of summer.
-              <li><b>When?</b> Saturday, 14th September from 1000z onwards
+              <li><b>Date:</b> Sunday, 29th September 2019 from 0800z onwards
+              <li><b>From:</b> EFHK, ESSA and ENGM
+              <li><b>To:</b> CYQX, CYYZ and CYUL
             </ul>
-            @auth
+            {{-- @auth
             @pending
             @canexpressavailability
             <form class="form-horizontal" action="{{ route('request.available') }}" method="POST">
@@ -25,9 +26,9 @@
             <button class="btn btn-success disabled" disabled>Availability Expressed - Please wait to be approved</button>
             @endcanexpressavailability
             @endpending
-            @endauth
+            @endauth --}}
           </div>
-      </div>--}}
+      </div>
       <div class="card w-100">
         @guest
           <div class="card-header">
@@ -54,7 +55,7 @@
               <p>Welcome to the <i>Audio For VATSIM</i> Beta Test.</p>
               <p>All testing is taking place on a standalone set of VATSIM servers which are not connected to the main network.</p>
 			        <p>Take a look at the different menus on the left. There you will find everything you need to start testing as a pilot or a controller.</p>
-			        <p>Feel free to join our discord by clicking connect on the bottom right where help will be available from the team.</p>
+			        <p>Feel free to join our Discord server, where help will be available from the team.</p>
             @endapproved
             @pending
             <div class="card-body">
