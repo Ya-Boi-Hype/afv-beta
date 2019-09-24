@@ -8,8 +8,6 @@ You have been granted the following permissions:
 <li>{{ $permission }}</li>
 @endforeach
 </ul>
-
-Visit the {{ config('app.name') }} website to view the relevant section(s).
      
 <hr>
 @if (! empty($salutation))
