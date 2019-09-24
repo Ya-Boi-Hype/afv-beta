@@ -1,8 +1,9 @@
 @component('mail::layout')
     {{-- Header --}}
     @slot('header')
-        @component('mail::header', ['url' => 'https://www.vatsim.net/'])
-            <img src="https://www.vatsim.net/sites/default/files/vatsim_0.png" alt="VATSIM">
+        @component('mail::header', ['url' => 'https://www.vatsim.net'])
+            ![VATSIM][logo]
+            [logo]: {{asset('/images/logo_white.png')}} "VATSIM"
         @endcomponent
     @endslot
 
