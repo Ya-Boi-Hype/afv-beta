@@ -200,7 +200,7 @@ table td .header p{
     margin-bottom: 0;
 }
 
-table td .header p img{
+table td .header img.logo{
     height: 83px;
 }
 
