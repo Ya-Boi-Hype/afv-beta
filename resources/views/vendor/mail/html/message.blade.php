@@ -2,7 +2,7 @@
     {{-- Header --}}
     @slot('header')
         @component('mail::header', ['url' => 'https://www.vatsim.net'])
-            <img class="logo" src="{{asset('/images/logo_white.png')}}" alt="VATSIM"/>
+            <img class="logo" src="{{asset('/images/logo_white.png')}}" data-skip-embed alt="VATSIM"/>
         @endcomponent
     @endslot
 

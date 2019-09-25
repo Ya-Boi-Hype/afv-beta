@@ -5,6 +5,7 @@ UID:AFV-HF-28091908001200
 DTSTART;TZID=Zulu:20190929T080000
 DTEND;TZID=Zulu:20190929T120000
 SUMMARY:Audio For VATSIM HF Test
+ORGANIZER:Audio For VATSIM Team
 DESCRIPTION:Visit https://afv-beta.vatsim.net for more information, including how to connect to the AFV Servers and where to download the clients from.
 URL:https%3A%2F%2Fafv-beta.vatsim.net
 LOCATION:VATSIM Network

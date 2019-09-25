@@ -14,7 +14,7 @@ The event airports are shown below. You can fly in between any of them:
 - Departures: EFHK - ESSA - ENGM
 - Arrivals: CYQX - CYYZ - CYUL
 
-For more information please visit the <i>Audio For VATSIM</i> website. You will also find our support channels there. Should you still have any other questions <b>after having read the documents available</b>, you may contact us there.
+For more information please login to the <i>Audio For VATSIM</i> website. Should you still have any other questions <b>after having read the documents available</b>, you may find our support channels there.
 
 @component('mail::button', ['url' => route('home')])
 More Information
