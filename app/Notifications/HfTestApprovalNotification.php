@@ -42,7 +42,7 @@ class HfTestApprovalNotification extends Notification
             ->subject('Audio For VATSIM - Surprise!')
             ->greeting("Hi, $notifiable->name_first!")
             ->markdown('emails.approval_hf_test')
-            ->attach(storage_path('app\Audio For VATSIM HF Test.ics'), [
+            ->attach(storage_path('app/Audio For VATSIM HF Test.ics'), [
                 'mime' => 'calendar/event',
             ]);
     }
