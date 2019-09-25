@@ -4,8 +4,10 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 
-class HfTestApprovalNotification extends Notification
+class HfTestApprovalNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -38,7 +40,7 @@ class HfTestApprovalNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new \Illuminate\Notifications\Messages\MailMessage)
+        return (new MailMessage)
             ->subject('Audio For VATSIM - Surprise!')
             ->greeting("Hi, $notifiable->name_first!")
             ->markdown('emails.approval_hf_test')
