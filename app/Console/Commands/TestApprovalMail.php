@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\User;
+use Illuminate\Console\Command;
 use App\Notifications\HfTestApprovalNotification;
 
 class TestApprovalMail extends Command
@@ -44,6 +44,7 @@ class TestApprovalMail extends Command
             $user = User::findOrFail($cid);
         } catch (ModelNotFoundException $e) {
             echo 'User could not be found';
+
             return;
         }
 
