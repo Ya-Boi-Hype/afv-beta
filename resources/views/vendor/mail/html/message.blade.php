@@ -21,7 +21,7 @@
     {{-- Footer --}}
     @slot('footer')
         @component('mail::footer')
-            ©{{ date('Y') }} VATSIM Network. @lang('All rights reserved.')
+            ©{{ date('Y') }} VATSIM Network - Design by Néstor Pérez
         @endcomponent
     @endslot
 @endcomponent

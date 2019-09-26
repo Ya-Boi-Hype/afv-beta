@@ -4,7 +4,7 @@
 @section('content')
   <div class="content-header">
     <div class="col">
-      <div class="card w-100 bg-success border border-success">
+      <div class="card w-100 bg-info border border-success">
           <div class="card-header">
             <b>Next Event</b>: <u>HF (Oceanic) Testing</u>
           </div>

@@ -63,17 +63,16 @@ class ApproveRandom extends Command
 
         Log::info("Command user $actAs is approving $qty random users");
         foreach ($newApprovals->cursor() as $approval) {
+            if (! $approval->user()->exists) {
+                continue;
+            }
             try {
                 $approval->approve($actAs);
             } catch (\Exception $e) {
                 continue;
             }
             $approved++;
-            if ($approval->user()->exists) {
-                Log::info($approval->user->full_name.' ('.$approval->user->id.") has been approved by command user $actAs");
-            } else {
-                Log::info($approval->user->id." has been approved by command user $actAs");
-            }
+            Log::info($approval->user->full_name.' ('.$approval->user->id.") has been approved by command user $actAs");
         }
         Log::info("Command user $actAs has approved $approved users successfully");
 
