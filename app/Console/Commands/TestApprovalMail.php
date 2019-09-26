@@ -43,12 +43,12 @@ class TestApprovalMail extends Command
         try {
             $user = User::findOrFail($cid);
         } catch (ModelNotFoundException $e) {
-            echo 'User could not be found';
+            echo 'User could not be found'.PHP_EOL;
 
             return;
         }
 
         $user->notify(new HfTestApprovalNotification());
-        echo 'Email queued!';
+        echo 'Email queued!'.PHP_EOL;
     }
 }
