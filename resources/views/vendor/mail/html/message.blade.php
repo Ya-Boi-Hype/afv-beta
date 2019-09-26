@@ -21,7 +21,7 @@
     {{-- Footer --}}
     @slot('footer')
         @component('mail::footer')
-            ©{{ date('Y') }} VATSIM Network - Design by Néstor Pérez
+            <i>©{{ date('Y') }} VATSIM Network - Design by Néstor Pérez</i>
         @endcomponent
     @endslot
 @endcomponent
