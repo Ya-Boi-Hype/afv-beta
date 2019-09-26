@@ -11,6 +11,6 @@ class DownloadController extends Controller
 
     public function euroscope()
     {
-        return response()->download(storage_path('app/EuroscopeBeta32a21WithAFVShortcut.zip'));
+        return response()->download(storage_path('app/EuroScope Shortcut.zip'));
     }
 }
