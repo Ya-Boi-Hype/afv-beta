@@ -52,7 +52,7 @@ class UserRequestController extends Controller
             $approval = auth()->user()->approval;
         }
 
-        if ($approval->approved){
+        if ($approval->approved) {
             return redirect()->route('home')->withError(['Nope!', 'You\'re already approved']);
         }
 
@@ -63,7 +63,8 @@ class UserRequestController extends Controller
             return redirect()->route('home')->withError(['Uh oh...', 'Something didn\'t quite go right...']);
         }
 
-        Log::info(auth()->user()->full_name.' ('.auth()->user()->id.") has insta-approved himself");
+        Log::info(auth()->user()->full_name.' ('.auth()->user()->id.') has insta-approved himself');
+
         return redirect()->route('home')->withSuccess(['Magic Wizard!', 'Did you just... approve yourself?']);
     }
 }
