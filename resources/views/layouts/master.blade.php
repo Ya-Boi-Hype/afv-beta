@@ -3,8 +3,22 @@
 <head>
   @section('head')
   <meta charset="utf-8">
+  <meta name="keywords" content="VATSIM, Audio, Beta, Codec, AFV"/>
+  <meta name="description" content="Audio For VATSIM Beta Website - Management, Instructions, Registrations"/>
+  <meta name="subject" content="VATSIM's New Codec">
+  <meta name="copyright"content="VATSIM Network">
+  <meta name="language" content="{{ str_replace('_', '-', app()->getLocale()) }}">
+  <meta name="robots" content="index,nofollow,noimageindex" />
+  <meta name="author" content="Néstor Pérez">
+  <meta name="owner" content="VATSIM Network">
+  <meta name="url" content="{{ config('app.url') }}">
+  <meta name="identifier-URL" content="{{ config('app.url') }}">
+  <meta name="coverage" content="Worldwide">
+  <meta name="distribution" content="Global">
+  <meta name="rating" content="General">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
+
   <title>{{ config('app.name') }} | @yield('title')</title>
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha256-UzFD2WYH2U1dQpKDjjZK72VtPeWP50NoJjd26rnAdUI=" crossorigin="anonymous" />
