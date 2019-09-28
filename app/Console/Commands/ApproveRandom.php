@@ -63,7 +63,7 @@ class ApproveRandom extends Command
 
         Log::info("Command user $actAs is approving $qty random users");
         foreach ($newApprovals->cursor() as $approval) {
-            if (! $approval->user()->exists) {
+            if (! $approval->user) {
                 continue;
             }
             try {

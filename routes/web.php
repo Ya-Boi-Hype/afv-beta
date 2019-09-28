@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
     // User has no request to join
     //--------------------------------------------------------------------------
     Route::middleware('hasNoRequest')->group(function () {
-        Route::get('request', 'UserRequestController@store')->name('request');
+        // Route::get('request', 'UserRequestController@store')->name('request');
     });
 
     //--------------------------------------------------------------------------
