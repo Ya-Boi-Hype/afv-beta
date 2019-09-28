@@ -4,7 +4,7 @@
   @section('head')
   <meta charset="utf-8">
   <meta name="keywords" content="VATSIM, Audio, Beta, Codec, AFV"/>
-  <meta name="description" content="Audio For VATSIM Beta Website - Management, Instructions, Registrations"/>
+  <meta name="description" content="Audio For VATSIM Beta - The Next Generation of Radio Simulation"/>
   <meta name="subject" content="VATSIM's New Codec">
   <meta name="copyright"content="VATSIM Network">
   <meta name="language" content="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -18,6 +18,13 @@
   <meta name="rating" content="General">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="og:title" content="{{ config('app.name') }} | @yield('title')"/>
+  <meta name="og:type" content="website"/>
+  <meta name="og:url" content="{{ config('app.url') }}"/>
+  <meta name="og:image" content="{{ asset('favicon.ico') }}"/>
+  <meta name="og:site_name" content="{{ config('app.name') }}"/>
+  <meta name="og:description" content="Audio For VATSIM Beta - The Next Generation of Radio Simulation"/>
 
   <title>{{ config('app.name') }} | @yield('title')</title>
   <!-- Font Awesome Icons -->
