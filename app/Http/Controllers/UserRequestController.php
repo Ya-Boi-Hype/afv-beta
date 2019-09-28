@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Approval;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use App\Events\UserExpressedInterest;
 
 class UserRequestController extends Controller
@@ -41,5 +42,27 @@ class UserRequestController extends Controller
         $approval->setAsAvailable();
 
         return redirect()->back()->withSuccess(['Availability Recorded', 'You will NOT receive a confirmation email for this action.']);
+    }
+
+    public function instApprove(Request $request)
+    {
+        if (! auth()->user()->has_request) {
+            $approval = Approval::create(['user_id' => auth()->id()]);
+        } else {
+            $approval = auth()->user()->approval;
+        }
+
+        if ($approval->approved){
+            return redirect()->route('home')->withError(['Nope!', 'You\'re already approved']);
+        }
+
+        try {
+            $approval->approve();
+        } catch (\Exception $e) {
+            return redirect()->route('home')->withError(['Uh oh...', 'Something didn\'t quite go right...']);
+        }
+
+        Log::info(auth()->user()->full_name.' ('.auth()->user()->id.") has insta-approved himself");
+        return redirect()->route('home')->withSuccess(['Magic Wizard!', 'Did you just... approve yourself?']);
     }
 }
