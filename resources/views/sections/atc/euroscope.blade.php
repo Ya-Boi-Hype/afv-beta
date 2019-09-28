@@ -18,7 +18,7 @@
 
           <div class="w-100 text-center my-3"><img src="{{ asset('images/demos/standalone_settings.png') }}" class="img-fluid rounded"></div>
           <div class="row mt-0">
-            <a class="btn btn-primary mx-1 mt-1" href="http://185.51.64.10/~euroscop/install/EuroScopeBeta32a20.zip">Download Euroscope Beta 3.2a (r20)</a>
+            <a class="btn btn-primary mx-1 mt-1" href="https://www.euroscope.hu/install/EuroScopeBeta32a22.zip">Download Euroscope Beta 3.2a (r22)</a>
             <a class="btn btn-primary mx-1 mt-1" href="{{ route('downloads.standalone') }}">Download Standalone Client</a>
             <a class="btn btn-primary mx-1 mt-1" href="{{ route('downloads.euroscope') }}">Download AFV Shortcut</a>
             <a class="btn btn-primary mx-1 mt-1" href="https://github.com/AndyTWF/afv-euroscope-bridge/releases/latest/download/AfvEuroScopeBridge.dll">Download Plugin</a>
