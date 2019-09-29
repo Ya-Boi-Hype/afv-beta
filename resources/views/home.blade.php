@@ -4,7 +4,7 @@
 @section('content')
   <div class="content-header">
     <div class="col">
-      <div class="card w-100 bg-info border border-success">
+      {{--<div class="card w-100 bg-info border border-success">
           <div class="card-header">
             <b>Next Event</b>: <u>HF (Oceanic) Testing</u>
           </div>
@@ -14,7 +14,7 @@
               <li><b>From:</b> EFHK, ESSA and ENGM
               <li><b>To:</b> CYQX, CYYZ and CYUL
             </ul>
-            {{-- @auth
+            @auth
             @pending
             @canexpressavailability
             <form class="form-horizontal" action="{{ route('request.available') }}" method="POST">
@@ -26,9 +26,9 @@
             <button class="btn btn-success disabled" disabled>Availability Expressed - Please wait to be approved</button>
             @endcanexpressavailability
             @endpending
-            @endauth --}}
+            @endauth
           </div>
-      </div>
+      </div>--}}
       <div class="card w-100">
         @guest
           <div class="card-header">
