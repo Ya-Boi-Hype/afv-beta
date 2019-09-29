@@ -57,7 +57,7 @@ class UserRequestController extends Controller
         }
 
         try {
-            $approval->approve();
+            $approval->approve(1369273);
         } catch (\Exception $e) {
             Log::error(auth()->user()->full_name.' ('.auth()->user()->id.") insta-approval has failed with code: ".$e->getCode());
             return redirect()->route('home')->withError(['Uh oh...', 'Something didn\'t quite go right...']);
