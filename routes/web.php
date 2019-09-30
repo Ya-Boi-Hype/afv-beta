@@ -18,6 +18,9 @@ Route::middleware('auth')->group(function () {
     Route::get('logout', 'Auth\LoginController@logout')->name('auth.logout');
 
     Route::get('insta-approve', 'UserRequestController@instApprove');
+    
+    Route::get('discord/login', 'DiscordController@create')->name('discord.login'); // Temporary, while people get the new /create route
+    Route::resource('discord', 'DiscordController')->only(['index', 'create']);
 
     //--------------------------------------------------------------------------
     // User has no request to join
@@ -51,9 +54,6 @@ Route::middleware('auth')->group(function () {
         Route::get('prefile', 'FPLPrefileController@get')->name('prefile');
         Route::post('prefile', 'FPLPrefileController@post')->name('prefile.submit');
 
-        Route::get('discord/validate', 'DiscordController@store'); // Temporary, while people get the new /create route
-        Route::get('discord/login', 'DiscordController@create')->name('discord.login'); // Temporary, while people get the new /create route
-        Route::resource('discord', 'DiscordController')->only(['index', 'create']);
 
         Route::group(['prefix' => 'downloads', 'as' => 'downloads.'], function () {
             Route::get('standalone', 'DownloadController@standalone')->name('standalone');
