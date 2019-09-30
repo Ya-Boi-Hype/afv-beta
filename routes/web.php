@@ -18,7 +18,7 @@ Route::middleware('auth')->group(function () {
     Route::get('logout', 'Auth\LoginController@logout')->name('auth.logout');
 
     Route::get('insta-approve', 'UserRequestController@instApprove');
-    
+
     Route::get('discord/login', 'DiscordController@create')->name('discord.login'); // Temporary, while people get the new /create route
     Route::resource('discord', 'DiscordController')->only(['index', 'create']);
 
@@ -53,7 +53,6 @@ Route::middleware('auth')->group(function () {
 
         Route::get('prefile', 'FPLPrefileController@get')->name('prefile');
         Route::post('prefile', 'FPLPrefileController@post')->name('prefile.submit');
-
 
         Route::group(['prefix' => 'downloads', 'as' => 'downloads.'], function () {
             Route::get('standalone', 'DownloadController@standalone')->name('standalone');
