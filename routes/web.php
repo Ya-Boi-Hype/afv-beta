@@ -17,7 +17,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('logout', 'Auth\LoginController@logout')->name('auth.logout');
 
-    Route::get('insta-approve', 'UserRequestController@instApprove');
+    // Route::get('insta-approve', 'UserRequestController@instApprove');
 
     Route::get('discord/login', 'DiscordController@create')->name('discord.login'); // Temporary, while people get the new /create route
     Route::resource('discord', 'DiscordController')->only(['index', 'create']);
@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
     // User has no request to join
     //--------------------------------------------------------------------------
     Route::middleware('hasNoRequest')->group(function () {
-        // Route::get('request', 'UserRequestController@store')->name('request');
+        Route::get('request', 'UserRequestController@store')->name('request');
     });
 
     //--------------------------------------------------------------------------
