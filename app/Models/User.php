@@ -68,7 +68,10 @@ class User extends Authenticatable
         try {
             return Cache::rememberForever('permissions'.$this->id, function () {
                 $permissions = AfvApiController::getPermissions($this->id);
-                $permissions = array_diff($permissions, ['Facility Engineer']);
+                $permissions = array_diff($permissions, [
+                    'Facility Engineer',
+                    'User Permission Read',
+                ]);
 
                 return $permissions;
             });
