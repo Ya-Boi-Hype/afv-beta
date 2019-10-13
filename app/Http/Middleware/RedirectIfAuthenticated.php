@@ -18,7 +18,7 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check() && ! count(auth()->user()->permissions)) {
-			return redirect()->away('https://audio.vatsim.net');
+            return redirect()->away('https://audio.vatsim.net');
             // return redirect()->intended(route('home'));
         }
 
