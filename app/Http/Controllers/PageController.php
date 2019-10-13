@@ -15,6 +15,7 @@ class PageController extends Controller
             return redirect()->away('https://audio.vatsim.net');
         }
     }
+
     public function home()
     {
         return view('home');
