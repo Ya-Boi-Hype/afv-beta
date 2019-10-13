@@ -9,6 +9,12 @@ namespace App\Http\Controllers;
  */
 class PageController extends Controller
 {
+    public function __construct()
+    {
+        if (auth()->check() && count(auth()->user()->permissions == 0)) {
+            return redirect()->away('https://audio.vatsim.net');
+        }
+    }
     public function home()
     {
         return view('home');
