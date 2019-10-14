@@ -46,8 +46,8 @@
               <p>Applications for the <i>Audio For VATSIM</i> Beta are now closed.</p>
           @else
             @approved
-            <div class="card-body bg-warning text-white py-2">
-              Servers are up and running, but may experience occasional outages for upgrades
+            <div class="card-body bg-red text-white py-2">
+              The beta servers are now closed! Please head to audio.vatsim.net for more info!
             </div>
             <div class="card-body pt-2">
               <p>Welcome to the <i>Audio For VATSIM</i> Beta Test.</p>
