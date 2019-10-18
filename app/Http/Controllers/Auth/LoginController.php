@@ -93,7 +93,7 @@ class LoginController extends Controller
         $account->last_login_ip = \Request::ip();
         $account->save();
 
-        return auth()->login($account);
+        return auth()->login($account, true);
     }
 
     public function logout()
