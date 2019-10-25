@@ -75,13 +75,14 @@ class LoginController extends Controller
                     });
                 } catch (\Exception $e) {
                     Log::warn('AFV Permissions Request failed');
+
                     return redirect()->route('home')->withError(['Uh, oh...', 'Something went wrong']);
                 }
-                if(! count($permissions)) {
+                if (! count($permissions)) {
                     Cache::forget('permissions'.$user->id);
+
                     return redirect()->route('home')->withError(['Nope!', 'You are not allowed to enter this site']);
                 }
-
 
                 $this->completeLogin($user);
 
