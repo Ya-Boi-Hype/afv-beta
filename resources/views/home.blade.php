@@ -32,7 +32,7 @@
       <div class="card w-100">
         @guest
           <div class="card-header">
-            <h1 class="m-0 text-dark">Welcome to the {{ config('app.name') }} Website!</h1>
+            <h1 class="m-0 text-dark">Welcome to the {{ config('app.name') }} Control Panel!</h1>
           </div>
           <div class="card-body">
             In order to access the site, you must first <a href="{{ route('auth.login') }}">log in using your VATSIM Account</a>.
@@ -41,27 +41,10 @@
           <div class="card-header">
             <h1 class="m-0 text-dark">Hi, {{ auth()->user()->name_first }}!</h1>
           </div>
-          @hasnorequest
-            <div class="card-body">
-              <p>Applications for the <i>Audio For VATSIM</i> Beta are now closed.</p>
-          @else
-            @approved
-            <div class="card-body bg-red text-white py-2">
-              The beta servers are now closed! Please head to audio.vatsim.net for more info!
-            </div>
-            <div class="card-body pt-2">
-              <p>Welcome to the <i>Audio For VATSIM</i> Beta Test.</p>
-              <p>All testing is taking place on a standalone set of VATSIM servers which are not connected to the main network.</p>
-			        <p>Take a look at the different menus on the left. There you will find everything you need to start testing as a pilot or a controller.</p>
-			        <p>Feel free to join our Discord server, where help will be available from the team.</p>
-              Thanks for your help and patience with this beta testing,<hr>
-            @endapproved
-            @pending
-            <div class="card-body">
-              <p>We have received your request to join the beta and will get in touch with you soon!</p>
-              Thanks for your help and patience with this beta testing,<hr>
-            @endpending
-          @endhasnorequest
+          <div class="card-body pt-2">
+            <p>Use the different menus on the left to navigate throughout the page.</p>
+			      <p>Feel free to join our Discord server, where help will be available from the rest of the team.</p>
+            Kind regards,<hr>
             <i>The AFV Team</i>
           </div>
         @endguest {{-- guest | else=>approved --}}

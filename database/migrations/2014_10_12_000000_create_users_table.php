@@ -18,14 +18,8 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('name_first');
             $table->string('name_last');
-            $table->string('rating_atc');
-            $table->string('email');
-            $table->string('region');
-            $table->string('division');
-            $table->string('subdivision')->nullable();
             $table->rememberToken();
             $table->timestamp('last_login');
-            $table->string('last_login_ip');
             $table->timestamp('joined_at')->default(Carbon::now());
             $table->timestamps();
         });

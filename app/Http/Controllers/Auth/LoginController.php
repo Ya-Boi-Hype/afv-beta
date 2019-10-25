@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Input;
+use App\Http\Controllers\AfvApiController;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 /**
@@ -65,6 +66,23 @@ class LoginController extends Controller
             Input::get('oauth_verifier'),
             function ($user) use ($request, $main) {
                 $request->session()->forget('vatsimauth');
+
+                try {
+                    $permissions = Cache::rememberForever('permissions'.$user->id, function () use ($user) {
+                        return array_diff(
+                            AfvApiController::getPermissions($user->id), ['User Permission Read']
+                        );
+                    });
+                } catch (\Exception $e) {
+                    Log::warn('AFV Permissions Request failed');
+                    return redirect()->route('home')->withError(['Uh, oh...', 'Something went wrong']);
+                }
+                if(! count($permissions)) {
+                    Cache::forget('permissions'.$user->id);
+                    return redirect()->route('home')->withError(['Nope!', 'You are not allowed to enter this site']);
+                }
+
+
                 $this->completeLogin($user);
 
                 return redirect()->intended($main);
@@ -83,17 +101,11 @@ class LoginController extends Controller
 
         $account->name_first = utf8_decode($user->name_first);
         $account->name_last = utf8_decode($user->name_last);
-        $account->rating_atc = $user->rating->short;
-        $account->email = $user->email;
-        $account->region = $user->region->code;
-        $account->division = $user->division->code;
-        $account->subdivision = $user->subdivision->code;
         $account->joined_at = $user->reg_date;
         $account->last_login = Carbon::now();
-        $account->last_login_ip = \Request::ip();
         $account->save();
 
-        return auth()->login($account);
+        return auth()->login($account, true);
     }
 
     public function logout()

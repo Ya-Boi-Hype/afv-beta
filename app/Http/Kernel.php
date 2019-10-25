@@ -29,7 +29,6 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            \App\Http\Middleware\CheckDomain::class,
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             // \Illuminate\Session\Middleware\StartSession::class,
@@ -53,18 +52,13 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'admin' => \App\Http\Middleware\Admin::class,
-        'approved' => \App\Http\Middleware\Approved::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'expressAvailability' => \App\Http\Middleware\ExpressAvailability::class,
         'facilityEngineer' => \App\Http\Middleware\FacilityEngineer::class,
-        'hasNoRequest' => \App\Http\Middleware\HasNoRequest::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'manageApprovals' => \App\Http\Middleware\ManageApprovals::class,
         'managePermissions' => \App\Http\Middleware\ManagePermissions::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,

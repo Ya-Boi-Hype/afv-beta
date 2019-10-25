@@ -39,9 +39,7 @@ class DiscordController extends Controller
      */
     public function index()
     {
-        $hasAccount = auth()->user()->discord()->exists();
-
-        return view('sections.discord.index', compact('hasAccount'));
+        return view('sections.discord.index');
     }
 
     /**

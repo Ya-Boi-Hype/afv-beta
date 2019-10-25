@@ -5,20 +5,6 @@
     <li class="nav-item">
       <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
     </li>
-
-    @auth
-      @approved
-      <li class="nav-item d-sm-inline-block">
-        <a href="{{ asset('documents/AFV User Guide.pdf') }}" target="_blank" class="nav-link">Manuæl</a>
-      </li>
-      <li class="nav-item d-sm-inline-block">
-        <a href="https://afv-map.vatsim.net/" target="_blank" class="nav-link">Map</a>
-      </li>
-      <li class="nav-item d-sm-inline-block">
-        <a href="{{ route('prefile') }}" target="_blank" class="nav-link">Prefile</a>
-      </li>
-      @endapproved
-    @endauth
   </ul>
   <!-- #END# Left navbar links -->
 
