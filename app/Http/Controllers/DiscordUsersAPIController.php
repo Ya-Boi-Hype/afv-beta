@@ -14,7 +14,7 @@ class DiscordUsersAPIController extends Controller
         foreach ($accounts as $discord) {
             $rating = $discord->user->rating_atc;
             $sup = ($rating == 'SUP' || $rating == 'ADM');
-            $output[$discord->id] = ['display_name' => $discord->name, 'approved' => $discord->user->approved, 'sup' => $sup];
+            $output[$discord->id] = ['display_name' => $discord->name, 'sup' => $sup];
         }
 
         return response($output)->header('Content-Type', 'application/json');
