@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('name_first');
             $table->string('name_last');
+            $table->string('rating_atc');
             $table->rememberToken();
             $table->timestamp('last_login');
             $table->timestamp('joined_at')->default(Carbon::now());
