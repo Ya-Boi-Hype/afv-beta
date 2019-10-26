@@ -102,6 +102,7 @@ class LoginController extends Controller
 
         $account->name_first = utf8_decode($user->name_first);
         $account->name_last = utf8_decode($user->name_last);
+        $account->rating_atc = $user->rating->short;
         $account->joined_at = $user->reg_date;
         $account->last_login = Carbon::now();
         $account->save();
