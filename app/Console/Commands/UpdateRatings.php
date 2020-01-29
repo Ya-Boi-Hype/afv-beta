@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use \Vatsim\Xml\Facades\Xml as VatsimXML;
 use App\Models\User;
+use Illuminate\Console\Command;
+use Vatsim\Xml\Facades\Xml as VatsimXML;
 
 class UpdateRatings extends Command
 {
