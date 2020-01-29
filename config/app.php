@@ -176,7 +176,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\HorizonServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        Vatsim\Xml\XmlServiceProvider::class,
     ],
 
     /*
@@ -226,6 +226,7 @@ return [
         'Str'          => Illuminate\Support\Str::class,
         'URL'          => Illuminate\Support\Facades\URL::class,
         'Validator'    => Illuminate\Support\Facades\Validator::class,
+        'VatsimXML'    => Vatsim\Xml\Facades\Xml::class,
         'View'         => Illuminate\Support\Facades\View::class,
 
     ],

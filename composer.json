@@ -22,6 +22,7 @@
     "michelf/php-markdown": "^1.8",
     "predis/predis": "^1.1",
     "vatsim/sso": "3.*",
+    "vatsim/xml": "2.*",
     "wohali/oauth2-discord-new": "^1.0"
   },
   "require-dev": {

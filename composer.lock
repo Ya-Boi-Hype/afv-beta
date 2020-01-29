@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ea6ab2ba392c826d32ac8c50a9ce475",
+    "content-hash": "f11f5c1c260ddf4098439f425618663d",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -4780,6 +4780,49 @@
                 "vatsim"
             ],
             "time": "2017-02-22T13:24:17+00:00"
+        },
+        {
+            "name": "vatsim/xml",
+            "version": "2.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/VATSIM-UK/VatsimXML.git",
+                "reference": "9de09a99ded54c5a2734e11eff5415f8dc44df9e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/VATSIM-UK/VatsimXML/zipball/9de09a99ded54c5a2734e11eff5415f8dc44df9e",
+                "reference": "9de09a99ded54c5a2734e11eff5415f8dc44df9e",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">5.0.0",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Vatsim\\Xml\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anthony Lawrence",
+                    "email": "freelancer@anthonylawrence.me.uk"
+                }
+            ],
+            "description": "A simple laravel package for retrieving data from public VATSIM XML Feeds.",
+            "keywords": [
+                "feeds",
+                "laravel",
+                "vatsim",
+                "xml"
+            ],
+            "time": "2019-12-22T22:01:45+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
