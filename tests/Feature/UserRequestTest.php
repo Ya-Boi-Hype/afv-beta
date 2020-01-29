@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Approval;
 use App\Events\UserExpressedInterest;
-use Illuminate\Support\Facades\Event;
+use App\Models\Approval;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
 
 class UserRequestTest extends TestCase
 {

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Events\PermissionsUpdated;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\AfvApiController;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class PermissionsController extends Controller
 {

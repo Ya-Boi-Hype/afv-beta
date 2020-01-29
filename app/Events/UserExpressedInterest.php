@@ -3,8 +3,8 @@
 namespace App\Events;
 
 use App\Models\Approval;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class UserExpressedInterest
 {
@@ -23,7 +23,7 @@ class UserExpressedInterest
         $this->approval = $approval;
     }
 
-    public function getApproval() : Approval
+    public function getApproval(): Approval
     {
         return $this->approval;
     }

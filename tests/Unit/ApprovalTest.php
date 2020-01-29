@@ -2,14 +2,14 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Approval;
 use App\Events\UserApproved;
 use App\Listeners\SendApprovalNotification;
+use App\Models\Approval;
+use App\Models\User;
 use App\Notifications\ApprovalWelcomeEmail;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
+use Tests\TestCase;
 
 class ApprovalTest extends TestCase
 {
