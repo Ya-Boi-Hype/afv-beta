@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Models\User;
 use App\Events\PermissionsUpdated;
+use App\Models\User;
 use App\Notifications\PermissionsUpdatedEmail;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

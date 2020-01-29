@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use GuzzleHttp\Exception\ClientError;
 use GuzzleHttp\Exception\ServerError;
-use Illuminate\Support\Facades\Cache;
 use GuzzleHttp\Exception\TransferException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class AfvApiController extends Controller
 {

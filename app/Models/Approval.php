@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Events\UserApproved;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\AfvApiController;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class Approval extends Model
 {

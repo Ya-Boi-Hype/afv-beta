@@ -2,10 +2,10 @@
 
 namespace App\Events;
 
-use App\Models\User;
 use App\Models\Approval;
-use Illuminate\Queue\SerializesModels;
+use App\Models\User;
 use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class UserApproved
 {

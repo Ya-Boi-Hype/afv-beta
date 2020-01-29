@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\User;
-use Illuminate\Console\Command;
 use App\Notifications\HfTestApprovalNotification;
+use Illuminate\Console\Command;
 
 class TestApprovalMail extends Command
 {

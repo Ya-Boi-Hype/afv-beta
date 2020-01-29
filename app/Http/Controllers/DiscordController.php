@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Discord_Account;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Wohali\OAuth2\Client\Provider\Discord;
 use Wohali\OAuth2\Client\Provider\Exception\DiscordIdentityProviderException;

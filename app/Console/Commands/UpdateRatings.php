@@ -39,10 +39,9 @@ class UpdateRatings extends Command
      */
     public function handle()
     {
-        $users = User::chunk(20, function($users) {
-            foreach ($users as $user)
-            {
-                $data = VatsimXML::getData($user->id, "idstatusint");
+        $users = User::chunk(20, function ($users) {
+            foreach ($users as $user) {
+                $data = VatsimXML::getData($user->id, 'idstatusint');
                 $user->name_first = $data->name_first;
                 $user->name_last = $data->name_last;
                 $user->rating_atc = self::humanize_atc_rating($data->rating);
@@ -53,32 +52,31 @@ class UpdateRatings extends Command
 
     protected static function humanize_atc_rating($rating)
     {
-        switch($rating)
-        {
+        switch ($rating) {
             case -1:
-                return "INA";
+                return 'INA';
             case 0:
-                return "SUS";
+                return 'SUS';
             case 1:
-                return "OBS";
+                return 'OBS';
             case 2:
-                return "S1";
+                return 'S1';
             case 3:
-                return "S2";
+                return 'S2';
             case 4:
-                return "S3";
+                return 'S3';
             case 5:
-                return "C1";
+                return 'C1';
             case 7:
-                return "C3";
+                return 'C3';
             case 8:
-                return "I1";
+                return 'I1';
             case 10:
-                return "I3";
+                return 'I3';
             case 11:
-                return "SUP";
+                return 'SUP';
             case 12:
-                return "ADM";
+                return 'ADM';
         }
     }
 }

@@ -2,13 +2,13 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use App\Models\Approval;
 use App\Events\UserExpressedInterest;
-use Illuminate\Support\Facades\Notification;
 use App\Listeners\SendInterestConfirmationEmail;
+use App\Models\Approval;
 use App\Notifications\InterestConfirmationEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
+use Tests\TestCase;
 
 class UserRequestTest extends TestCase
 {
