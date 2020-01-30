@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
-use Vatsim\Xml\Facades\Xml as VatsimXML;
+use Vatsim\Xml\Facades\XML as VatsimXML;
 
 class UpdateRatings extends Command
 {
