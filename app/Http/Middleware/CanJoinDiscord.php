@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class FacilityEngineer
+class CanJoinDiscord
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class FacilityEngineer
     public function handle($request, Closure $next)
     {
         $user = auth()->user();
-        if (in_array('Facility Engineer', $user->permissions)) {
+        if ($user->rating_atc == 'SUP' || $user->rating_atc == 'ADM' || in_array('Facility Engineer', $user->permissions)) {
             return $next($request);
         }
 

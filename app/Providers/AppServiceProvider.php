@@ -35,6 +35,10 @@ class AppServiceProvider extends ServiceProvider
         Blade::if('canexpressavailability', function () {
             return auth()->user()->has_request && ! auth()->user()->approval->available;
         });
+        
+        Blade::if('canJoinDiscord', function () {
+            return (bool) ($user->rating_atc == 'SUP' || $user->rating_atc == 'ADM' || in_array('Facility Engineer', auth()->user()->permissions));
+        });
 
         Blade::if('hasnorequest', function () {
             return ! auth()->user()->has_request && ! auth()->user()->admin;

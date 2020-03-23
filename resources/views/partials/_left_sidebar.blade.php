@@ -12,7 +12,7 @@
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">   
         @auth
-        @facilityEngineer
+        @canJoinDiscord
         <li class="nav-item">
           <a href="{{ route('discord.index') }}" class="nav-link {{ Request::is('discord*') ? 'active' : null }}">
             <i class="nav-icon fab fa-discord"></i>
@@ -21,7 +21,7 @@
             </p>
           </a>
         </li>
-        @endfacilityEngineer
+        @endcanJoinDiscord
         @managesPermissions
         <li class="nav-header">ADMIN</li>
         <li class="nav-item">
