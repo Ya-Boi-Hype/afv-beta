@@ -72,7 +72,6 @@ class LoginController extends Controller
                     return redirect()->intended($main);
                 }
 
-                
                 try {
                     $permissions = Cache::rememberForever('permissions'.$user->id, function () use ($user) {
                         return array_diff(
@@ -84,14 +83,13 @@ class LoginController extends Controller
                     $permissions = [];
                 }
 
-
                 if (count($permissions) > 0) {
                     $this->completeLogin($user);
 
                     return redirect()->intended($main);
                 } else {
                     Cache::forget('permissions'.$user->id);
-    
+
                     return redirect()->route('home')->withError(['Nope!', 'You are not allowed to enter this site']);
                 }
             },
