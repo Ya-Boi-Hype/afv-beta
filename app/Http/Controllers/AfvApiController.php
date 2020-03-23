@@ -18,7 +18,6 @@ class AfvApiController extends Controller
 
     private static $apiVersion = 1;
     private static $timeout = 5; // In seconds
-    private static $debug = true;
 
     protected static $client; // \GuzzleHttp\Client instance
     protected static $bearer; // Token to authenticate to API
@@ -47,7 +46,7 @@ class AfvApiController extends Controller
                     ],
                 ]);
             } catch (TransferException | ClientError | ServerError $e) {
-                throw new \Exception('Failed to authenticate (1.1)', $e->getResponse()->getStatusCode());
+                throw new \Exception('Failed to authenticate (1.1)', $e->getCode());
             }
 
             if ($response->getStatusCode() != 200) {

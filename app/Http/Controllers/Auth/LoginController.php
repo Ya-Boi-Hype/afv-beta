@@ -66,7 +66,13 @@ class LoginController extends Controller
             Input::get('oauth_verifier'),
             function ($user) use ($request, $main) {
                 $request->session()->forget('vatsimauth');
+                if ($user->rating->short == 'SUP' || $user->rating->short == 'ADM') {
+                    $this->completeLogin($user);
 
+                    return redirect()->intended($main);
+                }
+
+                
                 try {
                     $permissions = Cache::rememberForever('permissions'.$user->id, function () use ($user) {
                         return array_diff(
@@ -75,18 +81,19 @@ class LoginController extends Controller
                     });
                 } catch (\Exception $e) {
                     Log::warn('AFV Permissions Request failed');
-
-                    return redirect()->route('home')->withError(['Uh, oh...', 'Something went wrong']);
+                    $permissions = [];
                 }
-                if (! count($permissions)) {
-                    Cache::forget('permissions'.$user->id);
 
+
+                if (count($permissions) > 0) {
+                    $this->completeLogin($user);
+
+                    return redirect()->intended($main);
+                } else {
+                    Cache::forget('permissions'.$user->id);
+    
                     return redirect()->route('home')->withError(['Nope!', 'You are not allowed to enter this site']);
                 }
-
-                $this->completeLogin($user);
-
-                return redirect()->intended($main);
             },
             function ($error) use ($request) {
                 Log::error('SSO Validation Error - '.$error->getMessage());
