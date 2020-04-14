@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\User;
+use App\Http\Controllers\AfvApiController;
+use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use Vatsim\Xml\Facades\XML as VatsimXML;
 
@@ -39,12 +41,35 @@ class UpdateRatings extends Command
      */
     public function handle()
     {
-        $users = User::chunk(20, function ($users) {
+        $vatsim_api = new Client([
+            'base_uri' => 'https://api.vatsim.net/api/',
+            'timeout' => 5,
+        ]);
+
+        try {
+            $facility_engineers = json_decode(AfvApiController::doGET('permissions/Facility Engineer/users', null, FALSE));
+            $facility_engineers = collect($facility_engineers);
+            $facility_engineers = $facility_engineers->pluck('username');
+        } catch (\Exception $e) {
+            return $this->error('Couldn\'t fetch Facility Engineers: '. $e->getMessage);
+        }
+
+        $users = User::chunk(20, function ($users) use (&$vatsim_api, &$facility_engineers) {
             foreach ($users as $user) {
-                $data = VatsimXML::getData($user->id, 'idstatusint');
+                $id = $user->id;
+                try {
+                    $response = $vatsim_api->request('GET', "ratings/$id");
+                    $data = json_decode($response->getBody());
+                } catch (\Exception $e) {
+                    $this->error($e->getMessage());
+                    continue;
+                }
+                
                 $user->name_first = $data->name_first;
                 $user->name_last = $data->name_last;
                 $user->rating_atc = self::humanize_atc_rating($data->rating);
+                $user->facility_engineer = (bool) $facility_engineers->contains($user->id);
+
                 $user->save();
             }
         });
