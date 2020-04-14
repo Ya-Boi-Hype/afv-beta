@@ -5,7 +5,7 @@
  * --------------------------------------------
  */
 
-const ControlSidebar = ($ => {
+const ControlSidebar = (($) => {
     /**
      * Constants
      * ====================================================
@@ -97,7 +97,7 @@ const ControlSidebar = ($ => {
         // Static
 
         static _jQueryInterface(operation) {
-            return this.each(function() {
+            return this.each(function () {
                 let data = $(this).data(DATA_KEY);
 
                 if (!data) {
@@ -119,7 +119,7 @@ const ControlSidebar = ($ => {
      * Data Api implementation
      * ====================================================
      */
-    $(document).on('click', Selector.DATA_TOGGLE, function(event) {
+    $(document).on('click', Selector.DATA_TOGGLE, function (event) {
         event.preventDefault();
 
         ControlSidebar._jQueryInterface.call($(this), 'toggle');
@@ -132,7 +132,7 @@ const ControlSidebar = ($ => {
 
     $.fn[NAME] = ControlSidebar._jQueryInterface;
     $.fn[NAME].Constructor = ControlSidebar;
-    $.fn[NAME].noConflict = function() {
+    $.fn[NAME].noConflict = function () {
         $.fn[NAME] = JQUERY_NO_CONFLICT;
         return ControlSidebar._jQueryInterface;
     };

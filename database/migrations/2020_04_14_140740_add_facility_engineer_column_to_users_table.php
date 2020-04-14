@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddFacilityEngineerColumnToUsersTable extends Migration
 {
@@ -14,7 +14,7 @@ class AddFacilityEngineerColumnToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('facility_engineer')->default(FALSE);
+            $table->boolean('facility_engineer')->default(false);
         });
     }
 

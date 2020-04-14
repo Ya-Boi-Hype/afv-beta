@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Models\User;
 use App\Http\Controllers\AfvApiController;
+use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
-use Vatsim\Xml\Facades\XML as VatsimXML;
 
 class UpdateRatings extends Command
 {
@@ -47,11 +46,11 @@ class UpdateRatings extends Command
         ]);
 
         try {
-            $facility_engineers = json_decode(AfvApiController::doGET('permissions/Facility Engineer/users', null, FALSE));
+            $facility_engineers = json_decode(AfvApiController::doGET('permissions/Facility Engineer/users', null, false));
             $facility_engineers = collect($facility_engineers);
             $facility_engineers = $facility_engineers->pluck('username');
         } catch (\Exception $e) {
-            return $this->error('Couldn\'t fetch Facility Engineers: '. $e->getMessage);
+            return $this->error('Couldn\'t fetch Facility Engineers: '.$e->getMessage);
         }
 
         $users = User::chunk(20, function ($users) use (&$vatsim_api, &$facility_engineers) {
@@ -64,7 +63,7 @@ class UpdateRatings extends Command
                     $this->error($e->getMessage());
                     continue;
                 }
-                
+
                 $user->name_first = $data->name_first;
                 $user->name_last = $data->name_last;
                 $user->rating_atc = self::humanize_atc_rating($data->rating);

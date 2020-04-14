@@ -5,7 +5,7 @@
  * --------------------------------------------
  */
 
-const PushMenu = ($ => {
+const PushMenu = (($) => {
     /**
      * Constants
      * ====================================================
@@ -62,18 +62,14 @@ const PushMenu = ($ => {
         // Public
 
         show() {
-            $(Selector.BODY)
-                .addClass(ClassName.OPEN)
-                .removeClass(ClassName.COLLAPSED);
+            $(Selector.BODY).addClass(ClassName.OPEN).removeClass(ClassName.COLLAPSED);
 
             const shownEvent = $.Event(Event.SHOWN);
             $(this._element).trigger(shownEvent);
         }
 
         collapse() {
-            $(Selector.BODY)
-                .removeClass(ClassName.OPEN)
-                .addClass(ClassName.COLLAPSED);
+            $(Selector.BODY).removeClass(ClassName.OPEN).addClass(ClassName.COLLAPSED);
 
             const collapsedEvent = $.Event(Event.COLLAPSED);
             $(this._element).trigger(collapsedEvent);
@@ -134,7 +130,7 @@ const PushMenu = ($ => {
         // Static
 
         static _jQueryInterface(operation) {
-            return this.each(function() {
+            return this.each(function () {
                 let data = $(this).data(DATA_KEY);
                 const _options = $.extend({}, Default, $(this).data());
 
@@ -155,7 +151,7 @@ const PushMenu = ($ => {
      * ====================================================
      */
 
-    $(document).on('click', Selector.TOGGLE_BUTTON, event => {
+    $(document).on('click', Selector.TOGGLE_BUTTON, (event) => {
         event.preventDefault();
 
         let button = event.currentTarget;
@@ -178,7 +174,7 @@ const PushMenu = ($ => {
 
     $.fn[NAME] = PushMenu._jQueryInterface;
     $.fn[NAME].Constructor = PushMenu;
-    $.fn[NAME].noConflict = function() {
+    $.fn[NAME].noConflict = function () {
         $.fn[NAME] = JQUERY_NO_CONFLICT;
         return PushMenu._jQueryInterface;
     };

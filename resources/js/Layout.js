@@ -5,7 +5,7 @@
  * --------------------------------------------
  */
 
-const Layout = ($ => {
+const Layout = (($) => {
     /**
      * Constants
      * ====================================================
@@ -140,7 +140,7 @@ const Layout = ($ => {
             // Calculate the maximum number in a list
             let max = 0;
 
-            Object.keys(numbers).forEach(key => {
+            Object.keys(numbers).forEach((key) => {
                 if (numbers[key] > max) {
                     max = numbers[key];
                 }
@@ -152,7 +152,7 @@ const Layout = ($ => {
         // Static
 
         static _jQueryInterface(config) {
-            return this.each(function() {
+            return this.each(function () {
                 let data = $(this).data(DATA_KEY);
                 const _config = $.extend({}, Default, $(this).data());
 
@@ -184,7 +184,7 @@ const Layout = ($ => {
 
     $.fn[NAME] = Layout._jQueryInterface;
     $.fn[NAME].Constructor = Layout;
-    $.fn[NAME].noConflict = function() {
+    $.fn[NAME].noConflict = function () {
         $.fn[NAME] = JQUERY_NO_CONFLICT;
         return Layout._jQueryInterface;
     };

@@ -5,7 +5,7 @@
  * --------------------------------------------
  */
 
-const Treeview = ($ => {
+const Treeview = (($) => {
     /**
      * Constants
      * ====================================================
@@ -109,7 +109,7 @@ const Treeview = ($ => {
         // Private
 
         _setupListeners() {
-            $(document).on('click', this._config.trigger, event => {
+            $(document).on('click', this._config.trigger, (event) => {
                 this.toggle(event);
             });
         }
@@ -117,7 +117,7 @@ const Treeview = ($ => {
         // Static
 
         static _jQueryInterface(config) {
-            return this.each(function() {
+            return this.each(function () {
                 let data = $(this).data(DATA_KEY);
                 const _config = $.extend({}, Default, $(this).data());
 
@@ -139,7 +139,7 @@ const Treeview = ($ => {
      */
 
     $(window).on(Event.LOAD_DATA_API, () => {
-        $(Selector.DATA_WIDGET).each(function() {
+        $(Selector.DATA_WIDGET).each(function () {
             Treeview._jQueryInterface.call($(this), 'init');
         });
     });
@@ -151,7 +151,7 @@ const Treeview = ($ => {
 
     $.fn[NAME] = Treeview._jQueryInterface;
     $.fn[NAME].Constructor = Treeview;
-    $.fn[NAME].noConflict = function() {
+    $.fn[NAME].noConflict = function () {
         $.fn[NAME] = JQUERY_NO_CONFLICT;
         return Treeview._jQueryInterface;
     };

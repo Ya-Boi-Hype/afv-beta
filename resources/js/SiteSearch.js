@@ -5,7 +5,7 @@
  * --------------------------------------------
  */
 
-const SiteSearch = ($ => {
+const SiteSearch = (($) => {
     /**
      * Constants
      * ====================================================
@@ -70,7 +70,7 @@ const SiteSearch = ($ => {
         // Static
 
         static _jQueryInterface(options) {
-            return this.each(function() {
+            return this.each(function () {
                 let data = $(this).data(DATA_KEY);
 
                 if (!data) {
@@ -91,7 +91,7 @@ const SiteSearch = ($ => {
      * Data API
      * ====================================================
      */
-    $(document).on('click', Selector.TOGGLE_BUTTON, event => {
+    $(document).on('click', Selector.TOGGLE_BUTTON, (event) => {
         event.preventDefault();
 
         let button = $(event.currentTarget);
@@ -103,7 +103,7 @@ const SiteSearch = ($ => {
         SiteSearch._jQueryInterface.call(button, 'toggle');
     });
 
-    $(document).on('click', Selector.SEARCH_BACKDROP, event => {
+    $(document).on('click', Selector.SEARCH_BACKDROP, (event) => {
         const backdrop = $(event.currentTarget);
         SiteSearch._jQueryInterface.call(backdrop, 'close');
     });
@@ -115,7 +115,7 @@ const SiteSearch = ($ => {
 
     $.fn[NAME] = SiteSearch._jQueryInterface;
     $.fn[NAME].Constructor = SiteSearch;
-    $.fn[NAME].noConflict = function() {
+    $.fn[NAME].noConflict = function () {
         $.fn[NAME] = JQUERY_NO_CONFLICT;
         return SiteSearch._jQueryInterface;
     };

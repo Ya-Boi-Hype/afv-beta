@@ -5,7 +5,7 @@
  * --------------------------------------------
  */
 
-const Widget = ($ => {
+const Widget = (($) => {
     /**
      * Constants
      * ====================================================
@@ -127,7 +127,7 @@ const Widget = ($ => {
                             ' !important; transition: all .15s;'
                     )
                     .delay(100)
-                    .queue(function() {
+                    .queue(function () {
                         $(this).removeClass(ClassName.MAXIMIZED);
                         $('html').removeClass(ClassName.MAXIMIZED);
                         $(this).trigger(Event.MINIMIZED);
@@ -149,7 +149,7 @@ const Widget = ($ => {
                         transition: 'all .15s',
                     })
                     .delay(150)
-                    .queue(function() {
+                    .queue(function () {
                         $(this).addClass(ClassName.MAXIMIZED);
                         $('html').addClass(ClassName.MAXIMIZED);
                         $(this).trigger(Event.MAXIMIZED);
@@ -182,7 +182,7 @@ const Widget = ($ => {
         // Static
 
         static _jQueryInterface(config) {
-            return this.each(function() {
+            return this.each(function () {
                 let data = $(this).data(DATA_KEY);
 
                 if (!data) {
@@ -204,7 +204,7 @@ const Widget = ($ => {
      * ====================================================
      */
 
-    $(document).on('click', Selector.DATA_COLLAPSE, function(event) {
+    $(document).on('click', Selector.DATA_COLLAPSE, function (event) {
         if (event) {
             event.preventDefault();
         }
@@ -212,7 +212,7 @@ const Widget = ($ => {
         Widget._jQueryInterface.call($(this), 'toggle');
     });
 
-    $(document).on('click', Selector.DATA_REMOVE, function(event) {
+    $(document).on('click', Selector.DATA_REMOVE, function (event) {
         if (event) {
             event.preventDefault();
         }
@@ -220,7 +220,7 @@ const Widget = ($ => {
         Widget._jQueryInterface.call($(this), 'remove');
     });
 
-    $(document).on('click', Selector.DATA_MAXIMIZE, function(event) {
+    $(document).on('click', Selector.DATA_MAXIMIZE, function (event) {
         if (event) {
             event.preventDefault();
         }
@@ -235,7 +235,7 @@ const Widget = ($ => {
 
     $.fn[NAME] = Widget._jQueryInterface;
     $.fn[NAME].Constructor = Widget;
-    $.fn[NAME].noConflict = function() {
+    $.fn[NAME].noConflict = function () {
         $.fn[NAME] = JQUERY_NO_CONFLICT;
         return Widget._jQueryInterface;
     };
